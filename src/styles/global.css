@@ -1,0 +1,119 @@
+@import "normalize.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.backgroundImage {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: -10;
+  height: 100%;
+  width: 100%;
+  background-image: url("https://images2.imgbox.com/f3/e4/CdWeC3N9_o.jpg");
+  /* background: linear-gradient(
+    to right,
+
+    rgb(0, 4, 10),
+    rgb(0, 4, 10),
+    rgb(2, 8, 17)
+  ); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+.backgroundLogin {
+  background: linear-gradient(
+    to bottom,
+    rgb(5, 59, 137),
+    rgb(4, 42, 97),
+    rgb(3, 23, 52),
+    rgb(2, 8, 17)
+  );
+  background-size: cover;
+}
+
+.backgroundDash {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: -10;
+  height: 100%;
+  width: 100%;
+  /* background-image: url("https://cdn.discordapp.com/attachments/1262403669899346010/1263966545562832956/IMG_1271.jpg?ex=669f73d3&is=669e2253&hm=be03ac126681ba9ff5eb70a8ae6f6bc2a87c0cae9665c55841d0196789a54227&"); */
+  background: linear-gradient(
+    to right,
+
+    rgb(0, 4, 10),
+    rgb(0, 4, 10),
+    rgb(2, 8, 17)
+  );
+  /* background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px); */
+}
+
+@layer components {
+  .btn-primary {
+    @apply w-28 h-8  bg-blue-950 border  border-blue-300 rounded-lg flex justify-center items-center;
+  }
+
+  .btn-dropDown {
+    @apply flex gap-1 items-center justify-start text-gray-400 text-sm;
+  }
+
+  .btn-secundary {
+    @apply box-border flex flex-row justify-center text-white items-center p-3 gap-2  absolute w-40 h-12 left-10 top-2 bg-gray-900 border-gray-900 border-2 rounded-md;
+  }
+
+  .btn-form {
+    @apply w-[60%] min-[940px]:w-[80%] bg-purple-500 hover:bg-purple-600 rounded-md p-2;
+  }
+
+  .btn-error {
+    @apply w-36 h-12 rounded bg-red-100 hover:border-2 hover:border-red-200 hover:bg-red-200 text-red-500;
+  }
+
+  .btn-succes {
+    @apply w-36 h-12 rounded bg-green-100 hover:border-2 hover:border-green-200 hover:bg-green-200 text-green-500;
+  }
+
+  .btn-disabled {
+    @apply w-36 h-12 bg-brand-3 text-white font-bold rounded;
+  }
+
+  .btn-big-text {
+    @apply w-32 font-normal  text-base;
+  }
+
+  .btn-medium-text {
+    @apply w-28 font-normal  text-sm;
+  }
+
+  .btn-header {
+    @apply w-36 h-12 rounded hover:border-2 hover:border-gray-400 text-black;
+  }
+
+  .input-style {
+    @apply p-2 focus:outline-none border-b text-white bg-transparent;
+  }
+
+  .user-form-input {
+    @apply mt-1 px-6 py-4 h-14 text-xl bg-blue-900 shadow-sm placeholder-slate-400 focus:outline-none block w-[100%] rounded-md;
+  }
+
+  .user-form-button {
+    @apply px-6 py-3 h-10 flex w-full justify-center rounded-md bg-gray-100 text-2xl text-center flex items-center leading-6 text-gray-900 shadow-sm focus-visible:outline focus-visible:outline-2;
+  }
+}
