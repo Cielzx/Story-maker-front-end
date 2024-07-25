@@ -45,6 +45,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
   const cookies = parseCookies();
 
+  if (!cookies["user.Token"]) {
+    //  router.push("/login");
+  }
+
   const loginFunction = async (data: LoginData) => {
     try {
       const response = await api.post("login", data);
@@ -59,8 +63,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isSucess: true,
       });
       setTimeout(() => {
-        router.push("");
-      }, 3000);
+        router.push("/dashboard");
+      }, 2000);
     } catch (error) {
       Toast({
         message: "Credenciais inválidas",

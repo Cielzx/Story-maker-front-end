@@ -1,30 +1,84 @@
 import Input from "@/app/components/Input";
 import CustomModal from "@/app/components/Modal";
-import { useCategory } from "@/hooks";
+import { iSubCategories } from "@/context/categoryContext";
+import { useCategory, useSticker, useUSer } from "@/hooks";
+import { CategoryData, CombineCategorySchema } from "@/schemas/category.schema";
+import { StickerData, StickerSchema } from "@/schemas/sticker.schema";
 import { Image, Sticker } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import { useForm, UseFormRegister } from "react-hook-form";
 
 interface modalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
 const CategoryModal = ({ isOpen, onClose }: modalProps) => {
-  const { setCoverImage } = useCategory();
+  const { setCoverImage, createCategory, createSubCategorie } = useCategory();
+  const { setFigureImage, createSticker } = useSticker();
+  const { mode, setMode } = useUSer();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CombineCategorySchema>();
+  const pathname = usePathname();
 
   const onDrop = useCallback((files: File[]) => {
+    if (
+      pathname.startsWith("/dashboard/") &&
+      pathname.split("/").length === 4
+    ) {
+      setFigureImage(files[0]);
+    }
     setCoverImage(files[0]);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/jpeg": [], "image/png": [] },
+    accept: { "image/jpeg": ["jpg"], "image/png": ["png"] },
   });
+  let headerName = "";
+  if (mode === "category") {
+    headerName = "Criar categoria";
+  } else if (mode === "subCategory") {
+    headerName = "Criar Sub-categoria";
+  } else if (mode === "sticker") {
+    headerName = "Criar figurinha";
+  }
+
+  let fieldValue: keyof CombineCategorySchema = "category_name";
+  let label = "";
+  if (mode === "category") {
+    fieldValue = "category_name";
+    label = "Nome da categoria";
+  } else if (mode === "subCategory") {
+    fieldValue = "item_name";
+    label = "Nome da sub-categoria";
+  } else if (mode === "sticker") {
+    fieldValue = "figure_name";
+    label = "Nome da figurinha";
+  }
+
+  const onSub = (data: CombineCategorySchema) => {
+    if (mode === "category") {
+      createCategory(data);
+    } else if (mode === "subCategory") {
+      createSubCategorie(data);
+    } else if (mode === "sticker") {
+      createSticker(data);
+    }
+    setTimeout(() => {
+      onClose();
+    }, 1000);
+  };
 
   return (
     <CustomModal
       isOpen={isOpen}
-      headerText="Criar categoria"
+      headerText={headerName}
       onClose={onClose}
       MaxWidthBody="80%"
       MaxWidthHeader="100%"
@@ -32,12 +86,15 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
       widthHeader="100%"
       heightBody=""
     >
-      <div className="flex flex-col w-[100%] h-full justify-center items-center gap-2 border-red-300 border-1 border-solid text-white">
+      <form
+        onSubmit={handleSubmit(onSub)}
+        className="flex flex-col w-[100%] h-full justify-center items-center gap-2 border-red-300 border-1 border-solid text-white"
+      >
         <Input
           type="text"
-          id="category_name"
-          name="category_name"
-          label="Nome da categoria"
+          id={fieldValue}
+          label={label}
+          {...register(fieldValue)}
         />
 
         <div
@@ -61,8 +118,10 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
             </div>
           )}
         </div>
-        <button className="btn-form">Criar</button>
-      </div>
+        <button type="submit" className="btn-form">
+          Criar
+        </button>
+      </form>
     </CustomModal>
   );
 };

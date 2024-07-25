@@ -6,6 +6,7 @@ import { AuthProvider } from "@/context/authContext";
 import Header from "./components/header";
 import { UserProvider } from "@/context/userContext";
 import { CategoryProvider } from "@/context/categoryContext";
+import { StickerProvider } from "@/context/stickerContext";
 
 const nixie = Nixie_One({ weight: "400", subsets: ["latin"] });
 
@@ -20,12 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body className={nixie.className}>
         <ToastProvider>
           <AuthProvider>
             <UserProvider>
-              <CategoryProvider>{children}</CategoryProvider>
+              <CategoryProvider>
+                <StickerProvider>{children}</StickerProvider>
+              </CategoryProvider>
             </UserProvider>
           </AuthProvider>
         </ToastProvider>

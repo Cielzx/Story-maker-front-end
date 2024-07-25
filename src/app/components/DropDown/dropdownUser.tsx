@@ -12,11 +12,11 @@ import { destroyCookie, parseCookies } from "nookies";
 import { usePathname, useRouter } from "next/navigation";
 import { AuthContext, AuthProvider } from "@/context/authContext";
 import { Heart, LogOut, User } from "lucide-react";
-// import { useUser } from "@/hooks";
+import { useUSer } from "@/hooks";
 
 const DropDown = () => {
   const router = useRouter();
-  // const { user } = useUser();
+  const { user } = useUSer();
   const { onOpen, onClose, isOpen } = useDisclosure();
   const pathname = usePathname();
 
@@ -25,12 +25,12 @@ const DropDown = () => {
     return router.push("/login");
   };
 
-  // if (!user) {
-  //   return <></>;
-  // }
-  const user = "Lorena";
+  if (!user) {
+    return <></>;
+  }
+
   let initials = "";
-  const names = user.split(" ");
+  const names = user.name.split(" ");
 
   if (names && names.length > 0) {
     const firstName = names[0];
@@ -53,20 +53,13 @@ const DropDown = () => {
             <MenuButton as={Button}>
               <div className="w-full h-full flex gap-3   items-center">
                 <div className="w-16 h-16 bg-pink-400 text-4xl  rounded-full bg-gray-900 max-[920px]:w-14 max-[920px]:h-14">
-                  {/* { {user.profile_image ? (
-                    <img
-                      src=""
-                      className="rounded-full object-cover"
-                      alt=""
-                    />
+                  {user.profile_image ? (
+                    <img src="" className="rounded-full object-cover" alt="" />
                   ) : (
                     <p className="w-full h-full flex justify-center items-center  text-white">
                       {initials}
                     </p>
-                  )} } */}
-                  <p className="w-full h-full flex justify-center items-center  text-white">
-                    {initials}
-                  </p>
+                  )}
                 </div>
               </div>
             </MenuButton>
