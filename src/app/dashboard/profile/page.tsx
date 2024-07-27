@@ -9,28 +9,28 @@ import { useDisclosure } from "@chakra-ui/react";
 
 const Profile = () => {
   const { user, setProfileImage, profileImage, uploadPhoto } = useUSer();
-  //   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  if (!user) {
-    return <Loading />;
-  }
   const onDrop = useCallback((files: File[]) => {
     const selectFiles = files[0];
     setProfileImage(selectFiles);
   }, []);
+
+  useEffect(() => {
+    if (profileImage) {
+      uploadPhoto(user!.id, profileImage);
+    }
+
+    console.log(profileImage);
+  }, [profileImage]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { "image/jpeg": ["jpg"], "image/png": ["png"] },
   });
 
-  useEffect(() => {
-    if (profileImage) {
-      uploadPhoto(user.id, profileImage);
-    }
-
-    console.log(profileImage);
-  }, [profileImage]);
+  if (!user) {
+    return <Loading />;
+  }
 
   let initials = "";
   const names = user.name.split(" ");

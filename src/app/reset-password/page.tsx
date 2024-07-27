@@ -1,20 +1,10 @@
 "use client";
-import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Input from "../components/Input";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks";
-import { NextRequest } from "next/server";
-import { LoginData } from "../login/components/validator";
 import Toast from "../components/Toast";
-
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const query = searchParams.get("token");
-  console.log(query);
-  return Response.json(query);
-}
 
 const ResestPassword = ({
   searchParams,

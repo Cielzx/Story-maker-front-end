@@ -30,4 +30,6 @@ const Input = forwardRef<HTMLInputElement, iInputProps>(
   }
 );
 
+Input.displayName = "Input";
+
 export default Input;
