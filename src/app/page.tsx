@@ -19,14 +19,14 @@ export default function Home() {
 
         <Loading />
 
-        <div className="flex flex-col w-[100%] gap-[10px] items-center justify-center p-2">
+        {/* <div className="flex flex-col w-[100%] gap-[10px] items-center justify-center p-2">
           <Link
             className="w-[60%] h-[40px] flex justify-center items-center gap-2 rounded-[10px] bg-purple-600 text-[white] text-center text-2xl"
             href={"/login"}
           >
             Entre agora <FaArrowRight />
           </Link>
-        </div>
+        </div> */}
       </section>
     </main>
   );
