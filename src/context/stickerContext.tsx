@@ -82,6 +82,13 @@ export const StickerProvider = ({ children }: categoryProp) => {
   };
 
   const copyImageToClipboard = async (imageSrc: string) => {
+    if (!navigator.clipboard || !window.ClipboardItem) {
+      Toast({
+        message: "Clipboard API não é suportada neste navegador.",
+        isSucess: false,
+      });
+      return;
+    }
     try {
       const response = await fetch(imageSrc);
       const blob = await response.blob();
@@ -110,7 +117,10 @@ export const StickerProvider = ({ children }: categoryProp) => {
       //   });
       // }
 
-      if (figureImage!.name.includes("png")) {
+      if (
+        figureImage!.name.includes("png") ||
+        figureImage!.name.includes("heif")
+      ) {
         const response = await api.post<iSticker>("stickers", updatedData);
         await uploadStickerFile(response.data.id, figureImage!);
 
@@ -199,6 +209,8 @@ export const StickerProvider = ({ children }: categoryProp) => {
       });
     }
   };
+
+  console.log(figureImage);
 
   useEffect(() => {
     getSubCategorie(subCategoryId);

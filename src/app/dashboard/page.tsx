@@ -4,10 +4,10 @@ import { useDisclosure } from "@chakra-ui/react";
 import DropDown from "../components/DropDown/dropdownUser";
 import { useCategory, useUSer } from "@/hooks";
 import Loading from "../components/Loading";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import ReusableList from "./components/Lists/ReusableList";
-import dynamic from "next/dynamic";
+import Input from "../components/Input";
 
 const DashBoard = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -16,6 +16,7 @@ const DashBoard = () => {
   const { user, getUser } = useUSer();
   const { categoryArray, getCategory, subCategories, deleteCategory } =
     useCategory();
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     getCategory();
@@ -55,12 +56,19 @@ const DashBoard = () => {
               <DropDown />
             </div>
 
-            <div className="w-[70%] flex justify-end relative top-[6%] right-[15%] p-1 bg-white rounded-md">
+            <div className="w-[70%] flex items-center  relative top-[6%] right-[15%] p-1 bg-white rounded-md">
+              <input
+                type="text"
+                value={search}
+                className="text-black outline-none w-[90%]"
+                onChange={(e) => setSearch(e.target.value)}
+                id="text"
+              />
               <Search color="purple" />
             </div>
           </div>
           <div className="flex w-full  justify-center items-center">
-            <ReusableList items={categoryArray} />
+            <ReusableList items={categoryArray} search={search} />
           </div>
         </section>
       </main>

@@ -135,6 +135,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
       }
 
       const response = await api.get(url);
+
       if (id) {
         console.log();
         setCategoryId(response.data.id);

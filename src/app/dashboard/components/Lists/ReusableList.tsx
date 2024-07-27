@@ -10,9 +10,10 @@ interface props {
   items: CombineCategorySchema[];
   id?: string;
   subId?: string;
+  search?: string;
 }
 
-const ReusableList = ({ items, id, subId }: props) => {
+const ReusableList = ({ items, id, subId, search }: props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { deleteCategory, deleteSubCategory } = useCategory();
@@ -81,12 +82,24 @@ const ReusableList = ({ items, id, subId }: props) => {
     setFocusedIndex("");
   };
 
+  let filteredItems = items!.filter((item) => {
+    return item.category_name
+      .toLocaleLowerCase()
+      .includes(search!.toLocaleLowerCase());
+  });
+
+  if (search === "") {
+    filteredItems = items;
+  }
+
+  console.log(filteredItems);
+
   return (
     <ul className="w-full justify-center h-[77vh] flex flex-wrap gap-2 p-3">
-      {items && items.length > 0 ? (
+      {filteredItems && filteredItems.length > 0 ? (
         <div className="w-[100%] flex h-full h-[95%]  overflow-y-auto justify-between flex-wrap gap-2 p-2">
           <>
-            {items.map((item) => (
+            {filteredItems.map((item) => (
               <>
                 <motion.div
                   key={item.id}
