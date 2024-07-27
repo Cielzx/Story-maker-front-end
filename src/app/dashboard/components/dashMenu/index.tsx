@@ -42,13 +42,17 @@ const DashMenu = () => {
           size={30}
         />
 
-        <Heart
-          onClick={() => {
-            onOpen();
-          }}
-          className="cursor-pointer"
-          size={30}
-        />
+        {user.is_admin ? (
+          <></>
+        ) : (
+          <Heart
+            onClick={() => {
+              onOpen();
+            }}
+            className="cursor-pointer"
+            size={30}
+          />
+        )}
 
         {user.is_admin ? (
           <>

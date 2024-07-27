@@ -65,7 +65,7 @@ const CustomModal = ({
             }}
             className="bg-transparent w-[100%] flex justify-between items-center text-white  p-4 max-[920px]:w-[100%]"
           >
-            <p className="font-bold text-2xl">{headerText}</p>
+            <p className="font-bold text-xl">{headerText}</p>
             <button onClick={onClose}>
               <IoIosClose className="text-4xl" />
             </button>

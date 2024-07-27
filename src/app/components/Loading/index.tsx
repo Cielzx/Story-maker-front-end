@@ -1,5 +1,6 @@
 "use client";
 import { Spinner } from "@chakra-ui/spinner";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaArrowRight } from "react-icons/fa";
@@ -8,6 +9,7 @@ const Loading = () => {
   const pathname = usePathname();
   return (
     <main className="min-h-screen relative flex flex-col gap-4 items-center justify-center z-[99999px] text-white">
+      <div className="backgroundDash"></div>
       <div className="flex relative ">
         <img
           src="https://images2.imgbox.com/68/26/AGtl8eED_o.png"

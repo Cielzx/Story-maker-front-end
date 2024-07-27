@@ -49,11 +49,11 @@ const Profile = () => {
     <div className="w-full flex flex-col min-h-screen">
       <div className="backgroundDash"></div>
       <main className="w-full flex flex-col flex-grow bg-cover bg-center text-white items-center ">
-        <section className="w-full flex flex-col items-center h-[100vh]">
+        <section className="w-full flex flex-col relative items-center h-[100vh]">
           <div
             className="w-[100%] h-[40%] flex flex col"
             style={{
-              backgroundImage: `url(https://cdn.discordapp.com/attachments/1262403669899346010/1263966545562832956/IMG_1271.jpg?ex=66a4b9d3&is=66a36853&hm=d9be93f9d4c9f4ca66e48175f89038f356980cb1a481b8f06adaa42acc08344e&)`,
+              backgroundImage: `url(https://images2.imgbox.com/4f/49/NfAbt61z_o.jpg)`,
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
             }}
@@ -63,7 +63,7 @@ const Profile = () => {
                 {...getRootProps()}
                 className="w-24 h-24 bg-pink-400 text-4xl group relative  rounded-full bg-gray-900 max-[920px]:w-24 max-[920px]:h-24"
               >
-                <div className="hidden w-full h-full rounded-full flex items-center justify-center group-hover:flex absolute bottom-[23%] bg-[rgba(0,0,0,0.3)]">
+                <div className="hidden w-full h-full rounded-full flex items-center justify-center group-hover:flex absolute bg-[rgba(0,0,0,0.3)]">
                   <Camera />
                 </div>
                 <input className="hidden" {...getInputProps()} />
@@ -86,7 +86,7 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="w-full h-[44%] bg-[rgba(0,0,0,0.2)] rounded-lg flex flex-col justify-center gap-4 p-2">
+          <div className="w-[75%] h-[44%] bg-[rgba(0,0,0,0.2)] rounded-lg flex absolute bottom-[20%] flex-col justify-center gap-4 p-2">
             <div className="w-full flex items-center h-[50px] border-b-[1px] border-solid">
               <button className="flex gap-1">
                 <Edit /> Informações

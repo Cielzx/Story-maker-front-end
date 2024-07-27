@@ -2,7 +2,7 @@
 import ReusableList from "@/app/dashboard/components/Lists/ReusableList";
 import { useCategory, useUSer } from "@/hooks";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Loading from "../Loading";
 import Link from "next/link";
 import { ArrowLeft, Heart } from "lucide-react";
@@ -19,13 +19,21 @@ const SubCategorieContainer = ({ id, subId }: props) => {
   const { subCategories, subCategorie, getSubCategorie, category } =
     useCategory();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const { mode, setMode } = useUSer();
 
   const pathname = usePathname();
 
-  if (!subCategories) {
+  useEffect(() => {
+    if (category || subCategories || subCategorie) {
+      setIsLoading(false);
+    }
+  }, [category, subCategories, subCategorie]);
+
+  if (isLoading) {
     return <Loading />;
   }
 
