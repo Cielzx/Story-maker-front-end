@@ -24,7 +24,6 @@ const LoginForm = ({ mode, setMode }: iLoginProps) => {
   const { loginFunction, registerFunction, RequestPassword } = useAuth();
 
   const onSub = (data: CombinedSchema) => {
-    console.log(data);
     if (mode === "login") {
       loginFunction(data);
     } else if (mode === "register") {

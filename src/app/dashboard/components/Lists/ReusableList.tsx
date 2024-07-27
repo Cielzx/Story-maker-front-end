@@ -81,8 +81,6 @@ const ReusableList = ({ items, id, subId }: props) => {
     setFocusedIndex("");
   };
 
-  console.log(user);
-
   return (
     <ul className="w-full justify-center h-[77vh] flex flex-wrap gap-2 p-3">
       {items && items.length > 0 ? (
