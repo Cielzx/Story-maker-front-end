@@ -43,7 +43,7 @@ const DashBoard = () => {
 
   return (
     <div className="w-full flex flex-col min-h-screen">
-      <div className="backgroundDash "></div>
+      <div className="backgroundDash"></div>
       <main className="w-full flex flex-col flex-grow bg-cover bg-center text-white items-center ">
         <section className="w-full flex flex-col h-[100vh]">
           <div className="w-full  p-6  h-[20%] flex flex-col justify-center items-center">
