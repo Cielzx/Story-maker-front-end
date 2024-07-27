@@ -210,8 +210,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
-  console.log(figureImage);
-
   useEffect(() => {
     getSubCategorie(subCategoryId);
   }, []);

@@ -92,8 +92,6 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     filteredItems = items;
   }
 
-  console.log(filteredItems);
-
   return (
     <ul className="w-full justify-center h-[77vh] flex flex-wrap gap-2 p-3">
       {filteredItems && filteredItems.length > 0 ? (
