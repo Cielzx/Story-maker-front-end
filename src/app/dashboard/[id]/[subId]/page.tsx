@@ -1,5 +1,5 @@
 "use client";
-import { useCategory, useUSer } from "@/hooks";
+import { useCategory, useSticker, useUSer } from "@/hooks";
 import Loading from "@/app/components/Loading";
 import SubCategorieContainer from "@/app/components/SubCategorieContainer";
 import { useEffect } from "react";
@@ -7,8 +7,10 @@ import { usePathname } from "next/navigation";
 
 const StickerPage = ({ params }: { params: { subId: string } }) => {
   const { user, getUser } = useUSer();
-  const { category, getCategory, subCategories, getSubCategorie } =
+  const { getCategory, subCategories, getSubCategorie, subCategorie } =
     useCategory();
+  const { getSticker, sticker } = useSticker();
+
   const pathname = usePathname();
   const pathWithoutLeadingSlash = pathname.startsWith("/")
     ? pathname.slice(1)
@@ -21,6 +23,7 @@ const StickerPage = ({ params }: { params: { subId: string } }) => {
   useEffect(() => {
     getCategory(categoryId);
     getSubCategorie(subCategoryId);
+    getSticker(subCategoryId);
   }, [params.subId]);
 
   if (!user) {

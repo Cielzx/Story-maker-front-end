@@ -13,6 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { AuthContext, AuthProvider } from "@/context/authContext";
 import { Heart, LogOut, User } from "lucide-react";
 import { useUSer } from "@/hooks";
+import FavoriteModal from "@/app/dashboard/components/favoriteModal";
 
 const DropDown = () => {
   const router = useRouter();
@@ -54,7 +55,11 @@ const DropDown = () => {
               <div className="w-full h-full flex gap-3   items-center">
                 <div className="w-16 h-16 bg-pink-400 text-4xl  rounded-full bg-gray-900 max-[920px]:w-14 max-[920px]:h-14">
                   {user.profile_image ? (
-                    <img src="" className="rounded-full object-cover" alt="" />
+                    <img
+                      src={user.profile_image}
+                      className="rounded-full w-full h-full object-cover"
+                      alt=""
+                    />
                   ) : (
                     <p className="w-full h-full flex justify-center items-center  text-white">
                       {initials}
@@ -87,17 +92,14 @@ const DropDown = () => {
                       <></>
                     ) : (
                       <button
-                        onClick={() => router.push("/profile")}
+                        onClick={() => router.push("/dashboard/profile")}
                         className="btn-dropDown"
                       >
                         <User size={30} /> Meu perfil
                       </button>
                     )}
 
-                    <button
-                      onClick={() => handleLogout()}
-                      className="btn-dropDown"
-                    >
+                    <button onClick={() => onOpen()} className="btn-dropDown">
                       <Heart size={30} /> Favoritos
                     </button>
 
@@ -113,6 +115,8 @@ const DropDown = () => {
             </MenuList>
           </>
         </Menu>
+
+        <FavoriteModal isOpen={isOpen} onClose={onClose} />
       </div>
     </>
   );

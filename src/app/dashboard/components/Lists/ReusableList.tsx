@@ -1,9 +1,10 @@
+"use client";
 import { useCategory, useSticker, useUSer } from "@/hooks";
 import { CombineCategorySchema } from "@/schemas/category.schema";
 import { motion } from "framer-motion";
-import { Edit, Frown, Trash } from "lucide-react";
+import { Edit, Frown, Heart, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface props {
   items: CombineCategorySchema[];
@@ -15,24 +16,18 @@ const ReusableList = ({ items, id, subId }: props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { deleteCategory, deleteSubCategory } = useCategory();
-  const { deleteSticker } = useSticker();
-  const { mode, setMode } = useUSer();
+  const {
+    deleteSticker,
+    createFavorite,
+    getSticker,
+    sticker,
+    copyImageToClipboard,
+  } = useSticker();
+  const { mode, setMode, user } = useUSer();
+  const [clientMode, setClientMode] = useState("");
+  const [clicked, setIsClicked] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState("");
 
-  if (pathname === "/dashboard") {
-    setMode("category");
-  } else if (
-    pathname.startsWith("/dashboard/") &&
-    pathname.split("/").length === 3
-  ) {
-    setMode("subCategory");
-  } else if (
-    pathname.startsWith("/dashboard/") &&
-    pathname.split("/").length === 4
-  ) {
-    setMode("sticker");
-  }
-
-  console.log(mode);
   const handleCategoryName = (id: string) => {
     return router.push(`/dashboard/${id}`);
   };
@@ -55,62 +50,132 @@ const ReusableList = ({ items, id, subId }: props) => {
     visible: { opacity: 1, x: 0 },
   };
 
+  const handleFavoriteClick = async (item: any) => {
+    createFavorite(user!.id, sticker!.id);
+  };
+
+  useEffect(() => {
+    if (pathname === "/dashboard") {
+      setMode("category");
+    } else if (
+      pathname.startsWith("/dashboard/") &&
+      pathname.split("/").length === 3
+    ) {
+      setMode("subCategory");
+    } else if (
+      pathname.startsWith("/dashboard/") &&
+      pathname.split("/").length === 4
+    ) {
+      setMode("sticker");
+    }
+
+    setClientMode(mode);
+  }, [mode]);
+
+  const handleFocus = (id: string) => {
+    getSticker(id);
+    setFocusedIndex(id);
+  };
+
+  const handleBlur = () => {
+    setFocusedIndex("");
+  };
+
+  console.log(user);
+
   return (
-    <ul className="w-full justify-center flex flex-wrap gap-2 p-3">
+    <ul className="w-full justify-center h-[77vh] flex flex-wrap gap-2 p-3">
       {items && items.length > 0 ? (
-        <div className="w-[100%] flex justify-between flex-wrap gap-2 p-2">
+        <div className="w-[100%] flex h-full h-[95%]  overflow-y-auto justify-between flex-wrap gap-2 p-2">
           <>
             {items.map((item) => (
-              <motion.div
-                key={item.id}
-                className="w-[48%] "
-                initial="hidden"
-                animate="visible"
-                variants={variants}
-                transition={{ duration: 0.5 }}
-              >
-                <li
+              <>
+                <motion.div
                   key={item.id}
-                  className="w-full h-[170px] min-[940px]:h-[240px] flex items-start group justify-center relative rounded-lg"
-                  style={{
-                    backgroundImage: `url(${
-                      mode === "sticker" ? item.figure_image : item.cover_image
-                    })`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                  }}
+                  className="w-[48%] "
+                  initial="hidden"
+                  animate="visible"
+                  variants={variants}
+                  transition={{ duration: 0.5 }}
                 >
-                  <div className="w-full flex hidden group-hover:flex justify-between p-1">
-                    <Edit size={20} />
-                    <Trash
-                      onClick={() => {
-                        if (mode === "category") {
-                          deleteCategory(item.id);
-                        } else if (mode === "subCategory") {
-                          deleteSubCategory(item.id);
-                        } else if (mode === "sticker") {
-                          deleteSticker(item.id);
-                        }
-                      }}
-                      size={20}
-                    />
-                  </div>
-
-                  <span
-                    onClick={() => handleRedirect(item.id)}
-                    className="absolute text-[4vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
+                  <li
+                    key={item.id}
+                    tabIndex={0}
+                    onFocus={() => handleFocus(item.id)}
+                    onBlur={handleBlur}
+                    className="w-full h-[240px]  flex items-start group justify-center relative rounded-lg"
+                    style={{
+                      backgroundImage: `url(${
+                        mode === "sticker"
+                          ? item.figure_image
+                          : item.cover_image
+                      })`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}
                   >
-                    {mode === "category" ? (
-                      <>{item.category_name}</>
-                    ) : mode === "sticker" ? (
-                      <>{item.figure_name}</>
+                    <div className="w-full flex hidden group-hover:flex justify-between p-1">
+                      {user!.is_admin ? (
+                        <>
+                          <Edit size={20} />
+                          <Trash
+                            onClick={() => {
+                              if (clientMode === "category") {
+                                deleteCategory(item.id);
+                              } else if (clientMode === "subCategory") {
+                                deleteSubCategory(item.id);
+                              } else if (clientMode === "sticker") {
+                                deleteSticker(item.id);
+                              }
+                            }}
+                            size={20}
+                          />
+                        </>
+                      ) : (
+                        <></>
+                      )}
+
+                      {clientMode === "sticker" ? (
+                        <Heart
+                          size={20}
+                          fill={clicked ? "red" : "transparent"}
+                          onClick={() => {
+                            handleFavoriteClick(item);
+                            setIsClicked(true);
+                          }}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+
+                    <span
+                      onClick={() => handleRedirect(item.id)}
+                      className="absolute text-[4vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
+                    >
+                      {clientMode === "category" ? (
+                        <>{item.category_name}</>
+                      ) : clientMode === "sticker" ? (
+                        <>{item.figure_name}</>
+                      ) : (
+                        <>{item.item_name}</>
+                      )}
+                    </span>
+
+                    {mode === "sticker" ? (
+                      <div
+                        onClick={() => copyImageToClipboard(item.figure_image)}
+                        className="w-full font-semibold h-[40px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
+                      >
+                        <p className="text-lg">Copiar figurinha</p>
+                      </div>
                     ) : (
-                      <>{item.item_name}</>
+                      <></>
                     )}
-                  </span>
-                </li>
-              </motion.div>
+                  </li>
+                </motion.div>
+              </>
             ))}
           </>
         </div>

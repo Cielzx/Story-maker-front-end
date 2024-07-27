@@ -1,3 +1,4 @@
+"use client";
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full flex flex-col min-h-screen">

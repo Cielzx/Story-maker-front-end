@@ -43,8 +43,9 @@ interface categoryValues {
   getCategory: (id?: string) => void;
   getSubCategorie: (id: string) => void;
   subCategorie: iSubCategories | undefined;
-  category: CombineCategorySchema[];
+  categoryArray: CombineCategorySchema[];
   subCategories: iSubCategories[];
+  category: iCategoryData | undefined;
 }
 
 export const CategoryContext = createContext<categoryValues>(
@@ -53,7 +54,10 @@ export const CategoryContext = createContext<categoryValues>(
 
 export const CategoryProvider = ({ children }: categoryProp) => {
   const [coverImage, setCoverImage] = useState<File | null>(null);
-  const [category, setCategory] = useState<CombineCategorySchema[]>([]);
+  const [categoryArray, setCategoryArray] = useState<CombineCategorySchema[]>(
+    []
+  );
+  const [category, setCategory] = useState<iCategoryData>();
   const [categoryId, setCategoryId] = useState("");
   const [subCategorie, setSubCategorie] = useState<iSubCategories>();
   const [subCategories, setSubcategories] = useState<iSubCategories[]>([]);
@@ -136,6 +140,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
         setCategoryId(response.data.id);
         setSubcategories(response.data.categories);
       }
+      setCategoryArray(response.data);
       setCategory(response.data);
     } catch (error) {
       console.log(error);
@@ -229,6 +234,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
         subCategories,
         getCategory,
         getSubCategorie,
+        categoryArray,
         category,
         subCategorie,
         deleteCategory,

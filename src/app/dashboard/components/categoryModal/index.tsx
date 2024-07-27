@@ -18,6 +18,7 @@ interface modalProps {
 const CategoryModal = ({ isOpen, onClose }: modalProps) => {
   const { setCoverImage, createCategory, createSubCategorie } = useCategory();
   const { setFigureImage, createSticker } = useSticker();
+  const { user, updateUser } = useUSer();
   const { mode, setMode } = useUSer();
   const {
     register,
@@ -60,6 +61,9 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
   } else if (mode === "sticker") {
     fieldValue = "figure_name";
     label = "Nome da figurinha";
+  } else if (mode === "profile") {
+    fieldValue = "name";
+    label = "Editar nome";
   }
 
   const onSub = (data: CombineCategorySchema) => {
@@ -69,6 +73,8 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
       createSubCategorie(data);
     } else if (mode === "sticker") {
       createSticker(data);
+    } else if (mode === "profile") {
+      updateUser(user!.id, data);
     }
     setTimeout(() => {
       onClose();
@@ -97,27 +103,32 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
           {...register(fieldValue)}
         />
 
-        <div
-          {...getRootProps()}
-          className={`dropzone ${isDragActive ? "active" : ""}`}
-          style={{
-            border: "2px dashed #ccc",
-            borderRadius: "4px",
-            padding: "20px",
-            textAlign: "center",
-            cursor: "pointer",
-          }}
-        >
-          <input {...getInputProps()} />
-          {isDragActive ? (
-            <p>Solte a imagem aqui ...</p>
-          ) : (
-            <div className="w-full flex flex-col items-center">
-              <p>Arraste uma imagem aqui ou clique para selecionar</p>
-              <Image size={30} />
-            </div>
-          )}
-        </div>
+        {mode === "profile" ? (
+          <></>
+        ) : (
+          <div
+            {...getRootProps()}
+            className={`dropzone ${isDragActive ? "active" : ""}`}
+            style={{
+              border: "2px dashed #ccc",
+              borderRadius: "4px",
+              padding: "20px",
+              textAlign: "center",
+              cursor: "pointer",
+            }}
+          >
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <p>Solte a imagem aqui ...</p>
+            ) : (
+              <div className="w-full flex flex-col items-center">
+                <p>Arraste uma imagem aqui ou clique para selecionar</p>
+                <Image size={30} />
+              </div>
+            )}
+          </div>
+        )}
+
         <button type="submit" className="btn-form">
           Criar
         </button>

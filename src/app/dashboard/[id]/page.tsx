@@ -6,9 +6,11 @@ import { useEffect } from "react";
 
 const SubCategoriePage = ({ params }: { params: { id: string } }) => {
   const { user, getUser } = useUSer();
-  const { category, getCategory, subCategories } = useCategory();
+  const { getCategory, getSubCategorie, subCategorie } = useCategory();
+
   useEffect(() => {
     getCategory(params.id);
+    getSubCategorie(params.id);
   }, [params.id]);
 
   if (!user) {

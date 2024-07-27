@@ -1,6 +1,6 @@
 "use client";
 import Toast from "@/app/components/Toast";
-import { useCategory } from "@/hooks";
+import { useCategory, useUSer } from "@/hooks";
 import api from "@/services/api";
 import { usePathname } from "next/navigation";
 import { parseCookies } from "nookies";
@@ -29,6 +29,9 @@ interface stickerValues {
   setFigureImage: React.Dispatch<React.SetStateAction<File | null>>;
   createSticker: (data: iSticker) => void;
   deleteSticker: (id: string) => void;
+  deleteFavorite: (id: string) => void;
+  createFavorite: (userId: string, stickerId?: string) => void;
+  copyImageToClipboard: (imageSrc: string) => void;
 }
 
 export const StickerContext = createContext<stickerValues>({} as stickerValues);
@@ -39,7 +42,10 @@ export const StickerProvider = ({ children }: categoryProp) => {
   const cookies = parseCookies();
   const pathname = usePathname();
 
-  const { subCategories, getCategory, getSubCategorie } = useCategory();
+  const { subCategories, subCategorie, getCategory, getSubCategorie } =
+    useCategory();
+
+  const { getUser } = useUSer();
 
   const pathWithoutLeadingSlash = pathname.startsWith("/")
     ? pathname.slice(1)
@@ -65,13 +71,28 @@ export const StickerProvider = ({ children }: categoryProp) => {
         });
       }
 
-      if (figureImage.name.includes("png")) {
+      if (figureImage?.name.includes("png")) {
         fd.append("figure_image", figureImage);
         const res = await api.patch(`stickers/upload/${stickerId}`, fd, config);
         return res.status;
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const copyImageToClipboard = async (imageSrc: string) => {
+    try {
+      const response = await fetch(imageSrc);
+      const blob = await response.blob();
+      const item = new ClipboardItem({ "image/png": blob });
+      await navigator.clipboard.write([item]);
+      Toast({
+        message: "Figurinha copiada :)",
+        isSucess: true,
+      });
+    } catch (error) {
+      console.error("Falha ao copiar imagem:", error);
     }
   };
 
@@ -82,12 +103,12 @@ export const StickerProvider = ({ children }: categoryProp) => {
         subCategoryId: subCategoryId,
       };
 
-      if (figureImage!.name.includes("jpg")) {
-        return Toast({
-          message: "Formato de imagem não suportado, use o formato PNG",
-          isSucess: false,
-        });
-      }
+      // if (figureImage!.name.includes("jpg")) {
+      //   return Toast({
+      //     message: "Formato de imagem não suportado, use o formato PNG",
+      //     isSucess: false,
+      //   });
+      // }
 
       if (figureImage!.name.includes("png")) {
         const response = await api.post<iSticker>("stickers", updatedData);
@@ -133,7 +154,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
       let url = "stickers";
 
       if (id) {
-        url = `stickers/${subCategoryId}`;
+        url = `stickers/${id}`;
       }
 
       const response = await api.get(url);
@@ -144,14 +165,56 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
+  const createFavorite = async (userId: string, stickerId?: string) => {
+    try {
+      const updatedData = {
+        userId: userId,
+        stickerId: stickerId,
+      };
+      const response = await api.post("favorites", updatedData);
+      getUser();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getFavorite = async () => {
+    try {
+      const response = await api.get("stickers");
+      console.log(response.data);
+      getSubCategorie(subCategoryId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteFavorite = async (id: string) => {
+    try {
+      await api.delete(`favorites/${id}`);
+      getUser();
+    } catch (error) {
+      Toast({
+        message: "Algo deu errado ao tentar deletar sua musica!",
+        isSucess: false,
+      });
+    }
+  };
+
+  useEffect(() => {
+    getSubCategorie(subCategoryId);
+  }, []);
+
   return (
     <StickerContext.Provider
       value={{
         sticker,
         setFigureImage,
         createSticker,
+        createFavorite,
         getSticker,
+        deleteFavorite,
         deleteSticker,
+        copyImageToClipboard,
       }}
     >
       {children}

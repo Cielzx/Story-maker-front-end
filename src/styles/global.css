@@ -69,6 +69,14 @@
     @apply w-28 h-8  bg-blue-950 border  border-blue-300 rounded-lg flex justify-center items-center;
   }
 
+  body {
+    @apply bg-white text-black; /* Estilos para modo light */
+  }
+
+  body.dark {
+    @apply bg-gray-900 text-white; /* Estilos para modo dark */
+  }
+
   .btn-dropDown {
     @apply flex gap-1 items-center justify-start text-gray-400 text-sm;
   }

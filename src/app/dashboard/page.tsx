@@ -7,20 +7,20 @@ import Loading from "../components/Loading";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import ReusableList from "./components/Lists/ReusableList";
+import dynamic from "next/dynamic";
 
 const DashBoard = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const pathname = usePathname();
   const { user, getUser } = useUSer();
-  const { category, getCategory, subCategories, deleteCategory } =
+  const { categoryArray, getCategory, subCategories, deleteCategory } =
     useCategory();
 
   useEffect(() => {
     getCategory();
   }, [user]);
 
-  console.log(category);
   if (!user) {
     return <Loading />;
   }
@@ -60,23 +60,9 @@ const DashBoard = () => {
             </div>
           </div>
           <div className="flex w-full  justify-center items-center">
-            <ReusableList items={category} />
+            <ReusableList items={categoryArray} />
           </div>
         </section>
-
-        {/* <div className="w-full p-2  h-[46px]  bottom-[0%] z-[99999] flex justify-center bg-black rounded-md  p-2">
-          <div className="flex gap-2 w-[80%] justify-between">
-            <Home size={30} />
-
-            <Heart size={30} />
-
-            <UploadIcon onClick={() => onOpen()} size={30} />
-
-            <User size={30} />
-          </div>
-        </div>
-
-        <CategoryModal isOpen={isOpen} onClose={onClose} /> */}
       </main>
     </div>
   );

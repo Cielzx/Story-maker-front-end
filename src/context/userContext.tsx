@@ -28,13 +28,15 @@ interface userData {
   email: string;
   profile_image: string;
   description: string;
-  favorites: favoriteData;
+  is_admin: boolean;
+  favorites: favoriteData[];
 }
 
 interface userValues {
   user: userData | undefined;
   setUser: Dispatch<SetStateAction<userData | undefined>>;
   getUser: () => void;
+  updateUser: (id: string, data: userData) => void;
   uploadPhoto: (
     userId: string,
     profileImage: File
@@ -76,6 +78,19 @@ export const UserProvider = ({ children }: userProviderProp) => {
     }
   };
 
+  const updateUser = async (id: string, data: userData) => {
+    try {
+      const response = await api.patch(`users/update/${id}`, data);
+      Toast({
+        message: "Nome atualizado com sucesso!",
+        isSucess: true,
+      });
+      getUser();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     let decodedToken = jwt.decode(cookies["user.Token"]);
     let id = decodedToken ? decodedToken.sub : null;
@@ -98,13 +113,12 @@ export const UserProvider = ({ children }: userProviderProp) => {
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const fd = new FormData();
-      if (profileImage.name.includes("jpg" || "png")) {
+      if (
+        profileImage.name.includes("jpg") ||
+        profileImage.name.includes("png")
+      ) {
         fd.append("profile_image", profileImage);
-        const res = await api.patch(
-          `users/upload/profile/${userId}`,
-          fd,
-          config
-        );
+        const res = await api.patch(`users/upload/${userId}`, fd, config);
         Toast({
           message: "Foto atualizada",
           isSucess: true,
@@ -131,6 +145,7 @@ export const UserProvider = ({ children }: userProviderProp) => {
         user,
         setUser,
         getUser,
+        updateUser,
         uploadPhoto,
         profileImage,
         setProfileImage,

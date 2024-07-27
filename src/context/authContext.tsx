@@ -16,6 +16,7 @@ import {
 } from "react";
 import jwt from "jsonwebtoken";
 import Toast from "@/app/components/Toast";
+import { type NextRequest } from "next/server";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -35,6 +36,8 @@ interface AuthValue {
   setUser: Dispatch<SetStateAction<userData | undefined>>;
   getUser: () => void;
   userId: string;
+  RequestPassword: (data: LoginData) => void;
+  ResetPassword: (data: LoginData, token: string) => void;
 }
 
 export const AuthContext = createContext<AuthValue>({} as AuthValue);
@@ -42,6 +45,7 @@ export const AuthContext = createContext<AuthValue>({} as AuthValue);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [userId, setUserId] = useState("");
   const [user, setUser] = useState<userData>();
+  const [token, setToken] = useState("");
   const router = useRouter();
   const cookies = parseCookies();
 
@@ -99,6 +103,47 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const RequestPassword = async (data: LoginData) => {
+    try {
+      const response = await api.post("login/request-reset-password", data);
+      Toast({
+        message: "Email enviado!",
+        isSucess: true,
+      });
+    } catch (error) {
+      Toast({
+        message: "Algo deu errado :(",
+        isSucess: false,
+      });
+      console.log(error);
+    }
+  };
+
+  const ResetPassword = async (data: LoginData, token: string) => {
+    try {
+      const newData = {
+        ...data,
+        token: token,
+      };
+      const response = await api.post("login/reset-password", newData);
+      console.log(response);
+      Toast({
+        message: "Semha alterada :)",
+        isSucess: true,
+      });
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    } catch (error) {
+      Toast({
+        message: "Algo deu errado :(",
+        isSucess: false,
+      });
+      console.log(error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -108,6 +153,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser,
         getUser,
         userId,
+        RequestPassword,
+        ResetPassword,
       }}
     >
       {children}
