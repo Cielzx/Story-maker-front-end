@@ -7,8 +7,13 @@ import { usePathname } from "next/navigation";
 
 const StickerPage = ({ params }: { params: { subId: string } }) => {
   const { user, getUser } = useUSer();
-  const { getCategory, subCategories, getSubCategorie, subCategorie } =
-    useCategory();
+  const {
+    getCategory,
+    getCategoryById,
+    subCategories,
+    getSubCategorie,
+    subCategorie,
+  } = useCategory();
   const { getSticker, sticker } = useSticker();
 
   const pathname = usePathname();
@@ -21,7 +26,7 @@ const StickerPage = ({ params }: { params: { subId: string } }) => {
   const subCategoryId = pathParts[2];
 
   useEffect(() => {
-    getCategory(categoryId);
+    // getCategoryById(categoryId);
     getSubCategorie(subCategoryId);
     getSticker(subCategoryId);
   }, [params.subId]);

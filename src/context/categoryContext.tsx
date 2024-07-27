@@ -42,6 +42,7 @@ interface categoryValues {
   deleteSubCategory: (id: string) => void;
   getCategory: (id?: string) => void;
   getSubCategorie: (id: string) => void;
+  getCategoryById: (id: string) => void;
   subCategorie: iSubCategories | undefined;
   categoryArray: CombineCategorySchema[];
   subCategories: iSubCategories[];
@@ -130,18 +131,21 @@ export const CategoryProvider = ({ children }: categoryProp) => {
     try {
       let url = "category";
 
-      if (id) {
-        url = `category/${id}`;
-      }
-
       const response = await api.get(url);
 
-      if (id) {
-        console.log();
-        setCategoryId(response.data.id);
-        setSubcategories(response.data.categories);
-      }
       setCategoryArray(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCategoryById = async (id: string) => {
+    try {
+      const url = `category/${id}`;
+      const response = await api.get(url);
+
+      setCategoryId(response.data.id);
+      setSubcategories(response.data.categories);
       setCategory(response.data);
     } catch (error) {
       console.log(error);
@@ -235,6 +239,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
         subCategories,
         getCategory,
         getSubCategorie,
+        getCategoryById,
         categoryArray,
         category,
         subCategorie,

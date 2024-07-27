@@ -20,7 +20,7 @@ const DashBoard = () => {
 
   useEffect(() => {
     getCategory();
-  }, [user]);
+  }, []);
 
   if (!user) {
     return <Loading />;

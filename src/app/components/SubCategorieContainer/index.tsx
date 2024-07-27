@@ -50,9 +50,9 @@ const SubCategorieContainer = ({ id, subId }: props) => {
   let title = "";
 
   if (mode === "subCategory") {
-    title = `${category!.category_name}`;
+    title = `${category!.category_name || ""}`;
   } else if (mode === "sticker") {
-    title = `${subCategorie!.item_name}`;
+    title = `${subCategorie!.item_name || ""}`;
   }
 
   return (
@@ -62,7 +62,7 @@ const SubCategorieContainer = ({ id, subId }: props) => {
           <ArrowLeft size={40} />{" "}
         </Link>
 
-        <h2 className="text-white absolute text-4xl">{title}</h2>
+        <h2 className="text-white absolute text-4xl">{title || ""}</h2>
 
         {mode === "sticker" ? (
           <button

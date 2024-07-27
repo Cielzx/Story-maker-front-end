@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/components/Loading";
 import { useCategory, useSticker, useUSer } from "@/hooks";
 import { CombineCategorySchema } from "@/schemas/category.schema";
 import { motion } from "framer-motion";
@@ -82,16 +83,30 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     setFocusedIndex("");
   };
 
-  let filteredItems = items!.filter((item) => {
-    return item.category_name
-      .toLocaleLowerCase()
-      .includes(search!.toLocaleLowerCase());
-  });
-
-  if (search === "") {
-    filteredItems = items;
+  if (!user) {
+    return <Loading />;
   }
 
+  if (!items) {
+    return <Loading />;
+  }
+  let filteredItems;
+
+  if (search) {
+    if (clientMode === "category") {
+      filteredItems = items.filter((item) => {
+        if (clientMode === "category" && items) {
+          return item.category_name
+            .toLocaleLowerCase()
+            .includes(search!.toLocaleLowerCase());
+        }
+      });
+    }
+  }
+
+  if (!search) {
+    filteredItems = items;
+  }
   return (
     <ul className="w-full justify-center h-[77vh] flex flex-wrap gap-2 p-3">
       {filteredItems && filteredItems.length > 0 ? (

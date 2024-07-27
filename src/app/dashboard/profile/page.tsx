@@ -106,7 +106,7 @@ const Profile = () => {
               </button>
             </div>
             <div className="w-full flex items-center h-[50px]">
-              <button onClick={() => handleLogout} className="flex gap-1">
+              <button onClick={() => handleLogout()} className="flex gap-1">
                 <LogOut /> Sair da conta
               </button>
             </div>
