@@ -115,7 +115,8 @@ export const UserProvider = ({ children }: userProviderProp) => {
       const fd = new FormData();
       if (
         profileImage.name.includes("jpg") ||
-        profileImage.name.includes("png")
+        profileImage.name.includes("png") ||
+        profileImage.name.includes("heif")
       ) {
         fd.append("profile_image", profileImage);
         const res = await api.patch(`users/upload/${userId}`, fd, config);
