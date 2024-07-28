@@ -76,7 +76,7 @@ const LoginForm = ({ mode, setMode }: iLoginProps) => {
                     />
                   </div>
 
-                  <div className="flex justify-end items-center">
+                  <div className="flex justify-end relative items-center">
                     <Input
                       type={isShow ? "text" : "password"}
                       id="password"
@@ -84,7 +84,7 @@ const LoginForm = ({ mode, setMode }: iLoginProps) => {
                       {...register("password")}
                     />
 
-                    <div className="h-[70px] flex items-center fixed">
+                    <div className="h-[70px] flex absolute items-center fixed">
                       <button
                         className="flex justify-center "
                         onClick={() => handlePassword()}

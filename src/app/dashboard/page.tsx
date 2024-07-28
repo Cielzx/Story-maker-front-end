@@ -7,7 +7,6 @@ import Loading from "../components/Loading";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import ReusableList from "./components/Lists/ReusableList";
-import Input from "../components/Input";
 
 const DashBoard = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();

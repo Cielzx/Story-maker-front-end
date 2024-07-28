@@ -13,7 +13,7 @@ import { ThemeProvider } from "@chakra-ui/react";
 const nixie = Nixie_One({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Story Marker",
+  title: "Story Maker",
   description: "Para copiar stickers",
 };
 

@@ -1,5 +1,16 @@
 "use client";
+
+import { useRouter } from "next/router";
+import { parseCookies } from "nookies";
+
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
+  const cookies = parseCookies();
+
+  if (!cookies["user.Token"]) {
+    router.push("/login");
+  }
+
   return (
     <div className="w-full flex flex-col min-h-screen">
       <div className="backgroundDash"></div>

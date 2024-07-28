@@ -64,14 +64,15 @@ const Profile = () => {
               backgroundImage: `url(https://images2.imgbox.com/4f/49/NfAbt61z_o.jpg)`,
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
             }}
           >
             <div className="w-[50%] flex flex-col gap-4 justify-center absolute bottom-[60%] z-10  items-center">
               <div
                 {...getRootProps()}
-                className="w-32 h-32 bg-white text-4xl group border border-white border-solid    rounded-full bg-gray-900 max-[920px]:w-24 max-[920px]:h-24"
+                className="w-32 h-32 bg-white text-4xl group border border-white border-solid relative rounded-full bg-gray-900 max-[920px]:w-24 max-[920px]:h-24"
               >
-                <div className="hidden w-24 h-24 rounded-full flex items-center justify-center group-hover:flex absolute bg-[rgba(0,0,0,0.3)]">
+                <div className="hidden w-full h-full rounded-full flex items-center justify-center group-hover:flex absolute bg-[rgba(0,0,0,0.3)]">
                   <Camera />
                 </div>
                 <input className="hidden" {...getInputProps()} />
@@ -94,21 +95,23 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="w-[75%] h-[54%] bg-[rgba(255,255,255,0.84)] text-black font-semibold rounded-lg flex absolute bottom-[20%] flex-col justify-center gap-4 p-2">
-            <div className="w-full flex items-center h-[50px]">
-              <button className="flex gap-1">
-                <Edit /> Informações
-              </button>
-            </div>
-            <div className="w-full flex items-center h-[50px]">
-              <button className="flex gap-1">
-                <KeyRound /> Atualizar senha
-              </button>
-            </div>
-            <div className="w-full flex items-center h-[50px]">
-              <button onClick={() => handleLogout()} className="flex gap-1">
-                <LogOut /> Sair da conta
-              </button>
+          <div className="w-[60%] max-[940px]:w-full h-[60%] relative flex items-center justify-center">
+            <div className="w-[50%]  max-lg:w-[70%] h-[100%] bg-white absolute bottom-[25%] text-black font-semibold rounded-lg flex absolute bottom-[20%] flex-col justify-center gap-4 p-2">
+              <div className="w-full flex items-center h-[50px]">
+                <button className="flex gap-1">
+                  <Edit /> Informações
+                </button>
+              </div>
+              <div className="w-full flex items-center h-[50px]">
+                <button className="flex gap-1">
+                  <KeyRound /> Atualizar senha
+                </button>
+              </div>
+              <div className="w-full flex items-center h-[50px]">
+                <button onClick={() => handleLogout()} className="flex gap-1">
+                  <LogOut /> Sair da conta
+                </button>
+              </div>
             </div>
           </div>
         </section>

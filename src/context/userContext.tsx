@@ -11,7 +11,7 @@ import { parseCookies } from "nookies";
 import api from "@/services/api";
 import Toast from "@/app/components/Toast";
 import { useAuth } from "@/hooks";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { favoriteData } from "@/schemas/favorite.schema";
 
 interface userProviderProp {
@@ -59,7 +59,7 @@ export const UserProvider = ({ children }: userProviderProp) => {
   const [profileImage, setProfileImage] = useState<File | null>(null);
 
   let cookies = parseCookies();
-
+  const router = useRouter();
   let pathname = usePathname();
 
   if (cookies["user.Token"]) {

@@ -40,7 +40,7 @@ const RegisterForm = ({
       <div className="flex flex-col text-white-400 min-[940px]:w-[100%] gap-5">
         <Input type="text" {...register("name")} id="name" label="Usuario" />
         <Input type="text" {...register("email")} id="email" label="Email" />
-        <div className="flex justify-end items-center">
+        <div className="flex justify-end relative items-center">
           <Input
             type={isShow ? "text" : "password"}
             id="password"
@@ -48,7 +48,7 @@ const RegisterForm = ({
             {...register("password")}
           />
 
-          <div className="h-[70px] flex items-center fixed">
+          <div className="h-[70px] flex absolute items-center fixed">
             <button
               className="flex justify-center "
               onClick={() => handlePassword()}

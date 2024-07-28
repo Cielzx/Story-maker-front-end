@@ -9,7 +9,7 @@ import Link from "next/link";
 const Login = () => {
   const [mode, setMode] = useState("login");
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-svh">
       <div className="backgroundImage"></div>
       <main className="flex flex-grow bg-cover bg-center text-white items-center z-[99999]">
         <section className="flex flex-col justify-center items-center w-full ">
