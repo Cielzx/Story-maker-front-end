@@ -5,7 +5,7 @@ import Loading from "./components/Loading";
 
 export default function Home() {
   return (
-    <main className="flex w-[100%] h-dvh  flex-col items-center justify-between">
+    <main className="flex w-[100%] min-h-screen  flex-col items-center justify-between">
       <div className="backgroundImage"></div>
       <section className="flex flex-col justify-between w-[100%] h-[100vh] text-white">
         {/* <div className="flex w-[100%]  flex-col justify-between gap-[40px]  border border-solid border-red-600 p-4 ">
