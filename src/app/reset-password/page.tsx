@@ -39,7 +39,7 @@ const ResestPassword = ({
   }, []);
 
   return (
-    <div className="w-full flex flex-col min-h-svh">
+    <div className="w-full flex flex-col h-dvh">
       <div className="backgroundDash "></div>
       <main className="w-full flex flex-col flex-grow bg-cover bg-center text-white items-center ">
         <section className="w-full flex flex-col justify-center items-center h-[100vh]">

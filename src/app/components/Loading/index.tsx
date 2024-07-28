@@ -16,7 +16,7 @@ const Loading = () => {
   }
 
   return (
-    <main className="min-h-svh relative flex flex-col gap-4 items-center justify-center z-[99999px] text-white">
+    <main className="h-dvh relative flex flex-col gap-4 items-center justify-center z-[99999px] text-white">
       <div className="backgroundDash"></div>
       <div className="flex relative ">
         <img
