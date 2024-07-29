@@ -12,7 +12,7 @@ const Loading = () => {
   const cookies = parseCookies();
 
   return (
-    <main className="min-h-screen relative flex flex-col gap-4 items-center justify-center z-[99999px] text-white">
+    <main className="min-h-screen w-full relative flex flex-col gap-4 items-center justify-center z-[99999px] text-white">
       <div className="backgroundDash"></div>
       <div className="flex relative ">
         <img
