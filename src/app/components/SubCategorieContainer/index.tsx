@@ -57,7 +57,7 @@ const SubCategorieContainer = ({ id, subId }: props) => {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full h-[120px] flex justify-center relative items-center border-red-500 border-1 border-solid">
+      <div className="w-full h-[120px] flex justify-center relative items-center z-10 border-red-500 border-1 border-solid">
         <Link className="absolute left-[6%]" href={url}>
           <ArrowLeft size={40} />{" "}
         </Link>
@@ -78,7 +78,7 @@ const SubCategorieContainer = ({ id, subId }: props) => {
         )}
       </div>
 
-      <div className="flex w-full h-full justify-center items-center">
+      <div className="flex w-full h-full justify-center absolute items-center">
         {pathname.startsWith("/dashboard/") &&
         pathname.split("/").length === 4 ? (
           <ReusableList items={subCategorie!.stickers} id={id} subId={subId} />

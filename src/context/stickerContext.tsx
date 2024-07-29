@@ -231,7 +231,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
   };
 
   const copyImageToClipboard = async (imageSrc: string) => {
-    setShowSpinner(true);
     try {
       const response = await fetch(imageSrc);
       const blob = await response.blob();
@@ -243,12 +242,12 @@ export const StickerProvider = ({ children }: categoryProp) => {
           isSucess: true,
         });
       } else {
-        // const item = new ClipboardItem({ "image/png": blob });
-        // await navigator.clipboard.write([
-        //   new ClipboardItem({
-        //     "image/png": blob,
-        //   }),
-        // ]);
+        const item = new ClipboardItem({ "image/png": blob });
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png": blob,
+          }),
+        ]);
         Toast({
           message: "Erro não é um sistema iOS",
           isSucess: true,

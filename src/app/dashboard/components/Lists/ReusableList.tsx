@@ -108,27 +108,20 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     filteredItems = items;
   }
   return (
-    <ul className="w-full justify-center h-[77vh] flex flex-wrap gap-2 p-3">
-      {filteredItems && filteredItems.length > 0 ? (
-        <div className="w-[100%] flex h-full h-[95%]  overflow-y-auto justify-between flex-wrap gap-2 p-2">
-          <>
-            {filteredItems.map((item) => (
-              <>
-                <motion.div
-                  key={item.id}
-                  className="w-[48%] "
-                  initial="hidden"
-                  animate="visible"
-                  variants={variants}
-                  transition={{ duration: 0.5 }}
-                >
-                  <li
+    <ul className="w-full h-[80vh] flex flex-wrap gap-2 p-3">
+      <div className="w-full h-full overflow-y-scroll">
+        {filteredItems && filteredItems.length > 0 ? (
+          <div className="w-full h-[60%]  grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
+            <>
+              {filteredItems.map((item) => (
+                <>
+                  <motion.div
                     key={item.id}
-                    tabIndex={0}
-                    onFocus={() => handleFocus(item.id)}
-                    onClick={() => copyImageToClipboard(item.figure_image)}
-                    onBlur={handleBlur}
-                    className="w-full h-[240px]  flex items-start group justify-center relative rounded-lg"
+                    className="w-[100%] h-[300px]"
+                    initial="hidden"
+                    animate="visible"
+                    variants={variants}
+                    transition={{ duration: 0.5 }}
                     style={{
                       backgroundImage: `url(${
                         mode === "sticker"
@@ -140,78 +133,89 @@ const ReusableList = ({ items, id, subId, search }: props) => {
                       backgroundRepeat: "no-repeat",
                     }}
                   >
-                    <div className="w-full flex hidden group-hover:flex justify-between p-1">
-                      {user!.is_admin ? (
-                        <>
-                          <Edit size={20} />
-                          <Trash
-                            onClick={() => {
-                              if (clientMode === "category") {
-                                deleteCategory(item.id);
-                              } else if (clientMode === "subCategory") {
-                                deleteSubCategory(item.id);
-                              } else if (clientMode === "sticker") {
-                                deleteSticker(item.id);
-                              }
-                            }}
-                            size={20}
-                          />
-                        </>
-                      ) : (
-                        <></>
-                      )}
-
-                      {clientMode === "sticker" ? (
-                        <Heart
-                          size={20}
-                          fill={clicked ? "red" : "transparent"}
-                          onClick={() => {
-                            handleFavoriteClick(item);
-                            setIsClicked(true);
-                          }}
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-
-                    <span
-                      onClick={() => handleRedirect(item.id)}
-                      className="absolute text-[4vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
+                    <li
+                      key={item.id}
+                      tabIndex={0}
+                      onFocus={() => handleFocus(item.id)}
+                      onClick={() => copyImageToClipboard(item.figure_image)}
+                      onBlur={handleBlur}
+                      className="w-full h-full  flex items-start group justify-center relative rounded-lg"
                     >
-                      {clientMode === "category" ? (
-                        <>{item.category_name}</>
-                      ) : clientMode === "sticker" ? (
-                        <>{item.figure_name}</>
-                      ) : (
-                        <>{item.item_name}</>
-                      )}
-                    </span>
+                      <div className="w-full flex hidden group-hover:flex justify-between p-1">
+                        {user!.is_admin ? (
+                          <>
+                            <Edit size={20} />
+                            <Trash
+                              onClick={() => {
+                                if (clientMode === "category") {
+                                  deleteCategory(item.id);
+                                } else if (clientMode === "subCategory") {
+                                  deleteSubCategory(item.id);
+                                } else if (clientMode === "sticker") {
+                                  deleteSticker(item.id);
+                                }
+                              }}
+                              size={20}
+                            />
+                          </>
+                        ) : (
+                          <></>
+                        )}
 
-                    {mode === "sticker" ? (
-                      <div
-                        onClick={() => copyImageToClipboard(item.figure_image)}
-                        className="w-full font-semibold h-[40px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
-                      >
-                        <p className="text-lg">Copiar figurinha</p>
+                        {clientMode === "sticker" ? (
+                          <Heart
+                            size={20}
+                            fill={clicked ? "red" : "transparent"}
+                            onClick={() => {
+                              handleFavoriteClick(item);
+                              setIsClicked(true);
+                            }}
+                          />
+                        ) : (
+                          <></>
+                        )}
                       </div>
-                    ) : (
-                      <></>
-                    )}
-                  </li>
-                </motion.div>
-              </>
-            ))}
-          </>
-        </div>
-      ) : (
-        <>
-          {/* <div className="w-full h-[540px] flex flex-col justify-center items-center">
+
+                      <span
+                        onClick={() => handleRedirect(item.id)}
+                        className="absolute text-[4vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
+                      >
+                        {clientMode === "category" ? (
+                          <>{item.category_name}</>
+                        ) : clientMode === "sticker" ? (
+                          <>{item.figure_name}</>
+                        ) : (
+                          <>{item.item_name}</>
+                        )}
+                      </span>
+
+                      {mode === "sticker" ? (
+                        <div
+                          onClick={() =>
+                            copyImageToClipboard(item.figure_image)
+                          }
+                          className="w-full font-semibold h-[40px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
+                        >
+                          <p className="text-lg">Copiar figurinha</p>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                  </motion.div>
+                </>
+              ))}
+            </>
+          </div>
+        ) : (
+          <>
+            {/* <div className="w-full h-[540px] flex flex-col justify-center items-center">
             <h2 className="text-xl">PARECE QUE AQUI TÁ VAZIO...</h2>
             <Frown size={30} />
           </div> */}
-        </>
-      )}
+          </>
+        )}
+      </div>
     </ul>
   );
 };
