@@ -2,6 +2,7 @@
 import Toast from "@/app/components/Toast";
 import { useCategory, useUSer } from "@/hooks";
 import api from "@/services/api";
+import convertBase64ToBlob from "@/services/image.service";
 import { usePathname } from "next/navigation";
 import { parseCookies } from "nookies";
 import React, {
@@ -39,6 +40,7 @@ export const StickerContext = createContext<stickerValues>({} as stickerValues);
 export const StickerProvider = ({ children }: categoryProp) => {
   const [sticker, setSticker] = useState<iSticker>();
   const [figureImage, setFigureImage] = useState<File | null>(null);
+  const [showSpinner, setShowSpinner] = useState(false);
   const cookies = parseCookies();
   const pathname = usePathname();
 
@@ -78,28 +80,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
       }
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const copyImageToClipboard = async (imageSrc: string) => {
-    if (!navigator.clipboard || !window.ClipboardItem) {
-      Toast({
-        message: "Clipboard API não é suportada neste navegador.",
-        isSucess: false,
-      });
-      return;
-    }
-    try {
-      const response = await fetch(imageSrc);
-      const blob = await response.blob();
-      const item = new ClipboardItem({ "image/png": blob });
-      await navigator.clipboard.write([item]);
-      Toast({
-        message: "Figurinha copiada :)",
-        isSucess: true,
-      });
-    } catch (error) {
-      console.error("Falha ao copiar imagem:", error);
     }
   };
 
@@ -207,6 +187,76 @@ export const StickerProvider = ({ children }: categoryProp) => {
         message: "Algo deu errado ao tentar deletar sua musica!",
         isSucess: false,
       });
+    }
+  };
+
+  const ImageToClipboard = async (imgSrc: string) => {
+    try {
+      const base64 = imgSrc;
+      const blob = convertBase64ToBlob(base64);
+
+      if (isIos()) {
+        const clipboardItem = new ClipboardItem({ "image/png": blob });
+        await navigator.clipboard.write([clipboardItem]);
+        Toast({
+          message: "Figurinha copiada.",
+          isSucess: true,
+        });
+      } else {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png": blob,
+          }),
+        ]);
+        Toast({
+          message: "Figurinha copiada.",
+          isSucess: true,
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao copiar a figurinha:", error);
+      Toast({
+        message: "Erro ao copiar figurinha",
+        isSucess: false,
+      });
+    }
+  };
+
+  const isIos = (): boolean => {
+    const isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    console.log("User agent:", navigator.userAgent);
+    console.log("Is iOS:", isIosDevice);
+    return isIosDevice;
+  };
+
+  const copyImageToClipboard = async (imageSrc: string) => {
+    setShowSpinner(true);
+    try {
+      const response = await fetch(imageSrc);
+      const blob = await response.blob();
+      if (isIos()) {
+        const clipboardItem = new ClipboardItem({ "image/png": blob });
+        await navigator.clipboard.write([clipboardItem]);
+        Toast({
+          message: "Figurinha copiada.",
+          isSucess: true,
+        });
+      } else {
+        const item = new ClipboardItem({ "image/png": blob });
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png": blob,
+          }),
+        ]);
+        Toast({
+          message: "Figurinha copiada :)",
+          isSucess: true,
+        });
+      }
+    } catch (error) {
+      console.error("Falha ao copiar imagem:", error);
+    } finally {
+      setShowSpinner(false);
     }
   };
 
