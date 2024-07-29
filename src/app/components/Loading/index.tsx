@@ -11,10 +11,6 @@ const Loading = () => {
   const router = useRouter();
   const cookies = parseCookies();
 
-  if (!cookies["user.Token"]) {
-    router.push("/login");
-  }
-
   return (
     <main className="min-h-screen relative flex flex-col gap-4 items-center justify-center z-[99999px] text-white">
       <div className="backgroundDash"></div>

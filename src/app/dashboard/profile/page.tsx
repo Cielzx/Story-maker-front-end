@@ -13,9 +13,15 @@ const Profile = () => {
   const { user, setProfileImage, profileImage, uploadPhoto } = useUSer();
 
   const onDrop = useCallback((files: File[]) => {
-    const selectFiles = files[0];
-    setProfileImage(selectFiles);
+    setProfileImage(files[0]);
   }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [".jpg", ".jpeg", ".png", ".heif", ".heic"],
+    },
+  });
 
   const router = useRouter();
   const handleLogout = () => {
@@ -27,14 +33,7 @@ const Profile = () => {
     if (profileImage) {
       uploadPhoto(user!.id, profileImage);
     }
-
-    console.log(profileImage);
   }, [profileImage]);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { "image/jpeg": ["jpg"], "image/png": ["png"] },
-  });
 
   if (!user) {
     return <Loading />;

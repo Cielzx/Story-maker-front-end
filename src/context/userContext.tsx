@@ -109,21 +109,54 @@ export const UserProvider = ({ children }: userProviderProp) => {
     }
   };
 
+  const convertToSupportedFormat = async (file: File) => {
+    if (file.type === "image/heif" || file.type === "image/heic") {
+      const heic2any = require("heic2any");
+      const convertedBlob = await heic2any({
+        blob: file,
+        toType: "image/jpeg",
+      });
+      return new File([convertedBlob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
+        type: "image/jpeg",
+      });
+    }
+    return file;
+  };
+
   const uploadPhoto = async (userId: string, profileImage: File) => {
+    const supportedFormats = [
+      "image/jpg",
+      "image/jpeg",
+      "image/png",
+      "image/heif",
+      "image/heic",
+    ];
+    const fileExtension = profileImage.name.split(".").pop()!.toLowerCase();
+    // const fileToUpload = await convertToSupportedFormat(profileImage);
     try {
-      const config = { headers: { "Content-Type": "multipart/form-data" } };
-      const fd = new FormData();
-      if (
-        profileImage.name.includes("jpg") ||
-        profileImage.name.includes("png") ||
-        profileImage.name.includes("heif")
-      ) {
+      console.log("Tipo MIME do arquivo:", profileImage.type);
+      console.log("Nome do arquivo:", profileImage.name);
+      if (supportedFormats.includes(profileImage.type)) {
+        const fd = new FormData();
         fd.append("profile_image", profileImage);
+
+        for (const [key, value] of fd.entries()) {
+          console.log(`${key}: ${value}`);
+        }
+
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+
         const res = await api.patch(`users/upload/${userId}`, fd, config);
+
         Toast({
           message: "Foto atualizada",
           isSucess: true,
         });
+        console.log("Caminho do arquivo:", res);
         getUser();
         return res.status;
       }
