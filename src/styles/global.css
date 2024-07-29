@@ -28,6 +28,10 @@
   filter: blur(5px);
 }
 
+.body {
+  height: 20px;
+}
+
 .backgroundLogin {
   background: linear-gradient(
     to bottom,
