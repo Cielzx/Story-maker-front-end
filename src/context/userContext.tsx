@@ -114,10 +114,10 @@ export const UserProvider = ({ children }: userProviderProp) => {
       const heic2any = require("heic2any");
       const convertedBlob = await heic2any({
         blob: file,
-        toType: "image/jpeg",
+        toType: "image/png",
       });
       return new File([convertedBlob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
-        type: "image/jpeg",
+        type: "image/png",
       });
     }
     return file;
@@ -132,17 +132,14 @@ export const UserProvider = ({ children }: userProviderProp) => {
       "image/heic",
     ];
     const fileExtension = profileImage.name.split(".").pop()!.toLowerCase();
-    // const fileToUpload = await convertToSupportedFormat(profileImage);
-    try {
-      console.log("Tipo MIME do arquivo:", profileImage.type);
-      console.log("Nome do arquivo:", profileImage.name);
-      if (supportedFormats.includes(profileImage.type)) {
-        const fd = new FormData();
-        fd.append("profile_image", profileImage);
 
-        for (const [key, value] of fd.entries()) {
-          console.log(`${key}: ${value}`);
-        }
+    try {
+      const fileToUpload = await convertToSupportedFormat(profileImage);
+      console.log("Tipo MIME do arquivo:", fileToUpload.type);
+      console.log("Nome do arquivo:", fileToUpload.name);
+      if (supportedFormats.includes(fileToUpload.type)) {
+        const fd = new FormData();
+        fd.append("profile_image", fileToUpload);
 
         const config = {
           headers: {
