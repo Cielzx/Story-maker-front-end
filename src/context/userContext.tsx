@@ -13,6 +13,7 @@ import Toast from "@/app/components/Toast";
 import { useAuth } from "@/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { favoriteData } from "@/schemas/favorite.schema";
+import heic2any from "heic2any";
 
 interface userProviderProp {
   children: React.ReactNode;
@@ -109,37 +110,20 @@ export const UserProvider = ({ children }: userProviderProp) => {
     }
   };
 
-  const convertToSupportedFormat = async (file: File) => {
-    if (file.type === "image/heif" || file.type === "image/heic") {
-      const heic2any = require("heic2any");
-      const convertedBlob = await heic2any({
-        blob: file,
-        toType: "image/png",
-      });
-      return new File([convertedBlob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
-        type: "image/png",
-      });
-    }
-    return file;
-  };
-
   const uploadPhoto = async (userId: string, profileImage: File) => {
     const supportedFormats = [
+      "image/heif",
+      "image/heic",
       "image/jpg",
       "image/jpeg",
       "image/png",
-      "image/heif",
-      "image/heic",
     ];
     const fileExtension = profileImage.name.split(".").pop()!.toLowerCase();
 
     try {
-      const fileToUpload = await convertToSupportedFormat(profileImage);
-      console.log("Tipo MIME do arquivo:", fileToUpload.type);
-      console.log("Nome do arquivo:", fileToUpload.name);
-      if (supportedFormats.includes(fileToUpload.type)) {
+      if (supportedFormats.includes(profileImage.type)) {
         const fd = new FormData();
-        fd.append("profile_image", fileToUpload);
+        fd.append("profile_image", profileImage);
 
         const config = {
           headers: {
@@ -153,7 +137,6 @@ export const UserProvider = ({ children }: userProviderProp) => {
           message: "Foto atualizada",
           isSucess: true,
         });
-        console.log("Caminho do arquivo:", res);
         getUser();
         return res.status;
       }

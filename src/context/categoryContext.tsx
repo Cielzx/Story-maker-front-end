@@ -47,6 +47,7 @@ interface categoryValues {
   categoryArray: CombineCategorySchema[];
   subCategories: iSubCategories[];
   category: iCategoryData | undefined;
+  coverImage: File | null;
 }
 
 export const CategoryContext = createContext<categoryValues>(
@@ -245,6 +246,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
         subCategorie,
         deleteCategory,
         deleteSubCategory,
+        coverImage,
       }}
     >
       {children}

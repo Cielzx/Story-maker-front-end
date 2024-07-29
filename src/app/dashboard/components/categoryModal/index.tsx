@@ -4,9 +4,9 @@ import { iSubCategories } from "@/context/categoryContext";
 import { useCategory, useSticker, useUSer } from "@/hooks";
 import { CategoryData, CombineCategorySchema } from "@/schemas/category.schema";
 import { StickerData, StickerSchema } from "@/schemas/sticker.schema";
-import { Image, Sticker } from "lucide-react";
+import { Image, Sticker, Target } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useForm, UseFormRegister } from "react-hook-form";
 
@@ -16,7 +16,8 @@ interface modalProps {
 }
 
 const CategoryModal = ({ isOpen, onClose }: modalProps) => {
-  const { setCoverImage, createCategory, createSubCategorie } = useCategory();
+  const { setCoverImage, createCategory, createSubCategorie, coverImage } =
+    useCategory();
   const { setFigureImage, createSticker } = useSticker();
   const { user, updateUser } = useUSer();
   const { mode, setMode } = useUSer();
@@ -25,6 +26,7 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
     handleSubmit,
     formState: { errors },
   } = useForm<CombineCategorySchema>();
+  const [preview, SetPreview] = useState<string | ArrayBuffer | null>();
   const pathname = usePathname();
 
   const onDrop = useCallback((files: File[]) => {
@@ -34,11 +36,20 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
     ) {
       setFigureImage(files[0]);
     }
+
+    const file = new FileReader();
+
+    file.onload = () => {
+      SetPreview(file.result);
+    };
+
+    file.readAsDataURL(files[0]);
     setCoverImage(files[0]);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+
     accept: { "image/jpeg": ["jpg"], "image/png": ["png"] },
   });
   let headerName = "";
@@ -112,7 +123,8 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
             style={{
               border: "2px dashed #ccc",
               borderRadius: "4px",
-              padding: "20px",
+              height: "100px",
+              padding: "2px",
               textAlign: "center",
               cursor: "pointer",
             }}
@@ -121,7 +133,15 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
             {isDragActive ? (
               <p>Solte a imagem aqui ...</p>
             ) : (
-              <div className="w-full flex flex-col items-center">
+              <div
+                className="w-full flex flex-col items-center h-full justify-center text-black font-extrabold text-[15px] p-2"
+                style={{
+                  backgroundImage: `url(${preview})`,
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                }}
+              >
                 <p>Arraste uma imagem aqui ou clique para selecionar</p>
                 <Image size={30} />
               </div>

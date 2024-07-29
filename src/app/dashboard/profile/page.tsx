@@ -2,18 +2,47 @@
 import Loading from "@/app/components/Loading";
 import { useUSer } from "@/hooks";
 import { Camera, Edit, KeyRound, LogOut } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import CategoryModal from "../components/categoryModal";
 import { useDisclosure } from "@chakra-ui/react";
 import { destroyCookie } from "nookies";
 import { useRouter } from "next/navigation";
+import imageCompression from "browser-image-compression";
+
+interface FileInfo {
+  dateModified: string;
+  name: string;
+  size: number;
+  type: string;
+}
 
 const Profile = () => {
   const { user, setProfileImage, profileImage, uploadPhoto } = useUSer();
+  const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
 
-  const onDrop = useCallback((files: File[]) => {
-    setProfileImage(files[0]);
+  const onDrop = useCallback(async (files: File[]) => {
+    const file = files[0];
+
+    if (file.type === "image/heif" || file.type === "image/heic") {
+      try {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+          fileType: "image/png",
+        };
+
+        const compressedFile = await imageCompression(file, options);
+        console.log(compressedFile);
+
+        setProfileImage(compressedFile);
+      } catch (error) {
+        console.error("Erro ao converter a imagem HEIF:", error);
+      }
+    } else {
+      setProfileImage(file);
+    }
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
