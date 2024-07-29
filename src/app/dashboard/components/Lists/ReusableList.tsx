@@ -126,6 +126,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
                     key={item.id}
                     tabIndex={0}
                     onFocus={() => handleFocus(item.id)}
+                    onClick={() => copyImageToClipboard(item.figure_image)}
                     onBlur={handleBlur}
                     className="w-full h-[240px]  flex items-start group justify-center relative rounded-lg"
                     style={{

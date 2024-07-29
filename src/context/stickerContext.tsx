@@ -12,6 +12,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import platform from "platform";
 
 interface categoryProp {
   children: React.ReactNode;
@@ -234,22 +235,22 @@ export const StickerProvider = ({ children }: categoryProp) => {
     try {
       const response = await fetch(imageSrc);
       const blob = await response.blob();
-      if (isIos()) {
+      if (platform.os?.family === "iOS") {
         const clipboardItem = new ClipboardItem({ "image/png": blob });
         await navigator.clipboard.write([clipboardItem]);
         Toast({
-          message: "Figurinha copiada.",
+          message: "Figurinha copiada",
           isSucess: true,
         });
       } else {
-        const item = new ClipboardItem({ "image/png": blob });
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            "image/png": blob,
-          }),
-        ]);
+        // const item = new ClipboardItem({ "image/png": blob });
+        // await navigator.clipboard.write([
+        //   new ClipboardItem({
+        //     "image/png": blob,
+        //   }),
+        // ]);
         Toast({
-          message: "Figurinha copiada :)",
+          message: "Erro não é um sistema iOS",
           isSucess: true,
         });
       }
