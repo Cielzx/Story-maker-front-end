@@ -42,11 +42,11 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="w-full flex flex-col h-[189vw]">
+    <div className="w-full flex flex-col max-[940px]:h-[92vh] min-h-screen ">
       <div className="backgroundDash"></div>
       <main className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
-        <section className="w-full flex flex-col absolute h-[174vw]">
-          <div className="w-full  p-6  h-[15%] flex flex-col justify-center items-center">
+        <section className="w-full flex flex-col absolute max-md:h-[92vh]">
+          <div className="w-full  p-6 h-full  flex flex-col justify-center items-center">
             <div className="w-full flex gap-2 items-center justify-between ">
               <p className="text-[30px]">
                 Olá, {capitalizeFirstLetter(user.name)}
