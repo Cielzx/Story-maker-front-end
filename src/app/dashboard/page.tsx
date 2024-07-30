@@ -43,7 +43,7 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col min-h-s">
+    <div className="w-full h-full flex flex-col min-h-screen">
       <div className="backgroundDash"></div>
       <main className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
         <section className="w-full flex flex-col absolute">
@@ -70,8 +70,6 @@ const DashBoard = () => {
           <div className="flex w-full h-full  justify-center items-center">
             <ReusableList items={categoryArray} search={search} />
           </div>
-
-          <DashMenu />
         </section>
       </main>
     </div>

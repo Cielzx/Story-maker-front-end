@@ -9,6 +9,7 @@ import { CategoryProvider } from "@/context/categoryContext";
 import { StickerProvider } from "@/context/stickerContext";
 import DashMenu from "./dashboard/components/dashMenu";
 import { ThemeProvider } from "@chakra-ui/react";
+import Head from "next/head";
 
 const nixie = Nixie_One({ weight: "400", subsets: ["latin"] });
 
@@ -23,21 +24,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html lang="pt-br">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
       <body
         className={nixie.className}
         style={{
-          height: "100%",
-          display: "flex",
-          alignItems: "stretch",
-          background: `black`,
+          margin: "0",
+          padding: "0",
+          overflowX: "hidden",
+          overflowY: "hidden",
         }}
       >
         <ToastProvider>
           <AuthProvider>
             <UserProvider>
               <CategoryProvider>
-                <StickerProvider>{children}</StickerProvider>
+                <StickerProvider>
+                  {children}
+                  <DashMenu />
+                </StickerProvider>
               </CategoryProvider>
             </UserProvider>
           </AuthProvider>

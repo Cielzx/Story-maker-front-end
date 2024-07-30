@@ -38,7 +38,7 @@ const DashMenu = () => {
       {pathname === "/login" || pathname === "/" ? (
         <></>
       ) : (
-        <div className="w-full p-2 absolute top-[97%]  h-[46px] z-[99999] flex text-white justify-center bg-black rounded-md  p-2">
+        <div className="w-full p-2 absolute bottom-[0%]  h-[46px] z-[99999] flex text-white justify-center bg-black rounded-md  p-2">
           <div className="flex gap-2 w-[80%] justify-between">
             <Home
               className="cursor-pointer"
