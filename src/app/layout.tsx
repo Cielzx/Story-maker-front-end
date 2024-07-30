@@ -24,7 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
+    <html
+      lang="pt-br"
+      style={{
+        height: "-webkit-fill-available",
+      }}
+    >
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="public/js/viewport.js" defer></script>
@@ -32,10 +37,11 @@ export default function RootLayout({
       <body
         className={nixie.className}
         style={{
-          margin: "0",
+          margin: "0 auto",
           padding: "0",
           overflowX: "hidden",
           overflowY: "hidden",
+          height: "-webkit-fill-available",
         }}
       >
         <ToastProvider>

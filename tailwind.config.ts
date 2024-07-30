@@ -13,6 +13,16 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+
+      height: {
+        "fill-available": "-webkit-fill-available",
+      },
+      minHeight: {
+        "fill-available": "-webkit-fill-available",
+      },
+      maxHeight: {
+        "fill-available": "-webkit-fill-available",
+      },
     },
   },
   plugins: [],
