@@ -27,6 +27,7 @@ export default function RootLayout({
     <html lang="pt-br">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="public/js/viewport.js" defer></script>
       </Head>
       <body
         className={nixie.className}

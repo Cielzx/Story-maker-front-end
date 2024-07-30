@@ -28,6 +28,14 @@
   filter: blur(5px);
 }
 
+:root {
+  --vh: 1vh;
+}
+
+.container {
+  height: calc(var(--vh) * 100);
+}
+
 .backgroundLogin {
   background: linear-gradient(
     to bottom,

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:ts": "tsc public/js/viewport.ts --outDir public/js",
     "start": "next start",
     "lint": "next lint"
   },
