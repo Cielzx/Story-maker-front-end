@@ -7,6 +7,7 @@ import Loading from "../components/Loading";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import ReusableList from "./components/Lists/ReusableList";
+import DashMenu from "./components/dashMenu";
 
 const DashBoard = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -42,7 +43,7 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col min-h-s">
       <div className="backgroundDash"></div>
       <main className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
         <section className="w-full flex flex-col absolute">
@@ -69,6 +70,8 @@ const DashBoard = () => {
           <div className="flex w-full h-full  justify-center items-center">
             <ReusableList items={categoryArray} search={search} />
           </div>
+
+          <DashMenu />
         </section>
       </main>
     </div>

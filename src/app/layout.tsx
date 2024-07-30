@@ -24,15 +24,20 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="en">
-      <body className={nixie.className}>
+      <body
+        className={nixie.className}
+        style={{
+          height: "100%",
+          display: "flex",
+          alignItems: "stretch",
+          background: `black`,
+        }}
+      >
         <ToastProvider>
           <AuthProvider>
             <UserProvider>
               <CategoryProvider>
-                <StickerProvider>
-                  {children}
-                  <DashMenu />
-                </StickerProvider>
+                <StickerProvider>{children}</StickerProvider>
               </CategoryProvider>
             </UserProvider>
           </AuthProvider>
