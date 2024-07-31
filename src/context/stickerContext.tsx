@@ -294,9 +294,17 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
 
     const blob = response.blob();
-    const clipboardItem = new ClipboardItem({ "image/png": blob });
 
-    navigator.clipboard.write([clipboardItem]);
+    const record: any = new Object();
+    Reflect.set(record, "image/png", blob);
+
+    const item = new ClipboardItem(record);
+
+    const data = [item];
+
+    const clipboard = navigator.clipboard;
+
+    clipboard.write(data);
 
     Toast({
       message: "Figurinha copiada",
