@@ -7,10 +7,7 @@ import { motion } from "framer-motion";
 import { Edit, Frown, Heart, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  copyImageToClipboard,
-  requestClipboardWritePermission,
-} from "copy-image-clipboard";
+import copy from "copy-to-clipboard";
 
 interface props {
   items: CombineCategorySchema[];
@@ -231,11 +228,20 @@ const ReusableList = ({ items, id, subId, search }: props) => {
                   {mode === "sticker" ? (
                     <button
                       onClick={() =>
-                        copyImageToClipboard(item.figure_image).then(() => {
-                          Toast({
-                            message: "Figurinha copiada",
-                            isSucess: true,
-                          });
+                        copy(item, {
+                          async onCopy(clipboardData) {
+                            const response = await fetch(item.figure_image);
+                            const blob = response.blob();
+                            if (
+                              typeof navigator.clipboard.write === "function"
+                            ) {
+                              const clipboardItem = new ClipboardItem({
+                                "image/png": blob,
+                              });
+
+                              navigator.clipboard.write([clipboardItem]);
+                            }
+                          },
                         })
                       }
                       className="w-full font-semibold h-[40px] z-[10px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
