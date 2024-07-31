@@ -85,7 +85,7 @@ const Profile = () => {
     <div className="w-full flex flex-col min-h-screen">
       <div className="backgroundDash"></div>
       <main className="w-full flex flex-col flex-grow bg-cover bg-center text-black items-center ">
-        <section className="w-full flex flex-col relative items-center h-[100vh]">
+        <section className="w-full h-full flex flex-col relative items-center">
           <div
             className="w-[100%] h-[40%] flex justify-center"
             style={{
