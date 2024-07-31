@@ -277,41 +277,41 @@ export const StickerProvider = ({ children }: categoryProp) => {
   };
 
   const copyImageToClipboard = async (imageSrc: string) => {
-    if (!isClipboardSupported()) {
-      alert("A API Clipboard não é suportada neste navegador.");
-      return;
-    }
-    // const hasPermission = await requestClipboardPermissions();
-    // if (!hasPermission) {
-    //   throw new Error(
-    //     "Permissão para acessar a área de transferência negada."
-    //   );
-    // }
+    try {
+      if (!isClipboardSupported()) {
+        alert("A API Clipboard não é suportada neste navegador.");
+        return;
+      }
+      // const hasPermission = await requestClipboardPermissions();
+      // if (!hasPermission) {
+      //   throw new Error(
+      //     "Permissão para acessar a área de transferência negada."
+      //   );
+      // }
 
-    const response = await fetch(imageSrc);
-    if (!response.ok) {
-      throw new Error("Falha ao buscar a imagem.");
-    }
+      const response = await fetch(imageSrc);
+      if (!response.ok) {
+        throw new Error("Falha ao buscar a imagem.");
+      }
 
-    const blob = response.blob();
+      const blob = response.blob();
 
-    const record: any = new Object();
-    Reflect.set(record, "image/png", blob);
+      const record: any = new Object();
+      Reflect.set(record, "image/png", blob);
 
-    const item = new ClipboardItem(record);
+      const item = new ClipboardItem(record);
 
-    const data = [item];
+      const data = [item];
 
-    const clipboard = navigator.clipboard;
+      const clipboard = navigator.clipboard;
 
-    clipboard.write(data);
+      clipboard.write(data);
 
-    Toast({
-      message: "Figurinha copiada",
-      isSucess: true,
-    });
-
-    if (!response) {
+      Toast({
+        message: "Figurinha copiada",
+        isSucess: true,
+      });
+    } catch (error) {
       Toast({
         message:
           "Falha ao copiar imagem. Verifique as permissões e tente novamente.",
