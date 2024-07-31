@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { Edit, Frown, Heart, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import copy from "copy-to-clipboard";
 
 interface props {
   items: CombineCategorySchema[];
@@ -86,13 +85,22 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     }
 
     const blob = await response.blob();
+    const makeImagePromise = async () => {
+      const data = await fetch(imageSrc);
+      return await data.blob();
+    };
+    await navigator.clipboard.write([
+      new ClipboardItem({ [blob.type]: makeImagePromise() }),
+    ]);
+
+    console.log("success");
 
     if (typeof navigator.clipboard.write === "function") {
       const clipboardItem = new ClipboardItem({
         "image/png": blob,
       });
 
-      navigator.clipboard.write([clipboardItem]);
+      // navigator.clipboard.write([clipboardItem]);
 
       Toast({
         message: "Figurinha copiada",
@@ -227,23 +235,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
 
                   {mode === "sticker" ? (
                     <button
-                      onClick={() =>
-                        copy(item, {
-                          async onCopy(clipboardData) {
-                            const response = await fetch(item.figure_image);
-                            const blob = response.blob();
-                            if (
-                              typeof navigator.clipboard.write === "function"
-                            ) {
-                              const clipboardItem = new ClipboardItem({
-                                "image/png": blob,
-                              });
-
-                              navigator.clipboard.write([clipboardItem]);
-                            }
-                          },
-                        })
-                      }
+                      onClick={() => handleClipboard(item.figure_image)}
                       className="w-full font-semibold h-[40px] z-[10px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
                     >
                       <p className="text-lg">Copiar figurinha</p>
