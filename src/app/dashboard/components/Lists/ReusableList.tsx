@@ -165,6 +165,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
                         {clientMode === "sticker" ? (
                           <Heart
                             size={20}
+                            className="z-[10]"
                             fill={clicked ? "red" : "transparent"}
                             onClick={() => {
                               handleFavoriteClick(item);
