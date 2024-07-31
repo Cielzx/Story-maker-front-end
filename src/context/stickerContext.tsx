@@ -230,15 +230,41 @@ export const StickerProvider = ({ children }: categoryProp) => {
     return isIosDevice;
   };
 
-  const copyImageToClipboard = async (imageSrc: string) => {
+  const requestClipboardPermissions = async () => {
     try {
-      const clipboardPermission = await navigator.permissions.query({
+      const permissionStatus = await navigator.permissions.query({
         name: "clipboard-write" as PermissionName,
       });
-      if (
-        clipboardPermission.state !== "granted" &&
-        clipboardPermission.state !== "prompt"
-      ) {
+
+      if (permissionStatus.state === "granted") {
+        console.log(
+          "Permissão para acessar a área de transferência concedida."
+        );
+        return true;
+      }
+
+      if (permissionStatus.state === "prompt") {
+        console.log(
+          "Permissão para acessar a área de transferência não determinada. Solicitando permissão..."
+        );
+        // No prompt case, the actual permission request is done during the write operation
+        return true;
+      }
+
+      console.warn("Permissão para acessar a área de transferência negada.");
+      return false;
+    } catch (error) {
+      console.error("Erro ao verificar permissões:", error);
+      return false;
+    }
+  };
+
+  const copyImageToClipboard = async (imageSrc: string) => {
+    try {
+      setShowSpinner(true);
+
+      const hasPermission = await requestClipboardPermissions();
+      if (!hasPermission) {
         throw new Error(
           "Permissão para acessar a área de transferência negada."
         );
