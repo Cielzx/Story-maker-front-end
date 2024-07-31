@@ -277,33 +277,33 @@ export const StickerProvider = ({ children }: categoryProp) => {
   };
 
   const copyImageToClipboard = async (imageSrc: string) => {
-    try {
-      if (!isClipboardSupported()) {
-        alert("A API Clipboard não é suportada neste navegador.");
-        return;
-      }
-      // const hasPermission = await requestClipboardPermissions();
-      // if (!hasPermission) {
-      //   throw new Error(
-      //     "Permissão para acessar a área de transferência negada."
-      //   );
-      // }
+    if (!isClipboardSupported()) {
+      alert("A API Clipboard não é suportada neste navegador.");
+      return;
+    }
+    // const hasPermission = await requestClipboardPermissions();
+    // if (!hasPermission) {
+    //   throw new Error(
+    //     "Permissão para acessar a área de transferência negada."
+    //   );
+    // }
 
-      const response = await fetch(imageSrc);
-      if (!response.ok) {
-        throw new Error("Falha ao buscar a imagem.");
-      }
+    const response = await fetch(imageSrc);
+    if (!response.ok) {
+      throw new Error("Falha ao buscar a imagem.");
+    }
 
-      const blob = response.blob();
-      const clipboardItem = new ClipboardItem({ "image/png": blob });
+    const blob = response.blob();
+    const clipboardItem = new ClipboardItem({ "image/png": blob });
 
-      navigator.clipboard.write([clipboardItem]);
+    navigator.clipboard.write([clipboardItem]);
 
-      Toast({
-        message: "Figurinha copiada",
-        isSucess: true,
-      });
-    } catch (error) {
+    Toast({
+      message: "Figurinha copiada",
+      isSucess: true,
+    });
+
+    if (!response) {
       Toast({
         message:
           "Falha ao copiar imagem. Verifique as permissões e tente novamente.",
