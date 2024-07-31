@@ -1,11 +1,10 @@
 "use client";
 import { useUSer } from "@/hooks";
 import { useEffect } from "react";
-import FavoriteList from "../components/favoriteModal/FavoriteList";
 import Loading from "@/app/components/Loading";
 import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import FavoriteList from "./FavoriteList";
 
 const FavoritePage = () => {
   const { user, getUser } = useUSer();

@@ -10,10 +10,8 @@ import {
 import { useContext } from "react";
 import { destroyCookie, parseCookies } from "nookies";
 import { usePathname, useRouter } from "next/navigation";
-import { AuthContext, AuthProvider } from "@/context/authContext";
 import { Heart, LogOut, User } from "lucide-react";
 import { useUSer } from "@/hooks";
-import FavoriteModal from "@/app/dashboard/components/favoriteModal";
 
 const DropDown = () => {
   const router = useRouter();
@@ -115,8 +113,6 @@ const DropDown = () => {
             </MenuList>
           </>
         </Menu>
-
-        <FavoriteModal isOpen={isOpen} onClose={onClose} />
       </div>
     </>
   );
