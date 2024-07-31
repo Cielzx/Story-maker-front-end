@@ -7,6 +7,10 @@ import { motion } from "framer-motion";
 import { Edit, Frown, Heart, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  copyImageToClipboard,
+  requestClipboardWritePermission,
+} from "copy-image-clipboard";
 
 interface props {
   items: CombineCategorySchema[];
@@ -19,13 +23,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { deleteCategory, deleteSubCategory } = useCategory();
-  const {
-    deleteSticker,
-    createFavorite,
-    getSticker,
-    sticker,
-    copyImageToClipboard,
-  } = useSticker();
+  const { deleteSticker, createFavorite, getSticker, sticker } = useSticker();
   const { mode, setMode, user } = useUSer();
   const [clientMode, setClientMode] = useState("");
   const [clicked, setIsClicked] = useState(false);
@@ -97,9 +95,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
         "image/png": blob,
       });
 
-      setTimeout(() => {
-        navigator.clipboard.write([clipboardItem]);
-      }, 4000);
+      navigator.clipboard.write([clipboardItem]);
 
       Toast({
         message: "Figurinha copiada",
@@ -234,7 +230,20 @@ const ReusableList = ({ items, id, subId, search }: props) => {
 
                   {mode === "sticker" ? (
                     <button
-                      onClick={() => handleClipboard(item.figure_image)}
+                      onClick={() =>
+                        requestClipboardWritePermission()
+                          .then((hasPermission) => {
+                            console.log("Has Permission:", hasPermission);
+                          })
+                          .then(() => {
+                            copyImageToClipboard(item.figure_image).then(() => {
+                              Toast({
+                                message: "Figurinha copiada",
+                                isSucess: true,
+                              });
+                            });
+                          })
+                      }
                       className="w-full font-semibold h-[40px] z-[10px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
                     >
                       <p className="text-lg">Copiar figurinha</p>
