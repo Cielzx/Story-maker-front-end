@@ -4,11 +4,8 @@ import { useCategory, useUSer } from "@/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loading from "../Loading";
-import Link from "next/link";
-import { ArrowLeft, Heart } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useDisclosure } from "@chakra-ui/react";
-import CategoryModal from "@/app/dashboard/components/categoryModal";
-import FavoriteModal from "@/app/dashboard/components/favoriteModal";
 
 interface props {
   id?: string;
@@ -67,7 +64,7 @@ const SubCategorieContainer = ({ id, subId }: props) => {
         <h2 className="text-white absolute text-3xl">{title || ""}</h2>
       </div>
 
-      <div className="flex w-full h-full justify-center absolute items-center">
+      <div className="flex w-full h-[72vh]  justify-center items-center">
         {pathname.startsWith("/dashboard/") &&
         pathname.split("/").length === 4 ? (
           <ReusableList items={subCategorie!.stickers} id={id} subId={subId} />
@@ -75,8 +72,6 @@ const SubCategorieContainer = ({ id, subId }: props) => {
           <ReusableList items={subCategories} id={id} subId={subId} />
         )}
       </div>
-
-      <FavoriteModal isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };
