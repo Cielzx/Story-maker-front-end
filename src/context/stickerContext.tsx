@@ -246,6 +246,8 @@ export const StickerProvider = ({ children }: categoryProp) => {
         name: "clipboard-write" as PermissionName,
       });
 
+      console.log(permissionStatus);
+
       if (permissionStatus.state === "granted") {
         console.log(
           "Permissão para acessar a área de transferência concedida."
@@ -280,22 +282,22 @@ export const StickerProvider = ({ children }: categoryProp) => {
         alert("A API Clipboard não é suportada neste navegador.");
         return;
       }
-      const hasPermission = await requestClipboardPermissions();
-      if (!hasPermission) {
-        throw new Error(
-          "Permissão para acessar a área de transferência negada."
-        );
-      }
+      // const hasPermission = await requestClipboardPermissions();
+      // if (!hasPermission) {
+      //   throw new Error(
+      //     "Permissão para acessar a área de transferência negada."
+      //   );
+      // }
 
       const response = await fetch(imageSrc);
       if (!response.ok) {
         throw new Error("Falha ao buscar a imagem.");
       }
 
-      const blob = await response.blob();
+      const blob = response.blob();
       const clipboardItem = new ClipboardItem({ "image/png": blob });
 
-      await navigator.clipboard.write([clipboardItem]);
+      navigator.clipboard.write([clipboardItem]);
 
       Toast({
         message: "Figurinha copiada",
