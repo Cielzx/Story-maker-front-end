@@ -282,35 +282,44 @@ export const StickerProvider = ({ children }: categoryProp) => {
         alert("A API Clipboard não é suportada neste navegador.");
         return;
       }
-      // const hasPermission = await requestClipboardPermissions();
-      // if (!hasPermission) {
-      //   throw new Error(
-      //     "Permissão para acessar a área de transferência negada."
-      //   );
-      // }
 
       const response = await fetch(imageSrc);
       if (!response.ok) {
         throw new Error("Falha ao buscar a imagem.");
       }
 
-      const blob = response.blob();
+      if (typeof navigator.clipboard.write) {
+        const image = new ClipboardItem({
+          "image/png": fetch(imageSrc)
+            .then((res) => res.blob())
+            .then((blob) => new Blob([blob], { type: "image/png" })),
+        });
 
-      const record: any = new Object();
-      Reflect.set(record, "image/png", blob);
+        navigator.clipboard.write([image]);
 
-      const item = new ClipboardItem(record);
+        Toast({
+          message: "Figurinha copiada",
+          isSucess: true,
+        });
+      } else {
+        const blob = response.blob();
 
-      const data = [item];
+        const record: any = new Object();
+        Reflect.set(record, "image/png", blob);
 
-      const clipboard = navigator.clipboard;
+        const item = new ClipboardItem(record);
 
-      clipboard.write(data);
+        const data = [item];
 
-      Toast({
-        message: "Figurinha copiada",
-        isSucess: true,
-      });
+        const clipboard = navigator.clipboard;
+
+        await clipboard.write(data);
+
+        Toast({
+          message: "Figurinha copiada 2",
+          isSucess: true,
+        });
+      }
     } catch (error) {
       Toast({
         message:
