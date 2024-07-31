@@ -52,14 +52,6 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     visible: { opacity: 1, x: 0 },
   };
 
-  if (!user) {
-    return <Loading />;
-  }
-
-  const handleFavoriteClick = async (item: any) => {
-    createFavorite(user.id, sticker!.id);
-  };
-
   useEffect(() => {
     if (pathname === "/dashboard") {
       setMode("category");
@@ -77,6 +69,14 @@ const ReusableList = ({ items, id, subId, search }: props) => {
 
     setClientMode(mode);
   }, [mode]);
+
+  if (!user) {
+    return <Loading />;
+  }
+
+  const handleFavoriteClick = async (item: any) => {
+    createFavorite(user.id, sticker!.id);
+  };
 
   const handleFocus = (id: string) => {
     getSticker(id);
