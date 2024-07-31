@@ -1,7 +1,3 @@
-"use client";
-
-import DashMenu from "../components/dashMenu";
-
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full flex flex-col h-full">

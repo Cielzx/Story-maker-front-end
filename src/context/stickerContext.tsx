@@ -12,7 +12,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import platform from "platform";
+import { useCopyToClipboard } from "react-use";
 
 interface categoryProp {
   children: React.ReactNode;
@@ -42,6 +42,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
   const [sticker, setSticker] = useState<iSticker>();
   const [figureImage, setFigureImage] = useState<File | null>(null);
   const [showSpinner, setShowSpinner] = useState(false);
+  const [state, copyToClipboard] = useCopyToClipboard();
   const cookies = parseCookies();
   const pathname = usePathname();
 
@@ -191,37 +192,46 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
-  const ImageToClipboard = async (imgSrc: string) => {
-    try {
-      const base64 = imgSrc;
-      const blob = convertBase64ToBlob(base64);
+  // const ImageToClipboard = async (imgSrc: string) => {
+  //   try {
+  //     const base64 = imgSrc;
+  //     const blob = convertBase64ToBlob(base64);
 
-      if (isIos()) {
-        const clipboardItem = new ClipboardItem({ "image/png": blob });
-        await navigator.clipboard.write([clipboardItem]);
-        Toast({
-          message: "Figurinha copiada.",
-          isSucess: true,
-        });
-      } else {
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            "image/png": blob,
-          }),
-        ]);
-        Toast({
-          message: "Figurinha copiada.",
-          isSucess: true,
-        });
-      }
-    } catch (error) {
-      console.error("Erro ao copiar a figurinha:", error);
-      Toast({
-        message: "Erro ao copiar figurinha",
-        isSucess: false,
-      });
-    }
-  };
+  //     copyToClipboard(imgSrc);
+  //     if (state.error) {
+  //       alert(
+  //         "Falha ao copiar imagem. Verifique as permissões e tente novamente."
+  //       );
+  //     } else {
+  //       alert("Imagem copiada para a área de transferência!");
+  //     }
+
+  //     if (isIos()) {
+  //       const clipboardItem = new ClipboardItem({ "image/png": blob });
+  //       await navigator.clipboard.write([clipboardItem]);
+  //       Toast({
+  //         message: "Figurinha copiada.",
+  //         isSucess: true,
+  //       });
+  //     } else {
+  //       await navigator.clipboard.write([
+  //         new ClipboardItem({
+  //           "image/png": blob,
+  //         }),
+  //       ]);
+  //       Toast({
+  //         message: "Figurinha copiada.",
+  //         isSucess: true,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Erro ao copiar a figurinha:", error);
+  //     Toast({
+  //       message: "Erro ao copiar figurinha",
+  //       isSucess: false,
+  //     });
+  //   }
+  // };
 
   const isIos = (): boolean => {
     const isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -247,7 +257,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
         console.log(
           "Permissão para acessar a área de transferência não determinada. Solicitando permissão..."
         );
-        // No prompt case, the actual permission request is done during the write operation
         return true;
       }
 
@@ -259,10 +268,18 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
+  const isClipboardSupported = () => {
+    return (
+      navigator.clipboard && typeof navigator.clipboard.write === "function"
+    );
+  };
+
   const copyImageToClipboard = async (imageSrc: string) => {
     try {
-      setShowSpinner(true);
-
+      if (!isClipboardSupported()) {
+        alert("A API Clipboard não é suportada neste navegador.");
+        return;
+      }
       const hasPermission = await requestClipboardPermissions();
       if (!hasPermission) {
         throw new Error(
@@ -281,19 +298,15 @@ export const StickerProvider = ({ children }: categoryProp) => {
       await navigator.clipboard.write([clipboardItem]);
 
       Toast({
-        message: "Imagem copiada para a área de transferência!",
+        message: "Figurinha copiada",
         isSucess: true,
       });
     } catch (error) {
-      console.error("Falha ao copiar imagem:", error);
-
       Toast({
         message:
           "Falha ao copiar imagem. Verifique as permissões e tente novamente.",
         isSucess: false,
       });
-    } finally {
-      setShowSpinner(false);
     }
   };
 
