@@ -82,7 +82,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="w-full flex flex-col min-h-screen">
+    <div className="w-full flex flex-col h-full">
       <div className="backgroundDash"></div>
       <main className="w-full flex flex-col flex-grow bg-cover bg-center text-black items-center ">
         <section className="w-full h-full flex flex-col relative items-center">

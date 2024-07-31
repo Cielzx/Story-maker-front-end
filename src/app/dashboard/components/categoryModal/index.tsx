@@ -134,7 +134,7 @@ const CategoryModal = ({ isOpen, onClose }: modalProps) => {
               <p>Solte a imagem aqui ...</p>
             ) : (
               <div
-                className="w-full flex flex-col items-center h-full justify-center text-black font-extrabold text-[15px] p-2"
+                className="w-full flex flex-col items-center h-full justify-center text-white font-extrabold text-[15px] p-2"
                 style={{
                   backgroundImage: `url(${preview})`,
                   backgroundPosition: "center",

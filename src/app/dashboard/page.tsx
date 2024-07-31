@@ -43,7 +43,7 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col h-full">
+    <div className="w-full h-full flex flex-col">
       <div className="backgroundDash"></div>
       <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
         <section className="w-full flex flex-col absolute">
