@@ -16,7 +16,7 @@ const FavoriteList = ({ items }: props) => {
           {items.map((item) => (
             <li
               key={item.id}
-              className="w-[132px] h-[113px] min-[940px]:w-[30%] min-[940px]:h-[240px] flex items-start group justify-center relative rounded-lg"
+              className="w-[50%] h-[40%] min-[940px]:w-[30%] min-[940px]:h-[240px] flex items-start group justify-center relative rounded-lg"
               style={{
                 backgroundImage: `url(${item.sticker.figure_image})`,
                 backgroundSize: "cover",

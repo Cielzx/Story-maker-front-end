@@ -1,7 +1,7 @@
 "use client";
 import ReusableList from "@/app/dashboard/components/Lists/ReusableList";
 import { useCategory, useUSer } from "@/hooks";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loading from "../Loading";
 import Link from "next/link";
@@ -24,6 +24,8 @@ const SubCategorieContainer = ({ id, subId }: props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const { mode, setMode } = useUSer();
+
+  const router = useRouter();
 
   const pathname = usePathname();
 
@@ -57,25 +59,12 @@ const SubCategorieContainer = ({ id, subId }: props) => {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full h-[120px] flex justify-center relative items-center z-10 border-red-500 border-1 border-solid">
-        <Link className="absolute left-[6%]" href={url}>
+      <div className="w-full flex items-center z-10 bg-black justify-center text-3xl text-center h-[100px]">
+        <button onClick={() => router.back()} className="absolute left-[6%]">
           <ArrowLeft size={40} />{" "}
-        </Link>
+        </button>
 
-        <h2 className="text-white absolute text-4xl">{title || ""}</h2>
-
-        {mode === "sticker" ? (
-          <button
-            onClick={() => {
-              onOpen();
-            }}
-            className="btn-form flex justify-center w-[20%] absolute right-[2%]"
-          >
-            favoritos
-          </button>
-        ) : (
-          <></>
-        )}
+        <h2 className="text-white absolute text-3xl">{title || ""}</h2>
       </div>
 
       <div className="flex w-full h-full justify-center absolute items-center">

@@ -67,7 +67,7 @@ const DashBoard = () => {
               <Search color="purple" />
             </div>
           </div>
-          <div className="flex w-full h-full  justify-center items-center">
+          <div className="flex w-full h-[72vh]  justify-center items-center">
             <ReusableList items={categoryArray} search={search} />
           </div>
         </section>

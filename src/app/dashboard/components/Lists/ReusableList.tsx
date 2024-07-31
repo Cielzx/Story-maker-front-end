@@ -108,7 +108,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     filteredItems = items;
   }
   return (
-    <ul className="w-full h-[70vh] flex flex-wrap gap-2 p-3">
+    <ul className="w-full h-full flex flex-wrap gap-2 p-3">
       <div className="w-full h-full overflow-y-scroll">
         {filteredItems && filteredItems.length > 0 ? (
           <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2">

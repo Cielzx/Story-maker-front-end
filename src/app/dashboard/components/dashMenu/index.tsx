@@ -4,7 +4,6 @@ import CategoryModal from "../categoryModal";
 import { useDisclosure } from "@chakra-ui/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useUSer } from "@/hooks";
-import FavoriteModal from "../favoriteModal";
 
 const DashMenu = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -38,7 +37,7 @@ const DashMenu = () => {
       {pathname === "/login" || pathname === "/" ? (
         <></>
       ) : (
-        <div className="w-full p-2 absolute bottom-[0%]  h-[46px] z-[99999] flex text-white justify-center bg-black rounded-md  p-2">
+        <div className="w-full p-2 absolute bottom-[0%]  h-[46px] z-[10] flex text-white justify-center bg-black rounded-md  p-2">
           <div className="flex gap-2 w-[80%] justify-between">
             <Home
               className="cursor-pointer"
@@ -46,17 +45,13 @@ const DashMenu = () => {
               size={30}
             />
 
-            {user.is_admin ? (
-              <></>
-            ) : (
-              <Heart
-                onClick={() => {
-                  onOpen();
-                }}
-                className="cursor-pointer"
-                size={30}
-              />
-            )}
+            <Heart
+              onClick={() => {
+                router.push("/dashboard/favorites");
+              }}
+              className="cursor-pointer"
+              size={30}
+            />
 
             {user.is_admin ? (
               <>
@@ -81,12 +76,6 @@ const DashMenu = () => {
 
           {user.is_admin ? (
             <CategoryModal isOpen={isOpen} onClose={onClose} />
-          ) : (
-            <></>
-          )}
-
-          {user.is_admin === false ? (
-            <FavoriteModal isOpen={isOpen} onClose={onClose} />
           ) : (
             <></>
           )}
