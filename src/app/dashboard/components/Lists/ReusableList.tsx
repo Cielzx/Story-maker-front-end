@@ -97,7 +97,9 @@ const ReusableList = ({ items, id, subId, search }: props) => {
         "image/png": blob,
       });
 
-      navigator.clipboard.write([clipboardItem]);
+      setTimeout(() => {
+        navigator.clipboard.write([clipboardItem]);
+      }, 4000);
 
       Toast({
         message: "Figurinha copiada",
