@@ -90,7 +90,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
       throw new Error("Falha ao buscar a imagem.");
     }
 
-    const blob = await response.blob();
+    const blob = response.blob();
 
     if (typeof navigator.clipboard.write === "function") {
       const clipboardItem = new ClipboardItem({
