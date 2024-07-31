@@ -295,7 +295,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
             .then((blob) => new Blob([blob], { type: "image/png" })),
         });
 
-        navigator.clipboard.write([image]);
+        await navigator.clipboard.write([image]);
 
         Toast({
           message: "Figurinha copiada",

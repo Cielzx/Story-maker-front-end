@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/app/components/Loading";
+import Toast from "@/app/components/Toast";
 import { useCategory, useSticker, useUSer } from "@/hooks";
 import { CombineCategorySchema } from "@/schemas/category.schema";
 import { motion } from "framer-motion";
@@ -81,6 +82,46 @@ const ReusableList = ({ items, id, subId, search }: props) => {
   const handleFocus = (id: string) => {
     getSticker(id);
     setFocusedIndex(id);
+  };
+
+  const handleClipboard = async (imageSrc: string) => {
+    const response = await fetch(imageSrc);
+    if (!response.ok) {
+      throw new Error("Falha ao buscar a imagem.");
+    }
+
+    const blob = await response.blob();
+
+    if (typeof navigator.clipboard.write === "function") {
+      const clipboardItem = new ClipboardItem({
+        "image/png": blob,
+      });
+
+      await navigator.clipboard.write([clipboardItem]);
+
+      Toast({
+        message: "Figurinha copiada",
+        isSucess: true,
+      });
+    } else {
+      const blob = response.blob();
+
+      const record: any = new Object();
+      Reflect.set(record, "image/png", blob);
+
+      const item = new ClipboardItem(record);
+
+      const data = [item];
+
+      const clipboard = navigator.clipboard;
+
+      await clipboard.write(data);
+
+      Toast({
+        message: "Figurinha copiada 2",
+        isSucess: true,
+      });
+    }
   };
 
   const handleBlur = () => {
@@ -191,7 +232,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
 
                   {mode === "sticker" ? (
                     <button
-                      onClick={() => copyImageToClipboard(item.figure_image)}
+                      onClick={() => handleClipboard(item.figure_image)}
                       className="w-full font-semibold h-[40px] z-[10px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
                     >
                       <p className="text-lg">Copiar figurinha</p>
