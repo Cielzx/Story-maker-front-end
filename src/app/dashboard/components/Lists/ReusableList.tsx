@@ -90,14 +90,14 @@ const ReusableList = ({ items, id, subId, search }: props) => {
       throw new Error("Falha ao buscar a imagem.");
     }
 
-    const blob = response.blob();
+    const blob = await response.blob();
 
     if (typeof navigator.clipboard.write === "function") {
       const clipboardItem = new ClipboardItem({
         "image/png": blob,
       });
 
-      await navigator.clipboard.write([clipboardItem]);
+      navigator.clipboard.write([clipboardItem]);
 
       Toast({
         message: "Figurinha copiada",
