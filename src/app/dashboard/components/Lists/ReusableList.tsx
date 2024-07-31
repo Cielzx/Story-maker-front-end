@@ -137,7 +137,6 @@ const ReusableList = ({ items, id, subId, search }: props) => {
                       key={item.id}
                       tabIndex={0}
                       onFocus={() => handleFocus(item.id)}
-                      onClick={() => copyImageToClipboard(item.figure_image)}
                       onBlur={handleBlur}
                       className="w-full h-full  flex items-start group justify-center relative rounded-lg"
                     >
@@ -195,7 +194,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
                           onClick={() =>
                             copyImageToClipboard(item.figure_image)
                           }
-                          className="w-full font-semibold h-[40px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
+                          className="w-full font-semibold h-[40px] z-[10px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
                         >
                           <p className="text-lg">Copiar figurinha</p>
                         </div>
