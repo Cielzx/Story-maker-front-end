@@ -232,29 +232,40 @@ export const StickerProvider = ({ children }: categoryProp) => {
 
   const copyImageToClipboard = async (imageSrc: string) => {
     try {
-      const response = await fetch(imageSrc);
-      const blob = await response.blob();
-      if (platform.os?.family === "iOS") {
-        const clipboardItem = new ClipboardItem({ "image/png": blob });
-        await navigator.clipboard.write([clipboardItem]);
-        Toast({
-          message: "Figurinha copiada",
-          isSucess: true,
-        });
-      } else {
-        const item = new ClipboardItem({ "image/png": blob });
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            "image/png": blob,
-          }),
-        ]);
-        Toast({
-          message: "Erro não é um sistema iOS",
-          isSucess: true,
-        });
+      const clipboardPermission = await navigator.permissions.query({
+        name: "clipboard-write" as PermissionName,
+      });
+      if (
+        clipboardPermission.state !== "granted" &&
+        clipboardPermission.state !== "prompt"
+      ) {
+        throw new Error(
+          "Permissão para acessar a área de transferência negada."
+        );
       }
+
+      const response = await fetch(imageSrc);
+      if (!response.ok) {
+        throw new Error("Falha ao buscar a imagem.");
+      }
+
+      const blob = await response.blob();
+      const clipboardItem = new ClipboardItem({ "image/png": blob });
+
+      await navigator.clipboard.write([clipboardItem]);
+
+      Toast({
+        message: "Imagem copiada para a área de transferência!",
+        isSucess: true,
+      });
     } catch (error) {
       console.error("Falha ao copiar imagem:", error);
+
+      Toast({
+        message:
+          "Falha ao copiar imagem. Verifique as permissões e tente novamente.",
+        isSucess: false,
+      });
     } finally {
       setShowSpinner(false);
     }
