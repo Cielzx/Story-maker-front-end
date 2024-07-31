@@ -231,18 +231,12 @@ const ReusableList = ({ items, id, subId, search }: props) => {
                   {mode === "sticker" ? (
                     <button
                       onClick={() =>
-                        requestClipboardWritePermission()
-                          .then((hasPermission) => {
-                            console.log("Has Permission:", hasPermission);
-                          })
-                          .then(() => {
-                            copyImageToClipboard(item.figure_image).then(() => {
-                              Toast({
-                                message: "Figurinha copiada",
-                                isSucess: true,
-                              });
-                            });
-                          })
+                        copyImageToClipboard(item.figure_image).then(() => {
+                          Toast({
+                            message: "Figurinha copiada",
+                            isSucess: true,
+                          });
+                        })
                       }
                       className="w-full font-semibold h-[40px] z-[10px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
                     >
