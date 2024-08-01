@@ -276,66 +276,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
     );
   };
 
-  async function writeImageToClipboard(url: string) {
-    // Cria uma nova promise
-    const p = new Promise<void>(async (resolve, reject) => {
-      // Verifica a permissão para escrever no clipboard
-      try {
-        const permissionStatus = await navigator.permissions.query({
-          name: "clipboard-write" as PermissionName,
-        });
-        if (
-          permissionStatus.state !== "granted" &&
-          permissionStatus.state !== "prompt"
-        ) {
-          reject(
-            new DOMException(
-              "NotAllowedError",
-              "Clipboard permission not granted"
-            )
-          );
-          return;
-        }
-      } catch (e) {
-        // Ignora se a permissão não estiver disponível
-      }
-
-      try {
-        // Busca a imagem da URL e obtém como Blob
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Falha ao buscar a imagem");
-        }
-        const blob = await response.blob();
-
-        // Verifica se o tipo de Blob é suportado
-        const supportedTypes = ["image/png", "image/jpeg", "image/gif"];
-        if (!supportedTypes.includes(blob.type)) {
-          reject(new DOMException("NotAllowedError", "Unsupported MIME type"));
-          return;
-        }
-
-        // Sanitiza o Blob (neste caso, apenas cria uma nova cópia do Blob)
-        const cleanBlob = new Blob([blob], { type: blob.type });
-
-        // Cria um ClipboardItem com a imagem
-        const clipboardItem = new ClipboardItem({
-          [cleanBlob.type]: cleanBlob,
-        });
-
-        // Escreve no clipboard
-        await navigator.clipboard.write([clipboardItem]);
-
-        // Resolve a promise com sucesso
-        resolve();
-      } catch (error: any) {
-        reject(new DOMException("NotAllowedError", error.message));
-      }
-    });
-
-    return p;
-  }
-
   const copyImageToClipboard = async (imageSrc: string) => {
     try {
       if (!isClipboardSupported()) {

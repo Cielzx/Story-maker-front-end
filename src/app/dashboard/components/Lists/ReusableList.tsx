@@ -53,6 +53,57 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     visible: { opacity: 1, x: 0 },
   };
 
+  async function writeImageToClipboard(url: string) {
+    const p = new Promise<void>(async (resolve, reject) => {
+      try {
+        const permissionStatus = await navigator.permissions.query({
+          name: "clipboard-write" as PermissionName,
+        });
+        if (
+          permissionStatus.state !== "granted" &&
+          permissionStatus.state !== "prompt"
+        ) {
+          reject(
+            new DOMException(
+              "NotAllowedError",
+              "Clipboard permission not granted"
+            )
+          );
+          return;
+        }
+      } catch (e) {}
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Falha ao buscar a imagem");
+        }
+        const blob = await response.blob();
+
+        // Verifica se o tipo de Blob é suportado
+        const supportedTypes = ["image/png", "image/jpeg", "image/gif"];
+        if (!supportedTypes.includes(blob.type)) {
+          reject(new DOMException("NotAllowedError", "Unsupported MIME type"));
+          return;
+        }
+
+        const cleanBlob = new Blob([blob], { type: blob.type });
+
+        const clipboardItem = new ClipboardItem({
+          [cleanBlob.type]: cleanBlob,
+        });
+
+        await navigator.clipboard.write([clipboardItem]);
+
+        resolve();
+      } catch (error: any) {
+        reject(new DOMException("NotAllowedError", error.message));
+      }
+    });
+
+    return p;
+  }
+
   useEffect(() => {
     if (pathname === "/dashboard") {
       setMode("category");
@@ -83,6 +134,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     getSticker(id);
     setFocusedIndex(id);
   };
+  window.Clipboard;
 
   // const handleClipboard = async (imageSrc: string) => {
   //   const response = await fetch(imageSrc);
@@ -241,7 +293,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
 
                   {mode === "sticker" ? (
                     <button
-                      onClick={() => copyImageToClipboard(item.figure_image)}
+                      onClick={() => writeImageToClipboard(item.figure_image)}
                       className="w-full font-semibold h-[40px] z-[10px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
                     >
                       <p className="text-lg">Copiar figurinha</p>
