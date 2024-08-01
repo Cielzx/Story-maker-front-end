@@ -288,19 +288,21 @@ export const StickerProvider = ({ children }: categoryProp) => {
         throw new Error("Falha ao buscar a imagem.");
       }
 
-      if (typeof navigator.clipboard.write) {
-        const image = new ClipboardItem({
-          "image/png": fetch(imageSrc)
-            .then((res) => res.blob())
-            .then((blob) => new Blob([blob], { type: "image/png" })),
-        });
+      if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+        if (typeof navigator.clipboard.write) {
+          const image = new ClipboardItem({
+            "image/png": fetch(imageSrc)
+              .then((res) => res.blob())
+              .then((blob) => new Blob([blob], { type: "image/png" })),
+          });
 
-        await navigator.clipboard.write([image]);
+          await navigator.clipboard.write([image]);
 
-        Toast({
-          message: "Figurinha copiada",
-          isSucess: true,
-        });
+          Toast({
+            message: "Figurinha copiada",
+            isSucess: true,
+          });
+        }
       } else {
         const blob = response.blob();
 

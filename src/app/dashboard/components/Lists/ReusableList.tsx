@@ -19,7 +19,13 @@ const ReusableList = ({ items, id, subId, search }: props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { deleteCategory, deleteSubCategory } = useCategory();
-  const { deleteSticker, createFavorite, getSticker, sticker } = useSticker();
+  const {
+    deleteSticker,
+    createFavorite,
+    getSticker,
+    sticker,
+    copyImageToClipboard,
+  } = useSticker();
   const { mode, setMode, user } = useUSer();
   const [clientMode, setClientMode] = useState("");
   const [clicked, setIsClicked] = useState(false);
@@ -78,54 +84,54 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     setFocusedIndex(id);
   };
 
-  const handleClipboard = async (imageSrc: string) => {
-    const response = await fetch(imageSrc);
-    if (!response.ok) {
-      throw new Error("Falha ao buscar a imagem.");
-    }
+  // const handleClipboard = async (imageSrc: string) => {
+  //   const response = await fetch(imageSrc);
+  //   if (!response.ok) {
+  //     throw new Error("Falha ao buscar a imagem.");
+  //   }
 
-    const blob = await response.blob();
-    const makeImagePromise = async () => {
-      const data = await fetch(imageSrc);
-      return await data.blob();
-    };
-    await navigator.clipboard.write([
-      new ClipboardItem({ [blob.type]: makeImagePromise() }),
-    ]);
+  //   if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+  //     const blob = await response.blob();
+  //     const makeImagePromise = async () => {
+  //       const data = await fetch(imageSrc);
+  //       return await data.blob();
+  //     };
+  //     await navigator.clipboard.write([
+  //       new ClipboardItem({ [blob.type]: makeImagePromise() }),
+  //     ]);
+  //   }
 
-    console.log("success");
+  //   if (typeof navigator.clipboard.write === "function") {
+  //     const clipboardItem = new ClipboardItem({
+  //       "image/png": "blob",
+  //     });
 
-    if (typeof navigator.clipboard.write === "function") {
-      const clipboardItem = new ClipboardItem({
-        "image/png": blob,
-      });
+  //     // navigator.clipboard.write([clipboardItem]);
 
-      // navigator.clipboard.write([clipboardItem]);
+  //     Toast({
+  //       message: "Figurinha copiada",
+  //       isSucess: true,
+  //     });
+  //   } else {
+  //     const blob = response.blob();
 
-      Toast({
-        message: "Figurinha copiada",
-        isSucess: true,
-      });
-    } else {
-      const blob = response.blob();
+  //     const record: any = new Object();
+  //     Reflect.set(record, "image/png", blob);
 
-      const record: any = new Object();
-      Reflect.set(record, "image/png", blob);
+  //     const item = new ClipboardItem(record);
 
-      const item = new ClipboardItem(record);
+  //     const data = [item];
 
-      const data = [item];
+  //     const clipboard = navigator.clipboard;
 
-      const clipboard = navigator.clipboard;
+  //     await clipboard.write(data);
 
-      await clipboard.write(data);
-
-      Toast({
-        message: "Figurinha copiada 2",
-        isSucess: true,
-      });
-    }
-  };
+  //     Toast({
+  //       message: "Figurinha copiada 2",
+  //       isSucess: true,
+  //     });
+  //   }
+  // };
 
   const handleBlur = () => {
     setFocusedIndex("");
@@ -235,7 +241,7 @@ const ReusableList = ({ items, id, subId, search }: props) => {
 
                   {mode === "sticker" ? (
                     <button
-                      onClick={() => handleClipboard(item.figure_image)}
+                      onClick={() => copyImageToClipboard(item.figure_image)}
                       className="w-full font-semibold h-[40px] z-[10px] items-center absolute bottom-[0%] hidden flex justify-center group-hover:flex group-hover:text-center rounded-sm bg-purple-400"
                     >
                       <p className="text-lg">Copiar figurinha</p>
