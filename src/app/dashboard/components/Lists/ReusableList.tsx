@@ -80,7 +80,6 @@ const ReusableList = ({ items, id, subId, search }: props) => {
         }
         const blob = await response.blob();
 
-        // Verifica se o tipo de Blob é suportado
         const supportedTypes = ["image/png", "image/jpeg", "image/gif"];
         if (!supportedTypes.includes(blob.type)) {
           reject(new DOMException("NotAllowedError", "Unsupported MIME type"));
@@ -96,6 +95,11 @@ const ReusableList = ({ items, id, subId, search }: props) => {
         await navigator.clipboard.write([clipboardItem]);
 
         resolve();
+
+        Toast({
+          message: "Figurinha copiada",
+          isSucess: true,
+        });
       } catch (error: any) {
         reject(new DOMException("NotAllowedError", error.message));
       }
