@@ -61,14 +61,15 @@ const ReusableList = ({ items, id, subId, search }: props) => {
       }
       const blob = await response.blob();
 
-      const cleanBlob = new Blob([blob], { type: blob.type });
+      const record: any = new Object();
+      Reflect.set(record, "image/png", blob);
 
-      const clipboardItem = new ClipboardItem({
-        [cleanBlob.type]: cleanBlob,
-      });
+      const item = new ClipboardItem(record);
+
+      const data = [item];
 
       setTimeout(() => {
-        navigator.clipboard.write([clipboardItem]);
+        navigator.clipboard.write(data);
       }, 200);
 
       Toast({
