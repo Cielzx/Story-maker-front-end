@@ -276,6 +276,66 @@ export const StickerProvider = ({ children }: categoryProp) => {
     );
   };
 
+  async function writeImageToClipboard(url: string) {
+    // Cria uma nova promise
+    const p = new Promise<void>(async (resolve, reject) => {
+      // Verifica a permissão para escrever no clipboard
+      try {
+        const permissionStatus = await navigator.permissions.query({
+          name: "clipboard-write" as PermissionName,
+        });
+        if (
+          permissionStatus.state !== "granted" &&
+          permissionStatus.state !== "prompt"
+        ) {
+          reject(
+            new DOMException(
+              "NotAllowedError",
+              "Clipboard permission not granted"
+            )
+          );
+          return;
+        }
+      } catch (e) {
+        // Ignora se a permissão não estiver disponível
+      }
+
+      try {
+        // Busca a imagem da URL e obtém como Blob
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Falha ao buscar a imagem");
+        }
+        const blob = await response.blob();
+
+        // Verifica se o tipo de Blob é suportado
+        const supportedTypes = ["image/png", "image/jpeg", "image/gif"];
+        if (!supportedTypes.includes(blob.type)) {
+          reject(new DOMException("NotAllowedError", "Unsupported MIME type"));
+          return;
+        }
+
+        // Sanitiza o Blob (neste caso, apenas cria uma nova cópia do Blob)
+        const cleanBlob = new Blob([blob], { type: blob.type });
+
+        // Cria um ClipboardItem com a imagem
+        const clipboardItem = new ClipboardItem({
+          [cleanBlob.type]: cleanBlob,
+        });
+
+        // Escreve no clipboard
+        await navigator.clipboard.write([clipboardItem]);
+
+        // Resolve a promise com sucesso
+        resolve();
+      } catch (error: any) {
+        reject(new DOMException("NotAllowedError", error.message));
+      }
+    });
+
+    return p;
+  }
+
   const copyImageToClipboard = async (imageSrc: string) => {
     try {
       if (!isClipboardSupported()) {
@@ -287,42 +347,27 @@ export const StickerProvider = ({ children }: categoryProp) => {
       if (!response.ok) {
         throw new Error("Falha ao buscar a imagem.");
       }
+      const blob = await response.blob();
 
       if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
         if (typeof navigator.clipboard.write) {
-          const image = new ClipboardItem({
-            "image/png": fetch(imageSrc)
-              .then((res) => res.blob())
-              .then((blob) => new Blob([blob], { type: "image/png" })),
-          });
-
-          await navigator.clipboard.write([image]);
-
-          Toast({
-            message: "Figurinha copiada",
-            isSucess: true,
+          const item = [
+            new ClipboardItem({
+              "image/png": Promise.resolve(
+                new Blob([blob], { type: "image/png" })
+              ),
+            }),
+          ];
+          navigator.clipboard.write(item).then(function () {
+            Toast({
+              message: "Figurinha copiada",
+              isSucess: true,
+            });
           });
         }
-      } else {
-        const blob = response.blob();
-
-        const record: any = new Object();
-        Reflect.set(record, "image/png", blob);
-
-        const item = new ClipboardItem(record);
-
-        const data = [item];
-
-        const clipboard = navigator.clipboard;
-
-        await clipboard.write(data);
-
-        Toast({
-          message: "Figurinha copiada 2",
-          isSucess: true,
-        });
       }
     } catch (error) {
+      console.log(error);
       Toast({
         message:
           "Falha ao copiar imagem. Verifique as permissões e tente novamente.",
