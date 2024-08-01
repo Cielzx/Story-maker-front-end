@@ -54,60 +54,33 @@ const ReusableList = ({ items, id, subId, search }: props) => {
   };
 
   async function writeImageToClipboard(url: string) {
-    const p = new Promise<void>(async (resolve, reject) => {
-      try {
-        const permissionStatus = await navigator.permissions.query({
-          name: "clipboard-write" as PermissionName,
-        });
-        if (
-          permissionStatus.state !== "granted" &&
-          permissionStatus.state !== "prompt"
-        ) {
-          reject(
-            new DOMException(
-              "NotAllowedError",
-              "Clipboard permission not granted"
-            )
-          );
-          return;
-        }
-      } catch (e) {}
-
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Falha ao buscar a imagem");
-        }
-        const blob = await response.blob();
-
-        const supportedTypes = ["image/png", "image/jpeg", "image/gif"];
-        if (!supportedTypes.includes(blob.type)) {
-          reject(new DOMException("NotAllowedError", "Unsupported MIME type"));
-          return;
-        }
-
-        const cleanBlob = new Blob([blob], { type: blob.type });
-
-        const clipboardItem = new ClipboardItem({
-          [cleanBlob.type]: cleanBlob,
-        });
-
-        setTimeout(() => {
-          navigator.clipboard.write([clipboardItem]);
-        }, 0);
-
-        resolve();
-
-        Toast({
-          message: "Figurinha copiada",
-          isSucess: true,
-        });
-      } catch (error: any) {
-        reject(new DOMException("NotAllowedError", error.message));
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Falha ao buscar a imagem");
       }
-    });
+      const blob = await response.blob();
 
-    return p;
+      const cleanBlob = new Blob([blob], { type: blob.type });
+
+      const clipboardItem = new ClipboardItem({
+        [cleanBlob.type]: cleanBlob,
+      });
+
+      setTimeout(() => {
+        navigator.clipboard.write([clipboardItem]);
+      }, 200);
+
+      Toast({
+        message: "Figurinha copiada",
+        isSucess: true,
+      });
+    } catch (error: any) {
+      Toast({
+        message: "algo deu errado",
+        isSucess: false,
+      });
+    }
   }
 
   useEffect(() => {
