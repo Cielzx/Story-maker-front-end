@@ -92,7 +92,9 @@ const ReusableList = ({ items, id, subId, search }: props) => {
           [cleanBlob.type]: cleanBlob,
         });
 
-        await navigator.clipboard.write([clipboardItem]);
+        setTimeout(() => {
+          navigator.clipboard.write([clipboardItem]);
+        }, 0);
 
         resolve();
 
