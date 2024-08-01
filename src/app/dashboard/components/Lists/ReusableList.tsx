@@ -61,16 +61,15 @@ const ReusableList = ({ items, id, subId, search }: props) => {
       }
       const blob = await response.blob();
 
-      const record: any = new Object();
-      Reflect.set(record, "image/png", blob);
-
-      const item = new ClipboardItem(record);
+      const item = new ClipboardItem({
+        "image/png": blob,
+      });
 
       const data = [item];
 
       setTimeout(() => {
         navigator.clipboard.write(data);
-      }, 200);
+      }, 100);
 
       Toast({
         message: "Figurinha copiada",
