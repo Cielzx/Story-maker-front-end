@@ -7,6 +7,10 @@ import { motion } from "framer-motion";
 import { Edit, Frown, Heart, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Canvg } from "canvg";
+import CategoryModal from "../categoryModal";
+import { useDisclosure } from "@chakra-ui/react";
+import UpdateModal from "../updateModal";
 
 interface props {
   items: CombineCategorySchema[];
@@ -15,7 +19,7 @@ interface props {
   search?: string;
 }
 
-const ReusableList = ({ items, id, subId, search }: props) => {
+const ReusableList = ({ items, search }: props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { deleteCategory, deleteSubCategory } = useCategory();
@@ -30,6 +34,10 @@ const ReusableList = ({ items, id, subId, search }: props) => {
   const [clientMode, setClientMode] = useState("");
   const [clicked, setIsClicked] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState("");
+  const { updatedItems, setUpdatedItems } = useCategory();
+  const [id, setId] = useState("");
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const handleCategoryName = (id: string) => {
     return router.push(`/dashboard/${id}`);
@@ -109,68 +117,18 @@ const ReusableList = ({ items, id, subId, search }: props) => {
     createFavorite(user.id, sticker!.id);
   };
 
-  const handleFocus = (id: string) => {
-    getSticker(id);
-    setFocusedIndex(id);
+  const handleFocus = async (id: string) => {
+    try {
+      getSticker(id);
+      setFocusedIndex(id);
+    } catch (error) {
+      console.error("Erro ao buscar figurinha:", error);
+    }
   };
-  window.Clipboard;
-
-  // const handleClipboard = async (imageSrc: string) => {
-  //   const response = await fetch(imageSrc);
-  //   if (!response.ok) {
-  //     throw new Error("Falha ao buscar a imagem.");
-  //   }
-
-  //   if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
-  //     const blob = await response.blob();
-  //     const makeImagePromise = async () => {
-  //       const data = await fetch(imageSrc);
-  //       return await data.blob();
-  //     };
-  //     await navigator.clipboard.write([
-  //       new ClipboardItem({ [blob.type]: makeImagePromise() }),
-  //     ]);
-  //   }
-
-  //   if (typeof navigator.clipboard.write === "function") {
-  //     const clipboardItem = new ClipboardItem({
-  //       "image/png": "blob",
-  //     });
-
-  //     // navigator.clipboard.write([clipboardItem]);
-
-  //     Toast({
-  //       message: "Figurinha copiada",
-  //       isSucess: true,
-  //     });
-  //   } else {
-  //     const blob = response.blob();
-
-  //     const record: any = new Object();
-  //     Reflect.set(record, "image/png", blob);
-
-  //     const item = new ClipboardItem(record);
-
-  //     const data = [item];
-
-  //     const clipboard = navigator.clipboard;
-
-  //     await clipboard.write(data);
-
-  //     Toast({
-  //       message: "Figurinha copiada 2",
-  //       isSucess: true,
-  //     });
-  //   }
-  // };
 
   const handleBlur = () => {
     setFocusedIndex("");
   };
-
-  if (!user) {
-    return <Loading />;
-  }
 
   if (!items) {
     return <Loading />;
@@ -194,7 +152,12 @@ const ReusableList = ({ items, id, subId, search }: props) => {
   }
   return (
     <ul className="w-full h-full flex flex-wrap gap-2 p-3">
-      <div className="w-full h-full overflow-y-scroll">
+      <div
+        className="w-full h-full overflow-y-scroll"
+        style={{
+          scrollbarWidth: "none",
+        }}
+      >
         {filteredItems && filteredItems.length > 0 ? (
           <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
             {filteredItems.map((item) => (
@@ -224,7 +187,14 @@ const ReusableList = ({ items, id, subId, search }: props) => {
                   <div className="w-full flex hidden group-hover:flex justify-between p-1">
                     {user!.is_admin ? (
                       <>
-                        <Edit size={20} />
+                        <Edit
+                          size={20}
+                          onClick={() => {
+                            onOpen();
+                            setId(item.id);
+                            setMode("update");
+                          }}
+                        />
                         <Trash
                           onClick={() => {
                             if (clientMode === "category") {
@@ -258,7 +228,9 @@ const ReusableList = ({ items, id, subId, search }: props) => {
                   </div>
 
                   <span
-                    onClick={() => handleRedirect(item.id)}
+                    onClick={() => {
+                      handleRedirect(item.id);
+                    }}
                     className="absolute text-[4vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
                   >
                     {clientMode === "category" ? (
@@ -285,14 +257,15 @@ const ReusableList = ({ items, id, subId, search }: props) => {
             ))}
           </div>
         ) : (
-          <>
-            {/* <div className="w-full h-[540px] flex flex-col justify-center items-center">
-            <h2 className="text-xl">PARECE QUE AQUI TÁ VAZIO...</h2>
-            <Frown size={30} />
-          </div> */}
-          </>
+          <></>
         )}
       </div>
+
+      {user.is_admin ? (
+        <UpdateModal isOpen={isOpen} onClose={onClose} id={id} />
+      ) : (
+        <></>
+      )}
     </ul>
   );
 };

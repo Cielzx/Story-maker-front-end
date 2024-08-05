@@ -12,6 +12,7 @@ import React, {
   useState,
 } from "react";
 import { iSticker } from "./stickerContext";
+import { useUSer } from "@/hooks";
 
 interface categoryProp {
   children: React.ReactNode;
@@ -37,6 +38,7 @@ interface iCategoryData {
 interface categoryValues {
   setCoverImage: React.Dispatch<React.SetStateAction<File | null>>;
   createCategory: (data: iCategoryData) => void;
+  updateCategory: (data: iCategoryData, id: string) => void;
   createSubCategorie: (data: iSubCategories) => void;
   deleteCategory: (id: string) => void;
   deleteSubCategory: (id: string) => void;
@@ -48,6 +50,8 @@ interface categoryValues {
   subCategories: iSubCategories[];
   category: iCategoryData | undefined;
   coverImage: File | null;
+  updatedItems: any[];
+  setUpdatedItems: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 export const CategoryContext = createContext<categoryValues>(
@@ -63,6 +67,8 @@ export const CategoryProvider = ({ children }: categoryProp) => {
   const [categoryId, setCategoryId] = useState("");
   const [subCategorie, setSubCategorie] = useState<iSubCategories>();
   const [subCategories, setSubcategories] = useState<iSubCategories[]>([]);
+  const [updatedItems, setUpdatedItems] = useState(categoryArray);
+  const { setMode } = useUSer();
   const cookies = parseCookies();
   const pathname = usePathname();
 
@@ -125,6 +131,36 @@ export const CategoryProvider = ({ children }: categoryProp) => {
         isSucess: false,
       });
       console.log(error);
+    }
+  };
+
+  const updateItem = (updatedItem: iCategoryData) => {
+    setCategoryArray((prevItems) =>
+      prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+    );
+  };
+
+  const updateCategory = async (data: iCategoryData, id: string) => {
+    try {
+      const response = await api.patch(`category/update/${id}`, data);
+      if (data.cover_image) {
+        await uploadFile(id, coverImage!);
+      }
+
+      updateItem(response.data);
+
+      Toast({
+        message: "Atualizado com sucesso :)",
+        isSucess: true,
+      });
+
+      getCategory();
+    } catch (error) {
+      console.log(error);
+      Toast({
+        message: "Algo deu errado :(",
+        isSucess: true,
+      });
     }
   };
 
@@ -236,6 +272,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
       value={{
         setCoverImage,
         createCategory,
+        updateCategory,
         createSubCategorie,
         subCategories,
         getCategory,
@@ -247,6 +284,8 @@ export const CategoryProvider = ({ children }: categoryProp) => {
         deleteCategory,
         deleteSubCategory,
         coverImage,
+        updatedItems,
+        setUpdatedItems,
       }}
     >
       {children}

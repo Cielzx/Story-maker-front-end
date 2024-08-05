@@ -1,14 +1,12 @@
 import Input from "@/app/components/Input";
 import CustomModal from "@/app/components/Modal";
-import { iSubCategories } from "@/context/categoryContext";
 import { useCategory, useSticker, useUSer } from "@/hooks";
-import { CategoryData, CombineCategorySchema } from "@/schemas/category.schema";
-import { StickerData, StickerSchema } from "@/schemas/sticker.schema";
-import { Image, Sticker, Target } from "lucide-react";
+import { CombineCategorySchema } from "@/schemas/category.schema";
 import { usePathname } from "next/navigation";
 import { useCallback, useState } from "react";
+import { Image, Sticker, Target } from "lucide-react";
 import { useDropzone } from "react-dropzone";
-import { useForm, UseFormRegister } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 interface modalProps {
   isOpen: boolean;
@@ -16,7 +14,7 @@ interface modalProps {
   id?: string;
 }
 
-const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
+const UpdateModal = ({ isOpen, onClose, id }: modalProps) => {
   const {
     setCoverImage,
     createCategory,
@@ -59,45 +57,28 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
 
     accept: { "image/jpeg": ["jpg"], "image/png": ["png"] },
   });
+
   let headerName = "";
   if (mode === "category") {
-    headerName = "Criar categoria";
-  } else if (mode === "subCategory") {
-    headerName = "Criar Sub-categoria";
-  } else if (mode === "sticker") {
-    headerName = "Criar figurinha";
-  } else if (mode === "update") {
     headerName = "Atualizar categoria";
+  } else if (mode === "subCategory") {
+    headerName = "Atualizar Sub-categoria";
   }
 
   let fieldValue: keyof CombineCategorySchema = "category_name";
   let label = "";
-  if (mode === "category" || mode === "update") {
+
+  if (mode === "category") {
     fieldValue = "category_name";
     label = "Nome da categoria";
   } else if (mode === "subCategory") {
     fieldValue = "item_name";
     label = "Nome da sub-categoria";
-  } else if (mode === "sticker") {
-    fieldValue = "figure_name";
-    label = "Nome da figurinha";
-  } else if (mode === "profile") {
-    fieldValue = "name";
-    label = "Editar nome";
   }
 
   const onSub = (data: CombineCategorySchema) => {
-    if (mode === "category") {
-      createCategory(data);
-    } else if (mode === "subCategory") {
-      createSubCategorie(data);
-    } else if (mode === "sticker") {
-      createSticker(data);
-    } else if (mode === "profile") {
-      updateUser(user!.id, data);
-    } else if (mode === "update") {
-      updateCategory(data, id!);
-    }
+    updateCategory(data, id!);
+
     setTimeout(() => {
       onClose();
     }, 1000);
@@ -168,4 +149,4 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
   );
 };
 
-export default CategoryModal;
+export default UpdateModal;

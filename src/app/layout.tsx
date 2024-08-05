@@ -48,10 +48,7 @@ export default function RootLayout({
           <AuthProvider>
             <UserProvider>
               <CategoryProvider>
-                <StickerProvider>
-                  {children}
-                  <DashMenu />
-                </StickerProvider>
+                <StickerProvider>{children}</StickerProvider>
               </CategoryProvider>
             </UserProvider>
           </AuthProvider>

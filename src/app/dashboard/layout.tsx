@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 const RootDashLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <main className="flex-[1] overflow-scroll">{children}</main>
+      <main className="flex-[1]">
+        {children}
+        <DashMenu />
+      </main>
     </>
   );
 };

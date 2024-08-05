@@ -12,6 +12,7 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useUSer } from "@/hooks";
 
 interface ModalChildren {
   children: React.ReactNode;
@@ -36,6 +37,7 @@ const CustomModal = ({
   widthBody,
   heightBody,
 }: ModalChildren) => {
+  const { setMode } = useUSer();
   return (
     <Modal closeOnOverlayClick={true} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay
@@ -67,7 +69,7 @@ const CustomModal = ({
           >
             <p className="font-bold text-xl">{headerText}</p>
             <button onClick={onClose}>
-              <IoIosClose className="text-4xl" />
+              <IoIosClose onClick={() => setMode("")} className="text-4xl" />
             </button>
           </ModalHeader>
           {children}
