@@ -64,12 +64,12 @@ const Profile = () => {
     }
   }, [profileImage]);
 
-  if (!user) {
-    return <Loading />;
-  }
+  // if (!user) {
+  //   return <Loading />;
+  // }
 
   let initials = "";
-  const names = user.name.split(" ");
+  const names = user?.name.split(" ");
 
   if (names && names.length > 0) {
     const firstName = names[0];
@@ -104,7 +104,7 @@ const Profile = () => {
                   <Camera />
                 </div>
                 <input className="hidden" {...getInputProps()} />
-                {user.profile_image ? (
+                {user && user.profile_image ? (
                   <img
                     src={user.profile_image}
                     className="rounded-full w-full h-full object-cover"
@@ -118,7 +118,9 @@ const Profile = () => {
               </div>
 
               <div>
-                <p className="text-3xl font-semibold text-black">{user.name}</p>
+                <p className="text-3xl font-semibold text-black">
+                  {user?.name}
+                </p>
               </div>
             </div>
           </div>
