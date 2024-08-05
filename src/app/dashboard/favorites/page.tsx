@@ -19,7 +19,7 @@ const FavoritePage = () => {
       <div className="backgroundDash"></div>
       <div className="w-full flex flex-col flex-grow bg-cover bg-center text-white items-center ">
         <section className="w-full h-full flex flex-col">
-          <div className="w-full flex items-center bg-black justify-center text-3xl text-center h-[100px]">
+          <div className="w-full flex items-center bg-black z-10 justify-center text-3xl text-center h-[100px]">
             <h1>Favoritos</h1>
             <button
               onClick={() => router.back()}

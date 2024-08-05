@@ -107,6 +107,7 @@ const ReusableList = ({ items, search }: props) => {
     }
 
     setClientMode(mode);
+    console.log(sticker);
   }, [mode]);
 
   if (!user) {
@@ -114,7 +115,8 @@ const ReusableList = ({ items, search }: props) => {
   }
 
   const handleFavoriteClick = async (item: any) => {
-    createFavorite(user.id, sticker!.id);
+    await getSticker(item.id);
+    createFavorite(user.id, item.id);
   };
 
   const handleFocus = async (id: string) => {
@@ -180,8 +182,6 @@ const ReusableList = ({ items, search }: props) => {
                 <li
                   key={item.id}
                   tabIndex={0}
-                  onFocus={() => handleFocus(item.id)}
-                  onBlur={handleBlur}
                   className="w-full h-full  flex items-start group justify-center relative rounded-lg"
                 >
                   <div className="w-full flex hidden group-hover:flex justify-between p-1">

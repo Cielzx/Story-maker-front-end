@@ -40,6 +40,7 @@ interface categoryValues {
   createCategory: (data: iCategoryData) => void;
   updateCategory: (data: iCategoryData, id: string) => void;
   createSubCategorie: (data: iSubCategories) => void;
+  updateCategories: (data: iSubCategories, id: string) => void;
   deleteCategory: (id: string) => void;
   deleteSubCategory: (id: string) => void;
   getCategory: (id?: string) => void;
@@ -219,6 +220,30 @@ export const CategoryProvider = ({ children }: categoryProp) => {
     }
   };
 
+  const updateCategories = async (data: iSubCategories, id: string) => {
+    try {
+      const response = await api.patch(`categories/update/${id}`, data);
+      if (data.cover_image) {
+        await uploadFile(id, coverImage!);
+      }
+
+      updateItem(response.data);
+
+      Toast({
+        message: "Atualizado com sucesso :)",
+        isSucess: true,
+      });
+
+      getCategory();
+    } catch (error) {
+      console.log(error);
+      Toast({
+        message: "Algo deu errado :(",
+        isSucess: true,
+      });
+    }
+  };
+
   const getSubCategorie = async (id: string) => {
     try {
       const response = await api.get(`categories/${id}`);
@@ -274,6 +299,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
         createCategory,
         updateCategory,
         createSubCategorie,
+        updateCategories,
         subCategories,
         getCategory,
         getSubCategorie,

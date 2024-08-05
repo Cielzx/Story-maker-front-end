@@ -21,7 +21,7 @@ const UpdateModal = ({ isOpen, onClose, id }: modalProps) => {
     createSubCategorie,
     coverImage,
     updateCategory,
-    category,
+    updateCategories,
   } = useCategory();
   const { setFigureImage, createSticker } = useSticker();
   const { user, updateUser } = useUSer();
@@ -78,6 +78,9 @@ const UpdateModal = ({ isOpen, onClose, id }: modalProps) => {
 
   const onSub = (data: CombineCategorySchema) => {
     updateCategory(data, id!);
+    if (mode === "subCategory") {
+      updateCategories(data, id!);
+    }
 
     setTimeout(() => {
       onClose();
