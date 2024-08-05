@@ -118,12 +118,16 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
         onSubmit={handleSubmit(onSub)}
         className="flex flex-col w-[100%] h-full justify-center items-center gap-2 border-red-300 border-1 border-solid text-white"
       >
-        <Input
-          type="text"
-          id={fieldValue}
-          label={label}
-          {...register(fieldValue)}
-        />
+        {mode === "sticker" ? (
+          <></>
+        ) : (
+          <Input
+            type="text"
+            id={fieldValue}
+            label={label}
+            {...register(fieldValue)}
+          />
+        )}
 
         {mode === "profile" ? (
           <></>

@@ -230,7 +230,7 @@ const ReusableList = ({ items, search }: props) => {
                     {clientMode === "category" ? (
                       <>{item.category_name}</>
                     ) : clientMode === "sticker" ? (
-                      <>{item.figure_name}</>
+                      <></>
                     ) : (
                       <>{item.item_name}</>
                     )}
