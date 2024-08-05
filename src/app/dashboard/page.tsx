@@ -20,6 +20,7 @@ const DashBoard = () => {
 
   useEffect(() => {
     getCategory();
+    getUser();
   }, []);
 
   if (!user) {
