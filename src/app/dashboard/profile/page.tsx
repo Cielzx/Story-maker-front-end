@@ -89,65 +89,67 @@ const Profile = () => {
   }
 
   return (
-    <div className="w-full flex flex-col h-full">
+    <div className="w-full h-full flex flex-col">
       <div className="backgroundDash"></div>
       <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
-        <section className="w-full flex flex-col h-full relative items-center">
-          <div
-            className="w-[100%] h-[40%] flex justify-center"
-            style={{
-              backgroundImage: `url(https://images2.imgbox.com/4f/49/NfAbt61z_o.jpg)`,
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-            }}
-          >
-            <div className="w-[50%] flex flex-col gap-4 justify-center absolute bottom-[60%] z-10  items-center">
-              <div
-                {...getRootProps()}
-                className="w-32 h-32 bg-white text-4xl group border border-white border-solid relative rounded-full bg-gray-900 max-[920px]:w-24 max-[920px]:h-24"
-              >
-                <div className="hidden w-full h-full rounded-full flex items-center justify-center group-hover:flex absolute bg-[rgba(0,0,0,0.3)]">
-                  <Camera />
+        <section className="w-full flex flex-col">
+          <div className="w-full  h-full  flex flex-col absolute justify-center items-center">
+            <div
+              className="w-[100%] h-[40%] flex justify-center"
+              style={{
+                backgroundImage: `url(https://images2.imgbox.com/4f/49/NfAbt61z_o.jpg)`,
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+              }}
+            >
+              <div className="w-[50%] flex flex-col gap-4 justify-center absolute bottom-[60%] z-10  items-center">
+                <div
+                  {...getRootProps()}
+                  className="w-32 h-32 bg-white text-4xl group border border-white border-solid relative rounded-full bg-gray-900 max-[920px]:w-24 max-[920px]:h-24"
+                >
+                  <div className="hidden w-full h-full rounded-full flex items-center justify-center group-hover:flex absolute bg-[rgba(0,0,0,0.3)]">
+                    <Camera />
+                  </div>
+                  <input className="hidden" {...getInputProps()} />
+                  {user && user.profile_image ? (
+                    <img
+                      src={user.profile_image}
+                      className="rounded-full w-full h-full object-cover"
+                      alt="Foto de perfil"
+                    />
+                  ) : (
+                    <p className="w-full h-full flex justify-center items-center  text-white">
+                      {initials}
+                    </p>
+                  )}
                 </div>
-                <input className="hidden" {...getInputProps()} />
-                {user && user.profile_image ? (
-                  <img
-                    src={user.profile_image}
-                    className="rounded-full w-full h-full object-cover"
-                    alt="Foto de perfil"
-                  />
-                ) : (
-                  <p className="w-full h-full flex justify-center items-center  text-white">
-                    {initials}
-                  </p>
-                )}
-              </div>
 
-              <div>
-                <p className="text-3xl font-semibold text-black">
-                  {user?.name}
-                </p>
+                <div>
+                  <p className="text-3xl font-semibold text-black">
+                    {user?.name}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="w-[60%] max-[940px]:w-full h-[60%] relative flex items-center justify-center">
-            <div className="w-[50%]  max-lg:w-[70%] h-[100%] bg-white absolute bottom-[25%] text-black font-semibold rounded-lg flex absolute bottom-[20%] flex-col justify-center gap-4 p-2">
-              <div className="w-full flex items-center h-[50px]">
-                <button className="flex gap-1">
-                  <Edit /> Informações
-                </button>
-              </div>
-              <div className="w-full flex items-center h-[50px]">
-                <button className="flex gap-1">
-                  <KeyRound /> Atualizar senha
-                </button>
-              </div>
-              <div className="w-full flex items-center h-[50px]">
-                <button onClick={() => handleLogout()} className="flex gap-1">
-                  <LogOut /> Sair da conta
-                </button>
+            <div className="w-[60%] max-[940px]:w-full h-[60%] relative flex items-center justify-center">
+              <div className="w-[50%]  max-lg:w-[70%] h-[100%] bg-white absolute bottom-[25%] text-black font-semibold rounded-lg flex absolute bottom-[20%] flex-col justify-center gap-4 p-2">
+                <div className="w-full flex items-center h-[50px]">
+                  <button className="flex gap-1">
+                    <Edit /> Informações
+                  </button>
+                </div>
+                <div className="w-full flex items-center h-[50px]">
+                  <button className="flex gap-1">
+                    <KeyRound /> Atualizar senha
+                  </button>
+                </div>
+                <div className="w-full flex items-center h-[50px]">
+                  <button onClick={() => handleLogout()} className="flex gap-1">
+                    <LogOut /> Sair da conta
+                  </button>
+                </div>
               </div>
             </div>
           </div>
