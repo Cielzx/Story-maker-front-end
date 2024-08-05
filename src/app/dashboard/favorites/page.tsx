@@ -21,20 +21,22 @@ const FavoritePage = () => {
   return (
     <div className="w-full flex flex-col h-full">
       <div className="backgroundDash"></div>
-      <div className="w-full flex flex-col flex-grow bg-cover bg-center text-white items-center ">
-        <section className="w-full h-full flex flex-col">
-          <div className="w-full flex items-center bg-black z-10 justify-center text-3xl text-center h-[100px]">
-            <h1>Favoritos</h1>
-            <button
-              onClick={() => router.back()}
-              className="absolute left-[6%]"
-            >
-              <ArrowLeft size={40} />
-            </button>
-          </div>
+      <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
+        <section className="w-full flex flex-col">
+          <div className="w-full  h-full  flex flex-col fixed justify-center items-center">
+            <div className="w-full flex items-center bg-black z-10 justify-center text-3xl text-center h-[100px]">
+              <h1>Favoritos</h1>
+              <button
+                onClick={() => router.back()}
+                className="absolute left-[6%]"
+              >
+                <ArrowLeft size={40} />
+              </button>
+            </div>
 
-          <div className="w-[90%] h-full overflow-y-auto">
-            <FavoriteList items={user.favorites} />
+            <div className="w-[90%] h-full overflow-y-auto">
+              <FavoriteList items={user.favorites} />
+            </div>
           </div>
         </section>
       </div>
