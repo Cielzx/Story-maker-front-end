@@ -10,6 +10,10 @@ const FavoritePage = () => {
   const { user, getUser } = useUSer();
   const router = useRouter();
 
+  useEffect(() => {
+    getUser();
+  }, [user]);
+
   if (!user) {
     return <Loading />;
   }
