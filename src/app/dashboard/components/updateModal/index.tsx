@@ -77,8 +77,12 @@ const UpdateModal = ({ isOpen, onClose, id }: modalProps) => {
   }
 
   const onSub = (data: CombineCategorySchema) => {
-    updateCategory(data, id!);
+    if (mode === "category") {
+      updateCategory(data, id!);
+    }
+
     if (mode === "subCategory") {
+      console.log(data);
       updateCategories(data, id!);
     }
 
