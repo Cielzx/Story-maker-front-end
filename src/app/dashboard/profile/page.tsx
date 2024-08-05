@@ -18,7 +18,8 @@ interface FileInfo {
 }
 
 const Profile = () => {
-  const { user, setProfileImage, profileImage, uploadPhoto } = useUSer();
+  const { user, setProfileImage, profileImage, uploadPhoto, getUser } =
+    useUSer();
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
 
   const onDrop = useCallback(async (files: File[]) => {
@@ -57,6 +58,12 @@ const Profile = () => {
     destroyCookie(null, "user.Token");
     return router.push("/login");
   };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  console.log(user);
 
   useEffect(() => {
     if (profileImage) {
