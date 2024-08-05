@@ -54,7 +54,6 @@ const UpdateModal = ({ isOpen, onClose, id }: modalProps) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-
     accept: { "image/jpeg": ["jpg"], "image/png": ["png"] },
   });
 
@@ -149,7 +148,7 @@ const UpdateModal = ({ isOpen, onClose, id }: modalProps) => {
         )}
 
         <button type="submit" className="btn-form">
-          Criar
+          Atualizar
         </button>
       </form>
     </CustomModal>

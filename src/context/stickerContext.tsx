@@ -33,7 +33,6 @@ interface stickerValues {
   deleteSticker: (id: string) => void;
   deleteFavorite: (id: string) => void;
   createFavorite: (userId: string, stickerId?: string) => void;
-  copyImageToClipboard: (imageSrc: string) => void;
 }
 
 export const StickerContext = createContext<stickerValues>({} as stickerValues);
@@ -192,130 +191,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
-  // const ImageToClipboard = async (imgSrc: string) => {
-  //   try {
-  //     const base64 = imgSrc;
-  //     const blob = convertBase64ToBlob(base64);
-
-  //     copyToClipboard(imgSrc);
-  //     if (state.error) {
-  //       alert(
-  //         "Falha ao copiar imagem. Verifique as permissões e tente novamente."
-  //       );
-  //     } else {
-  //       alert("Imagem copiada para a área de transferência!");
-  //     }
-
-  //     if (isIos()) {
-  //       const clipboardItem = new ClipboardItem({ "image/png": blob });
-  //       await navigator.clipboard.write([clipboardItem]);
-  //       Toast({
-  //         message: "Figurinha copiada.",
-  //         isSucess: true,
-  //       });
-  //     } else {
-  //       await navigator.clipboard.write([
-  //         new ClipboardItem({
-  //           "image/png": blob,
-  //         }),
-  //       ]);
-  //       Toast({
-  //         message: "Figurinha copiada.",
-  //         isSucess: true,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Erro ao copiar a figurinha:", error);
-  //     Toast({
-  //       message: "Erro ao copiar figurinha",
-  //       isSucess: false,
-  //     });
-  //   }
-  // };
-
-  const isIos = (): boolean => {
-    const isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    console.log("User agent:", navigator.userAgent);
-    console.log("Is iOS:", isIosDevice);
-    return isIosDevice;
-  };
-
-  const requestClipboardPermissions = async () => {
-    try {
-      const permissionStatus = await navigator.permissions.query({
-        name: "clipboard-write" as PermissionName,
-      });
-
-      console.log(permissionStatus);
-
-      if (permissionStatus.state === "granted") {
-        console.log(
-          "Permissão para acessar a área de transferência concedida."
-        );
-        return true;
-      }
-
-      if (permissionStatus.state === "prompt") {
-        console.log(
-          "Permissão para acessar a área de transferência não determinada. Solicitando permissão..."
-        );
-        return true;
-      }
-
-      console.warn("Permissão para acessar a área de transferência negada.");
-      return false;
-    } catch (error) {
-      console.error("Erro ao verificar permissões:", error);
-      return false;
-    }
-  };
-
-  const isClipboardSupported = () => {
-    return (
-      navigator.clipboard && typeof navigator.clipboard.write === "function"
-    );
-  };
-
-  const copyImageToClipboard = async (imageSrc: string) => {
-    try {
-      if (!isClipboardSupported()) {
-        alert("A API Clipboard não é suportada neste navegador.");
-        return;
-      }
-
-      const response = await fetch(imageSrc);
-      if (!response.ok) {
-        throw new Error("Falha ao buscar a imagem.");
-      }
-      const blob = await response.blob();
-
-      if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
-        if (typeof navigator.clipboard.write) {
-          const item = [
-            new ClipboardItem({
-              "image/png": Promise.resolve(
-                new Blob([blob], { type: "image/png" })
-              ),
-            }),
-          ];
-          navigator.clipboard.write(item).then(function () {
-            Toast({
-              message: "Figurinha copiada",
-              isSucess: true,
-            });
-          });
-        }
-      }
-    } catch (error) {
-      console.log(error);
-      Toast({
-        message:
-          "Falha ao copiar imagem. Verifique as permissões e tente novamente.",
-        isSucess: false,
-      });
-    }
-  };
-
   useEffect(() => {
     getSubCategorie(subCategoryId);
   }, []);
@@ -330,7 +205,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
         getSticker,
         deleteFavorite,
         deleteSticker,
-        copyImageToClipboard,
       }}
     >
       {children}

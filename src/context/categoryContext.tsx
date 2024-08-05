@@ -223,9 +223,8 @@ export const CategoryProvider = ({ children }: categoryProp) => {
   const updateCategories = async (data: iSubCategories, id: string) => {
     try {
       const response = await api.patch(`categories/update/${id}`, data);
-      if (data.cover_image) {
-        await uploadFile(id, coverImage!);
-      }
+
+      await uploadSubFile(id, coverImage!);
 
       updateItem(response.data);
 

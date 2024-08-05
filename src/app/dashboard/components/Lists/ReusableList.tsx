@@ -23,13 +23,7 @@ const ReusableList = ({ items, search }: props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { deleteCategory, deleteSubCategory } = useCategory();
-  const {
-    deleteSticker,
-    createFavorite,
-    getSticker,
-    sticker,
-    copyImageToClipboard,
-  } = useSticker();
+  const { deleteSticker, createFavorite, getSticker, sticker } = useSticker();
   const { mode, setMode, user } = useUSer();
   const [clientMode, setClientMode] = useState("");
   const [clicked, setIsClicked] = useState(false);
