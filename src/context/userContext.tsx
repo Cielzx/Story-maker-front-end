@@ -14,6 +14,7 @@ import { useAuth } from "@/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { favoriteData } from "@/schemas/favorite.schema";
 import heic2any from "heic2any";
+import { updateUserForm } from "@/schemas/user.schema";
 
 interface userProviderProp {
   children: React.ReactNode;
@@ -23,7 +24,7 @@ export interface userDescription {
   description: string;
 }
 
-interface userData {
+export interface userData {
   id: string;
   name: string;
   email: string;
@@ -37,7 +38,7 @@ interface userValues {
   user: userData | undefined;
   setUser: Dispatch<SetStateAction<userData | undefined>>;
   getUser: () => void;
-  updateUser: (id: string, data: userData) => void;
+  updateUser: (id: string, data: updateUserForm) => void;
   uploadPhoto: (
     userId: string,
     profileImage: File
@@ -79,7 +80,7 @@ export const UserProvider = ({ children }: userProviderProp) => {
     }
   };
 
-  const updateUser = async (id: string, data: userData) => {
+  const updateUser = async (id: string, data: updateUserForm) => {
     try {
       const response = await api.patch(`users/update/${id}`, data);
       Toast({

@@ -27,8 +27,7 @@ const ReusableList = ({ items, search }: props) => {
   const { mode, setMode, user } = useUSer();
   const [clientMode, setClientMode] = useState("");
   const [clicked, setIsClicked] = useState(false);
-  const [focusedIndex, setFocusedIndex] = useState("");
-  const { updatedItems, setUpdatedItems } = useCategory();
+  const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const [id, setId] = useState("");
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -101,8 +100,14 @@ const ReusableList = ({ items, search }: props) => {
     }
 
     setClientMode(mode);
-    console.log(sticker);
   }, [mode]);
+
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem("favorites");
+    if (savedFavorites) {
+      setFavoriteIds(JSON.parse(savedFavorites));
+    }
+  }, []);
 
   if (!user) {
     return <Loading />;
@@ -110,20 +115,18 @@ const ReusableList = ({ items, search }: props) => {
 
   const handleFavoriteClick = async (item: any) => {
     await getSticker(item.id);
-    createFavorite(user.id, item.id);
-  };
+    const updatedFavorites = [...favoriteIds];
+    const favoriteIndex = updatedFavorites.indexOf(item.id);
 
-  const handleFocus = async (id: string) => {
-    try {
-      getSticker(id);
-      setFocusedIndex(id);
-    } catch (error) {
-      console.error("Erro ao buscar figurinha:", error);
+    if (favoriteIndex === -1) {
+      createFavorite(user.id, item.id);
+      updatedFavorites.push(item.id);
+    } else {
+      updatedFavorites.splice(favoriteIndex, 1);
     }
-  };
 
-  const handleBlur = () => {
-    setFocusedIndex("");
+    setFavoriteIds(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
   if (!items) {
@@ -155,7 +158,7 @@ const ReusableList = ({ items, search }: props) => {
         }}
       >
         {filteredItems && filteredItems.length > 0 ? (
-          <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
+          <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-2 p-2">
             {filteredItems.map((item) => (
               <motion.div
                 key={item.id}
@@ -210,7 +213,9 @@ const ReusableList = ({ items, search }: props) => {
                       <Heart
                         size={20}
                         className="z-[10]"
-                        fill={clicked ? "red" : "transparent"}
+                        fill={
+                          favoriteIds.includes(item.id) ? "red" : "transparent"
+                        }
                         onClick={() => {
                           handleFavoriteClick(item);
                           setIsClicked(true);
@@ -225,7 +230,7 @@ const ReusableList = ({ items, search }: props) => {
                     onClick={() => {
                       handleRedirect(item.id);
                     }}
-                    className="absolute text-[4vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
+                    className="absolute text-[4vw] min-[940px]:text-[2vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
                   >
                     {clientMode === "category" ? (
                       <>{item.category_name}</>

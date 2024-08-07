@@ -22,7 +22,6 @@ const ResestPassword = ({
   const [token, setToken] = useState("");
   const { ResetPassword } = useAuth();
 
-  console.log(token);
   const handlePassword = () => setIsShow(!isShow);
   const onSub = (data: any) => {
     if (newPassword !== confirmPassword) {

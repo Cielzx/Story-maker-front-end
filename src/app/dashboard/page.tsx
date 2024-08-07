@@ -57,18 +57,18 @@ const DashBoard = () => {
               <DropDown />
             </div>
 
-            <div className="w-[70%] flex items-center  relative top-[6%] right-[15%] p-1 bg-white rounded-md">
+            <div className="w-[70%] min-[940px]:w-[50%] min-[940px]:right-[25%] max-[940px]:right-[15%] flex items-center  relative top-[6%]  p-1 bg-white rounded-md">
               <input
                 type="text"
                 value={search}
-                className="text-black outline-none w-[90%]"
+                className="text-black outline-none w-[97%]"
                 onChange={(e) => setSearch(e.target.value)}
                 id="text"
               />
               <Search color="purple" />
             </div>
           </div>
-          <div className="flex w-full h-[72vh]  justify-center items-center">
+          <div className="flex w-full h-[72vh] min-[940px]:h-[79vh] justify-center items-center">
             <ReusableList items={categoryArray} search={search} />
           </div>
         </section>

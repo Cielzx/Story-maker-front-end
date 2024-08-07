@@ -53,6 +53,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     //  router.push("/login");
   }
 
+  if (cookies["user.Token"]) {
+    api.defaults.headers.common.authorization = `Bearer ${cookies["user.Token"]}`;
+  }
   const loginFunction = async (data: LoginData) => {
     try {
       const response = await api.post("login", data);

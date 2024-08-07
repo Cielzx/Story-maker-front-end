@@ -1,7 +1,7 @@
 "use client";
 import Loading from "@/app/components/Loading";
 import { useUSer } from "@/hooks";
-import { Camera, Edit, KeyRound, LogOut } from "lucide-react";
+import { ArrowLeft, Camera, Edit, KeyRound, LogOut } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import CategoryModal from "../components/categoryModal";
@@ -9,6 +9,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { destroyCookie } from "nookies";
 import { useRouter } from "next/navigation";
 import imageCompression from "browser-image-compression";
+import UserEditForm from "./Components/UserEditForm";
 
 interface FileInfo {
   dateModified: string;
@@ -18,8 +19,15 @@ interface FileInfo {
 }
 
 const Profile = () => {
-  const { user, setProfileImage, profileImage, uploadPhoto, getUser } =
-    useUSer();
+  const {
+    user,
+    setProfileImage,
+    profileImage,
+    uploadPhoto,
+    getUser,
+    mode,
+    setMode,
+  } = useUSer();
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
 
   const onDrop = useCallback(async (files: File[]) => {
@@ -63,8 +71,6 @@ const Profile = () => {
     getUser();
   }, []);
 
-  console.log(user);
-
   useEffect(() => {
     if (profileImage) {
       uploadPhoto(user!.id, profileImage);
@@ -103,7 +109,7 @@ const Profile = () => {
                 backgroundSize: "cover",
               }}
             >
-              <div className="w-[50%] flex flex-col gap-4 justify-center absolute bottom-[60%] z-10  items-center">
+              <div className="w-[50%] flex flex-col gap-0 justify-center absolute bottom-[63%] z-10  items-center">
                 <div
                   {...getRootProps()}
                   className="w-32 h-32 bg-white text-4xl group border border-white border-solid relative rounded-full bg-gray-900 max-[920px]:w-24 max-[920px]:h-24"
@@ -135,21 +141,41 @@ const Profile = () => {
 
             <div className="w-[60%] max-[940px]:w-full h-[60%] relative flex items-center justify-center">
               <div className="w-[50%]  max-lg:w-[70%] h-[100%] bg-white absolute bottom-[25%] text-black font-semibold rounded-lg flex absolute bottom-[20%] flex-col justify-center gap-4 p-2">
-                <div className="w-full flex items-center h-[50px]">
-                  <button className="flex gap-1">
-                    <Edit /> Informações
-                  </button>
-                </div>
-                <div className="w-full flex items-center h-[50px]">
-                  <button className="flex gap-1">
-                    <KeyRound /> Atualizar senha
-                  </button>
-                </div>
-                <div className="w-full flex items-center h-[50px]">
-                  <button onClick={() => handleLogout()} className="flex gap-1">
-                    <LogOut /> Sair da conta
-                  </button>
-                </div>
+                {mode === "info" || mode === "requestPassword" ? (
+                  <>
+                    <div className="absolute top-[5%]">
+                      <ArrowLeft onClick={() => setMode("profile")} size={30} />
+                    </div>
+                    <UserEditForm />
+                  </>
+                ) : (
+                  <>
+                    <div className="w-full flex items-center h-[50px]">
+                      <button
+                        onClick={() => setMode("info")}
+                        className="flex gap-1"
+                      >
+                        <Edit /> Informações
+                      </button>
+                    </div>
+                    <div className="w-full flex items-center h-[50px]">
+                      <button
+                        onClick={() => setMode("requestPassword")}
+                        className="flex gap-1"
+                      >
+                        <KeyRound /> Atualizar senha
+                      </button>
+                    </div>
+                    <div className="w-full flex items-center h-[50px]">
+                      <button
+                        onClick={() => handleLogout()}
+                        className="flex gap-1"
+                      >
+                        <LogOut /> Sair da conta
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

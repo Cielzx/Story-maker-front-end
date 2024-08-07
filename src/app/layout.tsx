@@ -37,7 +37,6 @@ export default function RootLayout({
       <body
         className={nixie.className}
         style={{
-          margin: "0 auto",
           padding: "0",
           overflowX: "hidden",
           overflowY: "hidden",

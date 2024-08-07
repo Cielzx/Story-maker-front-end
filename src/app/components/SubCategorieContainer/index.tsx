@@ -56,14 +56,14 @@ const SubCategorieContainer = ({ id, subId }: props) => {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full flex items-center z-10 bg-black justify-center text-3xl text-center h-[100px]">
+      <div className="w-full flex items-center relative right-[0%] z-10 bg-black justify-center text-3xl text-center h-[100px]">
         <button
           onClick={() => {
             router.back();
           }}
           className="absolute left-[6%]"
         >
-          <ArrowLeft size={40} />{" "}
+          <ArrowLeft size={40} />
         </button>
 
         <h2 className="text-white absolute text-3xl">{title || ""}</h2>
