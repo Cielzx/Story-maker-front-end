@@ -89,6 +89,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
         subCategoryId: subCategoryId,
       };
 
+      console.log(figureImage);
       if (
         figureImage!.name.includes("png") ||
         figureImage!.name.includes("heif")
