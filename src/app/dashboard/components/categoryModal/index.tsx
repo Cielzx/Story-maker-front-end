@@ -61,6 +61,8 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
       "image/*": [".jpg", ".jpeg", ".png", ".heif", ".heic"],
     },
   });
+
+  console.log(mode);
   let headerName = "";
   if (mode === "category") {
     headerName = "Criar categoria";
@@ -100,6 +102,7 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
     } else if (mode === "update") {
       updateCategory(data, id!);
     }
+
     setTimeout(() => {
       onClose();
     }, 1000);

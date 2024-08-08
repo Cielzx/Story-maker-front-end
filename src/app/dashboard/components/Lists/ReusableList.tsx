@@ -231,12 +231,16 @@ const ReusableList = ({ items, search }: props) => {
                     )}
                   </div>
 
-                  <div
-                    onClick={() => {
-                      handleRedirect(item.id);
-                    }}
-                    className="w-[100%] h-[90%] z-10 absolute bottom-[0%]"
-                  ></div>
+                  {mode === "sticker" ? (
+                    <></>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        handleRedirect(item.id);
+                      }}
+                      className="w-[100%] h-[90%] z-10 absolute bottom-[0%]"
+                    ></div>
+                  )}
 
                   <span className="absolute text-[4vw] min-[940px]:text-[2vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer">
                     {clientMode === "category" ? (

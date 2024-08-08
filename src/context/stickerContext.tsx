@@ -85,9 +85,11 @@ export const StickerProvider = ({ children }: categoryProp) => {
   };
 
   const createSticker = async (data: iSticker) => {
+    console.log(data);
     try {
       const updatedData = {
-        ...data,
+        figure_name: "",
+        figure_image: data.figure_image,
         subCategoryId: subCategoryId,
       };
 
