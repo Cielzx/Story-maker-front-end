@@ -45,7 +45,7 @@ const CustomModal = ({
           flexGrow: 0,
           flexShrink: 0,
         }}
-        className="flex flex-col items-center justify-center bg-black bg-opacity-70 "
+        className="flex flex-col items-center justify-center z-10  bg-black bg-opacity-70 "
       >
         <ModalBody
           style={{
@@ -68,7 +68,10 @@ const CustomModal = ({
           >
             <p className="font-bold text-xl">{headerText}</p>
             <button onClick={onClose}>
-              <IoIosClose onClick={() => setMode("")} className="text-4xl" />
+              <IoIosClose
+                onClick={() => setMode("")}
+                className="text-4xl cursor-pointer"
+              />
             </button>
           </ModalHeader>
           {children}

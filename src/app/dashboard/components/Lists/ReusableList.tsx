@@ -179,9 +179,9 @@ const ReusableList = ({ items, search }: props) => {
                 <li
                   key={item.id}
                   tabIndex={0}
-                  className="w-full h-full  flex items-start group justify-center relative rounded-lg"
+                  className="w-full h-full  flex flex-col items-start group justify-between relative rounded-lg"
                 >
-                  <div className="w-full flex hidden group-hover:flex justify-between p-1">
+                  <div className="w-full flex hidden  group-hover:flex justify-between p-1">
                     {user!.is_admin ? (
                       <>
                         {mode === "sticker" ? (
@@ -231,12 +231,14 @@ const ReusableList = ({ items, search }: props) => {
                     )}
                   </div>
 
-                  <span
+                  <div
                     onClick={() => {
                       handleRedirect(item.id);
                     }}
-                    className="absolute text-[4vw] min-[940px]:text-[2vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
-                  >
+                    className="w-[100%] h-[90%] z-10 absolute bottom-[0%]"
+                  ></div>
+
+                  <span className="absolute text-[4vw] min-[940px]:text-[2vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer">
                     {clientMode === "category" ? (
                       <>{item.category_name}</>
                     ) : clientMode === "sticker" ? (
