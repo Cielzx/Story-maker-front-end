@@ -62,7 +62,6 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
     },
   });
 
-  console.log(mode);
   let headerName = "";
   if (mode === "category") {
     headerName = "Criar categoria";

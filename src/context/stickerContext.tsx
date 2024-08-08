@@ -64,7 +64,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
 
   const uploadStickerFile = async (stickerId: string, figureImage: File) => {
     try {
-      console.log(figureImage);
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const fd = new FormData();
       if (figureImage.name.includes("jpg")) {
@@ -87,8 +86,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
   const createSticker = async (data: iSticker) => {
     try {
       const updatedData = {
-        figure_name: "",
-        figure_image: data.figure_image,
         subCategoryId: subCategoryId,
       };
 
