@@ -37,7 +37,7 @@ const UserEditForm = () => {
     >
       {mode === "requestPassword" ? (
         <div className="max-[940px]:w-full min-[940px]:w-full border-b border-1 border-black">
-          <label className="block  font-semibold mb-2">Email</label>
+          <label className="block  font-semibold mb-2">Seu E-mail</label>
           <input
             type="text"
             id="email"
