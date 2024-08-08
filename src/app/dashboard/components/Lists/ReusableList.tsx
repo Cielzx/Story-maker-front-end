@@ -245,8 +245,6 @@ const ReusableList = ({ items, search }: props) => {
                   <span className="absolute text-[4vw] min-[940px]:text-[2vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer">
                     {clientMode === "category" ? (
                       <>{item.category_name}</>
-                    ) : clientMode === "sticker" ? (
-                      <></>
                     ) : (
                       <>{item.item_name}</>
                     )}

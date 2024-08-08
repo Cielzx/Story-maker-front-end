@@ -95,7 +95,7 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
     } else if (mode === "subCategory") {
       createSubCategorie(data);
     } else if (mode === "sticker") {
-      createSticker(data);
+      createSticker();
     } else if (mode === "profile") {
       updateUser(user!.id, data);
     } else if (mode === "update") {

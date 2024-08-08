@@ -29,7 +29,7 @@ interface stickerValues {
   sticker: iSticker | undefined;
   getSticker: (id?: string) => void;
   setFigureImage: React.Dispatch<React.SetStateAction<File | null>>;
-  createSticker: (data: iSticker) => void;
+  createSticker: () => void;
   deleteSticker: (id: string) => void;
   deleteFavorite: (id: string) => void;
   createFavorite: (userId: string, stickerId?: string) => void;
@@ -83,18 +83,11 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
-  const createSticker = async (data: iSticker) => {
+  const createSticker = async () => {
     try {
       const updatedData = {
         subCategoryId: subCategoryId,
       };
-
-      // if (figureImage!.name.includes("jpg")) {
-      //   return Toast({
-      //     message: "Formato de imagem não suportado, use o formato PNG",
-      //     isSucess: false,
-      //   });
-      // }
 
       if (
         figureImage!.name.includes("png") ||
