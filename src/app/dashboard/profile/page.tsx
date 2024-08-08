@@ -1,11 +1,8 @@
 "use client";
-import Loading from "@/app/components/Loading";
 import { useUSer } from "@/hooks";
 import { ArrowLeft, Camera, Edit, KeyRound, LogOut } from "lucide-react";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import CategoryModal from "../components/categoryModal";
-import { useDisclosure } from "@chakra-ui/react";
 import { destroyCookie } from "nookies";
 import { useRouter } from "next/navigation";
 import imageCompression from "browser-image-compression";
@@ -43,7 +40,6 @@ const Profile = () => {
         };
 
         const compressedFile = await imageCompression(file, options);
-        console.log(compressedFile);
 
         setProfileImage(compressedFile);
       } catch (error) {
@@ -76,10 +72,6 @@ const Profile = () => {
       uploadPhoto(user!.id, profileImage);
     }
   }, [profileImage]);
-
-  // if (!user) {
-  //   return <Loading />;
-  // }
 
   let initials = "";
   const names = user?.name.split(" ");
@@ -181,8 +173,6 @@ const Profile = () => {
           </div>
         </section>
       </div>
-
-      {/* <CategoryModal isOpen={isOpen} onClose={onClose} /> */}
     </div>
   );
 };
