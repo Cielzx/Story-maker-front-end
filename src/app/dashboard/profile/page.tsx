@@ -143,7 +143,7 @@ const Profile = () => {
               <div className="w-[50%]  max-lg:w-[70%] h-[100%] bg-white absolute bottom-[25%] text-black font-semibold rounded-lg flex absolute bottom-[20%] flex-col justify-center gap-4 p-2">
                 {mode === "info" || mode === "requestPassword" ? (
                   <>
-                    <div className="absolute top-[5%] z-10 cursor-pointer">
+                    <div className="absolute right-[2%] top-[2%] z-10 cursor-pointer">
                       <ArrowLeft onClick={() => setMode("profile")} size={30} />
                     </div>
                     <UserEditForm />
