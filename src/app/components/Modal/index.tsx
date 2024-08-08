@@ -50,12 +50,11 @@ const CustomModal = ({
         <ModalBody
           style={{
             padding: "1rem",
-            maxWidth: MaxWidthBody,
             height: heightBody,
             flexGrow: 0,
             flexShrink: 0,
           }}
-          className="bg-black flex w-[90%] flex-col  gap-5 justify-start p-5 max-[920px]:w-[100%] "
+          className="bg-black flex w-[90%] flex-col  gap-5 justify-start p-5 min-[940px]:w-[600px] "
         >
           <ModalHeader
             style={{

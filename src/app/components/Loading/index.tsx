@@ -4,12 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { parseCookies } from "nookies";
+import { useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 
 const Loading = () => {
   const pathname = usePathname();
   const router = useRouter();
   const cookies = parseCookies();
+
+  // const token = cookies["user.Token"];
+  // useEffect(() => {
+  //   if (!token) {
+  //     return router.push("/login");
+  //   }
+  //   console.log(token);
+  // }, [token]);
 
   return (
     <main className="min-h-screen w-full relative flex flex-col gap-4 items-center justify-center z-[99999px] text-white">

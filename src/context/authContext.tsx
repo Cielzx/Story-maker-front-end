@@ -45,17 +45,13 @@ export const AuthContext = createContext<AuthValue>({} as AuthValue);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [userId, setUserId] = useState("");
   const [user, setUser] = useState<userData>();
-  const [token, setToken] = useState("");
   const router = useRouter();
   const cookies = parseCookies();
-
-  if (!cookies["user.Token"]) {
-    //  router.push("/login");
-  }
 
   if (cookies["user.Token"]) {
     api.defaults.headers.common.authorization = `Bearer ${cookies["user.Token"]}`;
   }
+  const token = cookies["user.Token"];
   const loginFunction = async (data: LoginData) => {
     try {
       const response = await api.post("login", data);
@@ -146,6 +142,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (!token) {
+      return router.push("/login");
+    } else if (token) {
+      return router.push("/dashboard");
+    }
+  }, [token]);
 
   return (
     <AuthContext.Provider

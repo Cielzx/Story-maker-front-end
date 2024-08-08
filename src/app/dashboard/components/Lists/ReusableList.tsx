@@ -184,14 +184,19 @@ const ReusableList = ({ items, search }: props) => {
                   <div className="w-full flex hidden group-hover:flex justify-between p-1">
                     {user!.is_admin ? (
                       <>
-                        <Edit
-                          size={20}
-                          onClick={() => {
-                            onOpen();
-                            setId(item.id);
-                            setMode("update");
-                          }}
-                        />
+                        {mode === "sticker" ? (
+                          <></>
+                        ) : (
+                          <Edit
+                            size={20}
+                            onClick={() => {
+                              onOpen();
+                              setId(item.id);
+                              setMode("update");
+                            }}
+                          />
+                        )}
+
                         <Trash
                           onClick={() => {
                             if (clientMode === "category") {
