@@ -81,10 +81,14 @@ export const CategoryProvider = ({ children }: categoryProp) => {
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const fd = new FormData();
-      if (
-        coverImage?.name.includes("jpg") ||
-        (coverImage?.name.includes("png") && pathname === "/dashboard")
-      ) {
+      const supportedFormats = [
+        "image/heif",
+        "image/heic",
+        "image/jpg",
+        "image/jpeg",
+        "image/png",
+      ];
+      if (supportedFormats.includes(coverImage?.type)) {
         fd.append("cover_image", coverImage);
         const res = await api.patch(
           `category/upload/${categoryId}`,

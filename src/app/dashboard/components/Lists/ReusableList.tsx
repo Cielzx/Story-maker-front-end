@@ -26,7 +26,7 @@ const ReusableList = ({ items, search }: props) => {
   const { deleteSticker, createFavorite, getSticker, sticker } = useSticker();
   const { mode, setMode, user } = useUSer();
   const [clientMode, setClientMode] = useState("");
-  const [clicked, setIsClicked] = useState(false);
+  const [height, setHeight] = useState("");
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const [id, setId] = useState("");
 
@@ -107,7 +107,13 @@ const ReusableList = ({ items, search }: props) => {
     if (savedFavorites) {
       setFavoriteIds(JSON.parse(savedFavorites));
     }
-  }, []);
+
+    if (clientMode === "category" || clientMode === "subCategory") {
+      setHeight("300px");
+    } else {
+      setHeight("200px");
+    }
+  }, [clientMode]);
 
   if (!user) {
     return <Loading />;
@@ -162,7 +168,7 @@ const ReusableList = ({ items, search }: props) => {
             {filteredItems.map((item) => (
               <motion.div
                 key={item.id}
-                className="w-[100%] h-[300px] max-md:h-[200px]"
+                className="w-[100%]"
                 initial="hidden"
                 animate="visible"
                 variants={variants}
@@ -171,6 +177,7 @@ const ReusableList = ({ items, search }: props) => {
                   backgroundImage: `url(${
                     mode === "sticker" ? item.figure_image : item.cover_image
                   })`,
+                  height: `${height}`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -223,7 +230,6 @@ const ReusableList = ({ items, search }: props) => {
                         }
                         onClick={() => {
                           handleFavoriteClick(item);
-                          setIsClicked(true);
                         }}
                       />
                     ) : (
