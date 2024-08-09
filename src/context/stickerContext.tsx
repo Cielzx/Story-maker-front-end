@@ -99,7 +99,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
         });
       } else {
         const response = await api.post<iSticker>("stickers", updatedData);
-        console.log(figureImage);
         await uploadStickerFile(response.data.id, figureImage!);
 
         Toast({

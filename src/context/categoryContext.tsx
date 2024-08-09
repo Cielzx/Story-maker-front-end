@@ -102,7 +102,10 @@ export const CategoryProvider = ({ children }: categoryProp) => {
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const fd = new FormData();
-      if (coverImage?.name.includes("jpg") || coverImage.name.includes("png")) {
+      if (
+        coverImage?.name.includes("jpg") ||
+        coverImage?.name.includes("png")
+      ) {
         fd.append("cover_image", coverImage);
         const res = await api.patch(
           `categories/upload/${categorieId}`,

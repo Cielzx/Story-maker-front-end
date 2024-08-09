@@ -56,17 +56,26 @@ const SubCategorieContainer = ({ id, subId }: props) => {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full flex items-center relative right-[0%] z-10 bg-black justify-center text-3xl text-center h-[100px]">
+      <div className="w-full flex items-center relative right-[0%] z-10 gap-2 bg-black justify-center text-3xl text-center h-[100px]">
         <button
           onClick={() => {
             router.back();
           }}
-          className="absolute left-[6%]"
+          className="absolute left-[2%]"
         >
           <ArrowLeft size={40} />
         </button>
 
-        <h2 className="text-white absolute text-3xl">{title || ""}</h2>
+        <div className="w-[75%] h-full text-center flex items-center justify-center">
+          <h2
+            className="text-white"
+            style={{
+              fontSize: "clamp(1.5rem, 1vw + 1rem, 1rem)",
+            }}
+          >
+            {title || ""}
+          </h2>
+        </div>
       </div>
 
       <div className="flex w-full h-[72vh]  justify-center items-center">

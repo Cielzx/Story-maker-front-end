@@ -162,7 +162,7 @@ const ReusableList = ({ items, search }: props) => {
             {filteredItems.map((item) => (
               <motion.div
                 key={item.id}
-                className="w-[100%] h-[300px]"
+                className="w-[100%] h-[300px] max-md:h-[200px]"
                 initial="hidden"
                 animate="visible"
                 variants={variants}
@@ -242,7 +242,12 @@ const ReusableList = ({ items, search }: props) => {
                     ></div>
                   )}
 
-                  <span className="absolute text-[4vw] min-[940px]:text-[2vw]  font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer">
+                  <span
+                    className="absolute   font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
+                    style={{
+                      fontSize: "clamp(1rem, 1vw + 1rem, 1rem)",
+                    }}
+                  >
                     {clientMode === "category" ? (
                       <>{item.category_name}</>
                     ) : (
