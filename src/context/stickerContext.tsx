@@ -33,6 +33,10 @@ interface stickerValues {
   deleteSticker: (id: string) => void;
   deleteFavorite: (id: string) => void;
   createFavorite: (userId: string, stickerId?: string) => void;
+  uploadStickerFile: (
+    stickerId?: string,
+    figureImage?: File
+  ) => Promise<number | undefined>;
 }
 
 export const StickerContext = createContext<stickerValues>({} as stickerValues);
@@ -41,7 +45,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
   const [sticker, setSticker] = useState<iSticker>();
   const [figureImage, setFigureImage] = useState<File | null>(null);
   const [showSpinner, setShowSpinner] = useState(false);
-  const [state, copyToClipboard] = useCopyToClipboard();
   const cookies = parseCookies();
   const pathname = usePathname();
 
@@ -62,7 +65,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
     api.defaults.headers.common.authorization = `Bearer ${cookies["user.Token"]}`;
   }
 
-  const uploadStickerFile = async (stickerId: string, figureImage: File) => {
+  const uploadStickerFile = async (stickerId?: string, figureImage?: File) => {
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const fd = new FormData();
@@ -96,9 +99,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
         });
       } else {
         const response = await api.post<iSticker>("stickers", updatedData);
-
         console.log(figureImage);
-
         await uploadStickerFile(response.data.id, figureImage!);
 
         Toast({
@@ -198,6 +199,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
         setFigureImage,
         createSticker,
         createFavorite,
+        uploadStickerFile,
         getSticker,
         deleteFavorite,
         deleteSticker,

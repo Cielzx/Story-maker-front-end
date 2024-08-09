@@ -25,8 +25,9 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
     updateCategory,
     category,
   } = useCategory();
-  const { setFigureImage, createSticker } = useSticker();
+  const { setFigureImage, createSticker, uploadStickerFile } = useSticker();
   const { user, updateUser } = useUSer();
+  const [stickerFile, setStickerFile] = useState<File | undefined>();
   const { mode, setMode } = useUSer();
   const {
     register,
@@ -37,13 +38,7 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
   const pathname = usePathname();
 
   const onDrop = useCallback((files: File[]) => {
-    console.log(files[0]);
-    if (
-      pathname.startsWith("/dashboard/") &&
-      pathname.split("/").length === 4
-    ) {
-      setFigureImage(files[0]);
-    }
+    setFigureImage(files[0]);
 
     const file = new FileReader();
 
@@ -90,7 +85,7 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
     label = "Editar nome";
   }
 
-  const onSub = (data: CombineCategorySchema) => {
+  const onSub = async (data: CombineCategorySchema) => {
     if (mode === "category") {
       createCategory(data);
     } else if (mode === "subCategory") {
