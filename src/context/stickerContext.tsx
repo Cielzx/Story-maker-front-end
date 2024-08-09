@@ -64,9 +64,10 @@ export const StickerProvider = ({ children }: categoryProp) => {
 
   const uploadStickerFile = async (stickerId: string, figureImage: File) => {
     try {
+      console.log(figureImage);
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const fd = new FormData();
-      if (figureImage.name.includes("jpg")) {
+      if (figureImage?.name.includes("jpg")) {
         Toast({
           message: "Formato não suportado, use o formato PNG",
           isSucess: false,
@@ -89,11 +90,12 @@ export const StickerProvider = ({ children }: categoryProp) => {
         subCategoryId: subCategoryId,
       };
 
-      console.log(figureImage);
-      if (
-        figureImage!.name.includes("png") ||
-        figureImage!.name.includes("heif")
-      ) {
+      if (figureImage?.name.includes("jpg")) {
+        Toast({
+          message: "Formato não suportado, use o formato PNG",
+          isSucess: false,
+        });
+      } else {
         const response = await api.post<iSticker>("stickers", updatedData);
         await uploadStickerFile(response.data.id, figureImage!);
 

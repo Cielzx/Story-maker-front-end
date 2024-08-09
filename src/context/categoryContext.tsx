@@ -83,7 +83,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
       const fd = new FormData();
       if (
         coverImage?.name.includes("jpg") ||
-        (coverImage.name.includes("png") && pathname === "/dashboard")
+        (coverImage?.name.includes("png") && pathname === "/dashboard")
       ) {
         fd.append("cover_image", coverImage);
         const res = await api.patch(
