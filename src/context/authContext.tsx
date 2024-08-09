@@ -149,7 +149,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const currentTime = Math.floor(Date.now() / 1000);
 
       if (decodedToken && decodedToken.exp) {
-        decodedToken.exp > currentTime;
+        return decodedToken.exp > currentTime;
       }
     } catch (error) {
       console.error("Token inválido:", error);
@@ -158,9 +158,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   useEffect(() => {
-    if (!token) {
+    if (!token && !isTokenValid()) {
       return router.push("/login");
-    } else if (isTokenValid()) {
+    } else if (isTokenValid() && token) {
       return router.push("/dashboard");
     }
   }, [token]);
