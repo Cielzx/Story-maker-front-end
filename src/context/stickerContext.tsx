@@ -64,7 +64,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
 
   const uploadStickerFile = async (stickerId: string, figureImage: File) => {
     try {
-      console.log(figureImage);
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const fd = new FormData();
       if (figureImage?.name.includes("jpg")) {
@@ -97,9 +96,10 @@ export const StickerProvider = ({ children }: categoryProp) => {
         });
       } else {
         const response = await api.post<iSticker>("stickers", updatedData);
-        setTimeout(() => {
-          uploadStickerFile(response.data.id, figureImage!);
-        }, 100);
+
+        console.log(figureImage);
+
+        await uploadStickerFile(response.data.id, figureImage!);
 
         Toast({
           message: "Figurinha criada com sucesso",
