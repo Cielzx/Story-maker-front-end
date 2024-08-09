@@ -41,7 +41,9 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
       pathname.startsWith("/dashboard/") &&
       pathname.split("/").length === 4
     ) {
-      setFigureImage(files[0]);
+      setTimeout(() => {
+        setFigureImage(files[0]);
+      }, 100);
     }
 
     const file = new FileReader();
