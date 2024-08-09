@@ -37,13 +37,12 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
   const pathname = usePathname();
 
   const onDrop = useCallback((files: File[]) => {
+    console.log(files[0]);
     if (
       pathname.startsWith("/dashboard/") &&
       pathname.split("/").length === 4
     ) {
-      setTimeout(() => {
-        setFigureImage(files[0]);
-      }, 100);
+      setFigureImage(files[0]);
     }
 
     const file = new FileReader();

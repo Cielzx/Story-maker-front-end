@@ -97,7 +97,9 @@ export const StickerProvider = ({ children }: categoryProp) => {
         });
       } else {
         const response = await api.post<iSticker>("stickers", updatedData);
-        await uploadStickerFile(response.data.id, figureImage!);
+        setTimeout(() => {
+          uploadStickerFile(response.data.id, figureImage!);
+        }, 100);
 
         Toast({
           message: "Figurinha criada com sucesso",
