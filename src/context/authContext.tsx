@@ -16,7 +16,6 @@ import {
 } from "react";
 import jwt from "jsonwebtoken";
 import Toast from "@/app/components/Toast";
-import { type NextRequest } from "next/server";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -143,10 +142,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  function isTokenValid() {
+    try {
+      const decodedToken = jwt.decode(token) as jwt.JwtPayload;
+
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (decodedToken && decodedToken.exp) {
+        decodedToken.exp > currentTime;
+      }
+    } catch (error) {
+      console.error("Token inválido:", error);
+      return false;
+    }
+  }
+
   useEffect(() => {
     if (!token) {
       return router.push("/login");
-    } else if (token) {
+    } else if (isTokenValid()) {
       return router.push("/dashboard");
     }
   }, [token]);
