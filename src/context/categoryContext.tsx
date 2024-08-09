@@ -102,10 +102,15 @@ export const CategoryProvider = ({ children }: categoryProp) => {
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const fd = new FormData();
-      if (
-        coverImage?.name.includes("jpg") ||
-        coverImage?.name.includes("png")
-      ) {
+
+      const supportedFormats = [
+        "image/heif",
+        "image/heic",
+        "image/jpg",
+        "image/jpeg",
+        "image/png",
+      ];
+      if (supportedFormats.includes(coverImage?.type)) {
         fd.append("cover_image", coverImage);
         const res = await api.patch(
           `categories/upload/${categorieId}`,
@@ -210,7 +215,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
       await uploadSubFile(response.data.id, coverImage!);
 
       Toast({
-        message: "Categoria criada com sucess",
+        message: "Categoria criada com sucesso",
         isSucess: true,
       });
       getCategory(categoryId);
