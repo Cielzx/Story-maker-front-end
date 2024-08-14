@@ -18,7 +18,6 @@ const InfoPlan = () => {
               <div className="w-full flex flex-col">
                 <h3>Plano</h3>
                 <span>{user.subscription.plan.name}</span>
-                <span>{user.subscription.status}</span>
               </div>
 
               <div className="w-full flex flex-col">
