@@ -32,6 +32,20 @@ export interface userData {
   description: string;
   is_admin: boolean;
   favorites: favoriteData[];
+  subscription?: Subscription;
+}
+
+interface Subscription {
+  id: string;
+  next_payment: Date;
+  start_date: Date;
+  status: string;
+  plan: Plan;
+}
+
+interface Plan {
+  name: string;
+  frequency: string;
 }
 
 interface userValues {
@@ -84,7 +98,7 @@ export const UserProvider = ({ children }: userProviderProp) => {
     try {
       const response = await api.patch(`users/update/${id}`, data);
       Toast({
-        message: "Nome atualizado com sucesso!",
+        message: "Atualizado com sucesso!",
         isSucess: true,
       });
       getUser();
