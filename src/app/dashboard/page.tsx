@@ -53,7 +53,7 @@ const DashBoard = () => {
               <p
                 className=""
                 style={{
-                  fontSize: "clamp(1.2rem, 1vw + 1rem, 1rem)",
+                  fontSize: "clamp(1.4rem, 1vw + 1rem, 1rem)",
                 }}
               >
                 Seja bem-vinda, {capitalizeFirstLetter(user.name)}
