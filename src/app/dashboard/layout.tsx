@@ -1,13 +1,18 @@
-import { parseCookies } from "nookies";
+"use client";
 import DashMenu from "./components/dashMenu";
-import { useRouter } from "next/navigation";
+import NotRenewed from "../components/NotRenewedModal";
+import { useDisclosure } from "@chakra-ui/react";
 
 const RootDashLayout = ({ children }: { children: React.ReactNode }) => {
+  const { onClose, isOpen, onOpen } = useDisclosure();
+
   return (
     <>
       <main className="flex-[1]">
         {children}
+
         <DashMenu />
+        <NotRenewed onClose={onClose} isOpen={isOpen} onOpen={onOpen} />
       </main>
     </>
   );

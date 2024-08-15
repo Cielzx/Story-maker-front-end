@@ -50,17 +50,23 @@ const DashBoard = () => {
         <section className="w-full flex flex-col absolute">
           <div className="w-full  p-6 h-full  flex flex-col justify-center items-center">
             <div className="w-full flex gap-2 items-center justify-between ">
-              <p className="text-[30px]">
-                Olá, {capitalizeFirstLetter(user.name)}
+              <p
+                className=""
+                style={{
+                  fontSize: "clamp(1.2rem, 1vw + 1rem, 1rem)",
+                }}
+              >
+                Seja bem-vinda, {capitalizeFirstLetter(user.name)}
               </p>
 
               <DropDown />
             </div>
 
-            <div className="w-[70%] min-[940px]:w-[50%] min-[940px]:right-[25%] max-[940px]:right-[15%] flex items-center  relative top-[6%]  p-1 bg-white rounded-md">
+            <div className="w-[70%] min-[940px]:w-[50%] min-[940px]:right-[25%] max-[940px]:right-[15%] flex flex-row-reverse items-center  relative top-[6%] gap-1  p-1 bg-white rounded-md">
               <input
                 type="text"
                 value={search}
+                placeholder="Pesquisar..."
                 className="text-black outline-none w-[97%]"
                 onChange={(e) => setSearch(e.target.value)}
                 id="text"

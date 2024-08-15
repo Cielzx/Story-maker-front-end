@@ -37,7 +37,7 @@ const CustomModal = ({
   widthBody,
   heightBody,
 }: ModalChildren) => {
-  const { setMode } = useUSer();
+  const { mode, setMode } = useUSer();
   return (
     <Modal closeOnOverlayClick={true} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay
@@ -54,7 +54,7 @@ const CustomModal = ({
             flexGrow: 0,
             flexShrink: 0,
           }}
-          className="bg-black flex w-[90%] flex-col  gap-5 justify-start p-5 min-[940px]:w-[600px] "
+          className="bg-[rgba(0,0,0,0.9)] flex w-[90%] flex-col  gap-5 justify-start p-5 min-[940px]:w-[600px] "
         >
           <ModalHeader
             style={{
@@ -67,12 +67,17 @@ const CustomModal = ({
             className="bg-transparent w-[100%] flex justify-between items-center text-white  p-4 max-[920px]:w-[100%]"
           >
             <p className="font-bold text-xl">{headerText}</p>
-            <button onClick={onClose}>
-              <IoIosClose
-                onClick={() => setMode("")}
-                className="text-4xl cursor-pointer"
-              />
-            </button>
+
+            {mode === "notRenewed" ? (
+              <></>
+            ) : (
+              <button onClick={onClose}>
+                <IoIosClose
+                  onClick={() => setMode("")}
+                  className="text-4xl cursor-pointer"
+                />
+              </button>
+            )}
           </ModalHeader>
           {children}
         </ModalBody>
