@@ -2,8 +2,9 @@
 import { AlertTriangle } from "lucide-react";
 import CustomModal from "../Modal";
 import { useUSer } from "@/hooks";
-import { differenceInDays, isAfter } from "date-fns";
+import { differenceInDays, isAfter, isBefore } from "date-fns";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface modalProps {
   isOpen: boolean;
@@ -13,10 +14,15 @@ interface modalProps {
 }
 const NotRenewed = ({ isOpen, onClose, onOpen }: modalProps) => {
   const { user, getUser, setMode } = useUSer();
+  const router = useRouter();
   const paymentCheckout = () => {
     const now = new Date();
     if (user && user.subscription) {
       const nextPayment = new Date(user.subscription.next_payment);
+
+      if (!isAfter(now, nextPayment)) {
+        onClose();
+      }
 
       if (isAfter(now, nextPayment)) {
         const daysLate = differenceInDays(now, nextPayment);
@@ -56,12 +62,15 @@ const NotRenewed = ({ isOpen, onClose, onOpen }: modalProps) => {
           <p className="text-white text-2xl">
             Por favor renove sua assinatura para continuar usando nosso produto
           </p>
-        </div>
 
-        <div className="w-full">
-          <span className="text-[3.5vw] text-white">
-            Você será redirecionado para a pagina de login
-          </span>
+          <div className="w-full">
+            <button
+              onClick={() => router.push("/login")}
+              className="w-[90%] btn-form text-white"
+            >
+              Voltar ao Login
+            </button>
+          </div>
         </div>
       </div>
     </CustomModal>

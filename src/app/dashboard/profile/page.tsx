@@ -201,19 +201,23 @@ const Profile = () => {
                       />
                     </div>
 
-                    <div className="w-[80%] flex justify-between gap-1 items-center h-[50px]">
-                      <button
-                        onClick={() => setMode("infoPlan")}
-                        className="w-full flex gap-1 "
-                      >
-                        <FilePen /> Assinatura
-                      </button>
+                    {user?.is_admin === true ? (
+                      <></>
+                    ) : (
+                      <div className="w-[80%] flex justify-between gap-1 items-center h-[50px]">
+                        <button
+                          onClick={() => setMode("infoPlan")}
+                          className="w-full flex gap-1 "
+                        >
+                          <FilePen /> Assinatura
+                        </button>
 
-                      <ChevronRight
-                        onClick={() => setMode("infoPlan")}
-                        size={30}
-                      />
-                    </div>
+                        <ChevronRight
+                          onClick={() => setMode("infoPlan")}
+                          size={30}
+                        />
+                      </div>
+                    )}
 
                     <div className="w-[80%] flex justify-between gap-1 items-center h-[50px]">
                       <button
