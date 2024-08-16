@@ -29,6 +29,7 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
   const { user, updateUser } = useUSer();
   const [stickerFile, setStickerFile] = useState<File | undefined>();
   const { mode, setMode } = useUSer();
+  const [files, setFiles] = useState<File[]>([]);
   const {
     register,
     handleSubmit,
@@ -57,6 +58,34 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
       "image/*": [".jpg", ".jpeg", ".png", ".heif", ".heic"],
     },
   });
+
+  const onPaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    const clipboardItems = event.clipboardData.items;
+    const pastedFiles: File[] = [];
+
+    for (let i = 0; i < clipboardItems.length; i++) {
+      const item = clipboardItems[i];
+      if (item.kind === "file" && item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (file) {
+          pastedFiles.push(file);
+        }
+      }
+    }
+
+    const file = new FileReader();
+
+    file.onload = () => {
+      SetPreview(file.result);
+    };
+
+    file.readAsDataURL(pastedFiles[0]);
+    setFigureImage(pastedFiles[0]);
+    setCoverImage(pastedFiles[0]);
+    if (pastedFiles.length > 0) {
+      setFiles((prevFiles) => [...prevFiles, ...pastedFiles]);
+    }
+  };
 
   let headerName = "";
   if (mode === "category") {
@@ -149,6 +178,7 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
               <p>Solte a imagem aqui ...</p>
             ) : (
               <div
+                onPaste={onPaste}
                 className="w-full flex flex-col items-center h-full justify-center text-white font-extrabold text-[15px] p-2"
                 style={{
                   backgroundImage: `url(${preview})`,

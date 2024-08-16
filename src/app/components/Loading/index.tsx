@@ -19,9 +19,9 @@ const Loading = () => {
   }, [user]);
 
   return (
-    <main className="min-h-screen w-full relative flex flex-col gap-4 items-center justify-center z-[99999px] text-white">
+    <main className="w-full h-full relative flex flex-col gap-4 items-center justify-center z-[99999px] text-white">
       <div className="backgroundDash"></div>
-      <div className="flex relative ">
+      <div className="flex relative h-full items-center">
         <img
           src="https://images2.imgbox.com/68/26/AGtl8eED_o.png"
           className="w-full object-contain absolute  h-[100%]"
