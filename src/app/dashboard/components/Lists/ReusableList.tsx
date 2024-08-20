@@ -108,7 +108,7 @@ const ReusableList = ({ items, search }: props) => {
 
       setTimeout(() => {
         navigator.clipboard.write(data);
-      }, 100);
+      }, 800);
 
       // const item = new ClipboardItem({
       //   "image/png": blob,
