@@ -22,6 +22,7 @@ interface props {
 
 import { ChromePicker, SketchPicker, SwatchesPicker } from "react-color";
 import { IoIosColorPalette } from "react-icons/io";
+import { resolve } from "path";
 
 const ReusableList = ({ items, search }: props) => {
   const router = useRouter();
@@ -79,36 +80,59 @@ const ReusableList = ({ items, search }: props) => {
       const svgUrl = URL.createObjectURL(svgBlob);
       img.src = svgUrl;
 
-      img.onload = async () => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+      setTimeout(async () => {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png": new Promise((resolve) => {
+              const canvas = document.createElement("canvas");
+              canvas.width = img.naturalWidth;
+              canvas.height = img.naturalHeight;
+              const context = canvas.getContext("2d");
+              context?.drawImage(img, 0, 0);
+              canvas.toBlob(async (blob) => {
+                console.log(blob);
+                if (blob) {
+                  resolve(blob);
+                }
+                canvas.remove();
+              }, "image/png");
+            }),
+          }),
+        ]);
+      }, 100);
 
-        canvas.width = img.width;
-        canvas.height = img.height;
+      Toast({
+        message: "Figurinha copiada",
+        isSucess: true,
+      });
+      // img.onload = async () => {
+      //   const canvas = document.createElement("canvas");
+      //   const ctx = canvas.getContext("2d");
 
-        ctx?.drawImage(img, 0, 0);
+      //   canvas.width = img.width;
+      //   canvas.height = img.height;
 
-        canvas.toBlob(async (blob) => {
-          if (blob) {
-            const item = new ClipboardItem({
-              "image/png": blob,
-            });
+      //   ctx?.drawImage(img, 0, 0);
 
-            const data = [item];
+      //   canvas.toBlob(async (blob) => {
+      //     if (blob) {
+      //       const item = new ClipboardItem({
+      //         "image/png": blob,
+      //       });
 
-            setData(data);
+      //       const data = [item];
 
-            Toast({
-              message: "Figurinha copiada",
-              isSucess: true,
-            });
-          }
-        }, "image/png");
-      };
+      //       setTimeout(() => {
+      //         navigator.clipboard.write(data);
+      //       }, 100);
 
-      setTimeout(() => {
-        navigator.clipboard.write(data);
-      }, 800);
+      //       Toast({
+      //         message: "Figurinha copiada",
+      //         isSucess: true,
+      //       });
+      //     }
+      //   }, "image/png");
+      // };
 
       // const item = new ClipboardItem({
       //   "image/png": blob,
