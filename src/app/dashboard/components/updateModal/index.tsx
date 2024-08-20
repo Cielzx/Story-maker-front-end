@@ -54,7 +54,9 @@ const UpdateModal = ({ isOpen, onClose, id }: modalProps) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/jpeg": ["jpg"], "image/png": ["png"] },
+    accept: {
+      "image/*": [".jpg", ".jpeg", ".png", ".heif", ".heic"],
+    },
   });
 
   let headerName = "";

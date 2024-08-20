@@ -165,16 +165,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
-  const getFavorite = async () => {
-    try {
-      const response = await api.get("stickers");
-      console.log(response.data);
-      getSubCategorie(subCategoryId);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const deleteFavorite = async (id: string) => {
     try {
       await api.delete(`favorites/${id}`);
@@ -186,10 +176,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
       });
     }
   };
-
-  useEffect(() => {
-    getSubCategorie(subCategoryId);
-  }, []);
 
   return (
     <StickerContext.Provider

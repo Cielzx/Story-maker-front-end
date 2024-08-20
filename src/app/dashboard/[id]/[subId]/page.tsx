@@ -28,8 +28,8 @@ const StickerPage = ({ params }: { params: { subId: string } }) => {
   useEffect(() => {
     // getCategoryById(categoryId);
     getSubCategorie(subCategoryId);
-    getSticker(subCategoryId);
-  }, [params.subId]);
+    // getSticker(subCategoryId);
+  }, [subCategorie]);
 
   if (!user) {
     return <Loading />;
