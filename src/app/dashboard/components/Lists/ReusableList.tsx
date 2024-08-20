@@ -89,17 +89,19 @@ const ReusableList = ({ items, search }: props) => {
               canvas.height = img.naturalHeight;
               const context = canvas.getContext("2d");
               context?.drawImage(img, 0, 0);
-              canvas.toBlob(async (blob) => {
+              canvas.toBlob((blob) => {
                 console.log(blob);
                 if (blob) {
                   resolve(blob);
                 }
                 canvas.remove();
               }, "image/png");
+
+              URL.revokeObjectURL(svgUrl);
             }),
           }),
         ]);
-      }, 100);
+      }, 200);
 
       Toast({
         message: "Figurinha copiada",
