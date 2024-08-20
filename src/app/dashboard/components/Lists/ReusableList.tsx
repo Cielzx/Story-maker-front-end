@@ -87,26 +87,27 @@ const ReusableList = ({ items, search }: props) => {
 
         ctx?.drawImage(img, 0, 0);
 
-        canvas.toBlob(async (blob) => {
-          if (blob) {
-            const item = new ClipboardItem({
-              "image/png": blob,
-            });
+        setTimeout(() => {
+          canvas.toBlob(async (blob) => {
+            if (blob) {
+              const item = new ClipboardItem({
+                "image/png": blob,
+              });
 
-            const data = [item];
+              const data = [item];
 
-            setTimeout(() => {
-              navigator.clipboard.write(data);
-            }, 100);
+              setTimeout(() => {
+                navigator.clipboard.write(data);
+              }, 150);
 
-            Toast({
-              message: "Figurinha copiada",
-              isSucess: true,
-            });
-          }
-        }, "image/png");
+              Toast({
+                message: "Figurinha copiada",
+                isSucess: true,
+              });
+            }
+          }, "image/png");
+        }, 100);
 
-        // Liberando o URL do SVG
         URL.revokeObjectURL(svgUrl);
       };
 
