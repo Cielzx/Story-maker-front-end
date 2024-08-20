@@ -80,8 +80,8 @@ const ReusableList = ({ items, search }: props) => {
       const svgUrl = URL.createObjectURL(svgBlob);
       img.src = svgUrl;
 
-      setTimeout(async () => {
-        await navigator.clipboard.write([
+      setTimeout(() => {
+        navigator.clipboard.write([
           new ClipboardItem({
             "image/png": new Promise((resolve) => {
               const canvas = document.createElement("canvas");
