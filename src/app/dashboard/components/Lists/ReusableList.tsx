@@ -35,6 +35,7 @@ const ReusableList = ({ items, search }: props) => {
   const [color, setColor] = useState("#FFFFFFFF");
   const [id, setId] = useState("");
   const [showPicker, setShowPicker] = useState(false);
+  const [data, setData] = useState<ClipboardItem[]>([]);
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -87,29 +88,27 @@ const ReusableList = ({ items, search }: props) => {
 
         ctx?.drawImage(img, 0, 0);
 
-        setTimeout(() => {
-          canvas.toBlob(async (blob) => {
-            if (blob) {
-              const item = new ClipboardItem({
-                "image/png": blob,
-              });
+        canvas.toBlob(async (blob) => {
+          if (blob) {
+            const item = new ClipboardItem({
+              "image/png": blob,
+            });
 
-              const data = [item];
+            const data = [item];
 
-              setTimeout(() => {
-                navigator.clipboard.write(data);
-              }, 500);
+            setData(data);
 
-              Toast({
-                message: "Figurinha copiada",
-                isSucess: true,
-              });
-            }
-          }, "image/png");
-        }, 100);
-
-        // URL.revokeObjectURL(svgUrl);
+            Toast({
+              message: "Figurinha copiada",
+              isSucess: true,
+            });
+          }
+        }, "image/png");
       };
+
+      setTimeout(() => {
+        navigator.clipboard.write(data);
+      }, 100);
 
       // const item = new ClipboardItem({
       //   "image/png": blob,
