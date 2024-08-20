@@ -80,10 +80,10 @@ const ReusableList = ({ items, search }: props) => {
       const svgUrl = URL.createObjectURL(svgBlob);
       img.src = svgUrl;
 
-      setTimeout(() => {
-        navigator.clipboard.write([
+      setTimeout(async () => {
+        await navigator.clipboard.write([
           new ClipboardItem({
-            "image/png": new Promise((resolve) => {
+            "image/png": await new Promise((resolve) => {
               const canvas = document.createElement("canvas");
               canvas.width = img.naturalWidth;
               canvas.height = img.naturalHeight;
@@ -101,7 +101,7 @@ const ReusableList = ({ items, search }: props) => {
             }),
           }),
         ]);
-      }, 200);
+      }, 300);
 
       Toast({
         message: "Figurinha copiada",
