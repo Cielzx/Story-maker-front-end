@@ -105,27 +105,25 @@ const ReusableList = ({ items, search }: props) => {
       });
     };
 
-    setTimeout(() => {
-      navigator.clipboard
-        .write([
-          new ClipboardItem({
-            "image/png": writeItem(),
-          }),
-        ])
-        .then(() => {
-          Toast({
-            message: "Figurinha copiada",
-            isSucess: true,
-          });
-        })
-        .catch((error) => {
-          console.log("Erro", error),
-            Toast({
-              message: "Erro ao copiar figurinha",
-              isSucess: false,
-            });
+    await navigator.clipboard
+      .write([
+        new ClipboardItem({
+          "image/png": writeItem(),
+        }),
+      ])
+      .then(() => {
+        Toast({
+          message: "Figurinha copiada",
+          isSucess: true,
         });
-    }, 100);
+      })
+      .catch((error) => {
+        console.log("Erro", error),
+          Toast({
+            message: "Erro ao copiar figurinha",
+            isSucess: false,
+          });
+      });
 
     URL.revokeObjectURL(svgUrl);
   }
