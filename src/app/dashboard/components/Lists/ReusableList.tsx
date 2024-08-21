@@ -106,27 +106,28 @@ const ReusableList = ({ items, search }: props) => {
       });
     };
 
-    setTimeout(() => {
-      navigator.clipboard
-        .write([
-          new ClipboardItem({
-            "image/png": writeItem(),
-          }),
-        ])
-        .then(() => {
-          Toast({
-            message: "Figurinha copiada",
-            isSucess: true,
-          });
-        })
-        .catch((error) => {
-          console.log("Erro", error),
-            Toast({
-              message: "Erro ao copiar figurinha",
-              isSucess: false,
-            });
+    const result = await writeItem();
+
+    navigator.clipboard
+      .write([
+        new ClipboardItem({
+          "image/png": result,
+        }),
+      ])
+      .then(() => {
+        Toast({
+          message: "Figurinha copiada",
+          isSucess: true,
         });
-    }, 0);
+      })
+      .catch((error) => {
+        console.log("Erro", error),
+          Toast({
+            message: "Erro ao copiar figurinha",
+            isSucess: false,
+          });
+      });
+    return result;
   }
 
   useEffect(() => {
@@ -287,9 +288,20 @@ const ReusableList = ({ items, search }: props) => {
                       />
 
                       <button
-                        onClick={() =>
-                          writeImageToClipboard(item.figure_image, color)
-                        }
+                        onClick={async () => {
+                          try {
+                            await navigator.clipboard.write([
+                              new ClipboardItem({
+                                "image/png": writeImageToClipboard(
+                                  item.figure_image,
+                                  color
+                                ),
+                              }),
+                            ]);
+                          } catch (error: any) {
+                            console.log(`${error.name}`, `${error.message}`);
+                          }
+                        }}
                         className="w-full font-semibold h-[40px] z-[10px] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-sm bg-purple-400"
                       >
                         <p className="text-lg">Copiar figurinha</p>
