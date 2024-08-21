@@ -108,25 +108,6 @@ const ReusableList = ({ items, search }: props) => {
 
     const result = await writeItem();
 
-    // navigator.clipboard
-    //   .write([
-    //     new ClipboardItem({
-    //       "image/png": result,
-    //     }),
-    //   ])
-    //   .then(() => {
-    //     Toast({
-    //       message: "Figurinha copiada",
-    //       isSucess: true,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log("Erro", error),
-    //       Toast({
-    //         message: "Erro ao copiar figurinha",
-    //         isSucess: false,
-    //       });
-    //   });
     return result;
   }
 

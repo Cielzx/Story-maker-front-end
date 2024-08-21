@@ -12,7 +12,7 @@ const Login = () => {
     <div className="flex h-full flex-col relative">
       <div className="backgroundImage"></div>
       <main className="flex h-full flex-grow bg-cover bg-center text-white items-center z-[99999]">
-        <section className="flex flex-col justify-center items-center w-full ">
+        <section className="flex h-full flex-col justify-center items-center w-full ">
           <div className="w-full h-full justify-center items-center flex flex-col">
             <div className="text-center h-40 w-full flex justify-center items-center">
               <img
