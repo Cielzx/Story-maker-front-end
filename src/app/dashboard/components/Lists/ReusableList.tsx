@@ -36,7 +36,7 @@ const ReusableList = ({ items, search }: props) => {
   const [color, setColor] = useState("#FFFFFFFF");
   const [id, setId] = useState("");
   const [showPicker, setShowPicker] = useState(false);
-  const [data, setData] = useState<ClipboardItem[]>([]);
+  const [navigatorBlob, setNavigatorBlob] = useState<Blob>();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -87,50 +87,35 @@ const ReusableList = ({ items, search }: props) => {
           img.onerror = reject;
         });
 
-      setTimeout(async () => {
-        const loadedImg = await loadImage();
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+      const loadedImg = await loadImage();
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-        canvas.width = loadedImg.width;
-        canvas.height = loadedImg.height;
+      canvas.width = loadedImg.width;
+      canvas.height = loadedImg.height;
 
-        ctx?.drawImage(loadedImg, 0, 0);
+      ctx?.drawImage(loadedImg, 0, 0);
 
-        canvas.toBlob(async (blob) => {
-          if (blob) {
-            const item = new ClipboardItem({
-              "image/png": blob,
-            });
+      canvas.toBlob(async (blob) => {
+        if (blob) {
+          setNavigatorBlob(blob);
+        }
+      }, "image/png");
 
-            const data = [item];
+      const item = new ClipboardItem({
+        "image/png": navigatorBlob!,
+      });
 
-            setTimeout(() => {
-              navigator.clipboard.write(data);
-            }, 80);
+      const data = [item];
 
-            Toast({
-              message: "Figurinha copiada",
-              isSucess: true,
-            });
-          }
-        }, "image/png");
+      setTimeout(() => {
+        navigator.clipboard.write(data);
       }, 100);
 
-      // const item = new ClipboardItem({
-      //   "image/png": blob,
-      // });
-
-      // const data = [item];
-
-      // setTimeout(() => {
-      //   navigator.clipboard.write(data);
-      // }, 100);
-
-      // Toast({
-      //   message: "Figurinha copiada",
-      //   isSucess: true,
-      // });
+      Toast({
+        message: "Figurinha copiada",
+        isSucess: true,
+      });
     } catch (error: any) {
       Toast({
         message: "Algo deu errado",
