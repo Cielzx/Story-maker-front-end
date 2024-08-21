@@ -96,9 +96,9 @@ const ReusableList = ({ items, search }: props) => {
 
     ctx?.drawImage(loadedImg, 0, 0);
 
-    canvas.toBlob(async (blob) => {
+    canvas.toBlob((blob) => {
       if (blob) {
-        await navigator.clipboard
+        navigator.clipboard
           .write([
             new ClipboardItem({
               "image/png": blob,
