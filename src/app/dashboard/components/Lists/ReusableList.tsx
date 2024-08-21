@@ -64,70 +64,61 @@ const ReusableList = ({ items, search }: props) => {
   };
 
   async function writeImageToClipboard(url: string, color: string) {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
+    const response = await fetch(url);
+    const blob = await response.blob();
 
-      if (!response.ok) {
-        throw new Error("Falha ao buscar a imagem");
-      }
-
-      const img = new Image();
-      const svgText = await blob.text();
-      const coloredSvgText = svgText
-        .replace(/fill="[^"]*"/g, "")
-        .replace(/<svg([^>]+)>/, `<svg$1 fill="${color}">`);
-      const svgBlob = new Blob([coloredSvgText], { type: "image/svg+xml" });
-      const svgUrl = URL.createObjectURL(svgBlob);
-      img.src = svgUrl;
-
-      const loadImage = () =>
-        new Promise<HTMLImageElement>((resolve, reject) => {
-          img.src = svgUrl;
-          img.onload = () => resolve(img);
-          img.onerror = reject;
-        });
-
-      const loadedImg = await loadImage();
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      canvas.width = loadedImg.width;
-      canvas.height = loadedImg.height;
-
-      ctx?.drawImage(loadedImg, 0, 0);
-
-      setTimeout(() => {
-        canvas.toBlob((blob) => {
-          if (blob) {
-            navigator.clipboard
-              .write([
-                new ClipboardItem({
-                  "image/png": blob,
-                }),
-              ])
-              .then(() => {
-                Toast({
-                  message: "Figurinha copiada",
-                  isSucess: true,
-                });
-              })
-              .catch((error) => {
-                console.log("Erro", error),
-                  Toast({
-                    message: "Erro ao copiar figurinha",
-                    isSucess: false,
-                  });
-              });
-          }
-        }, "image/png");
-      }, 100);
-    } catch (error: any) {
-      Toast({
-        message: "Algo deu errado",
-        isSucess: false,
-      });
+    if (!response.ok) {
+      throw new Error("Falha ao buscar a imagem");
     }
+
+    const img = new Image();
+    const svgText = await blob.text();
+    const coloredSvgText = svgText
+      .replace(/fill="[^"]*"/g, "")
+      .replace(/<svg([^>]+)>/, `<svg$1 fill="${color}">`);
+    const svgBlob = new Blob([coloredSvgText], { type: "image/svg+xml" });
+    const svgUrl = URL.createObjectURL(svgBlob);
+    img.src = svgUrl;
+
+    const loadImage = () =>
+      new Promise<HTMLImageElement>((resolve, reject) => {
+        img.src = svgUrl;
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+      });
+
+    const loadedImg = await loadImage();
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = loadedImg.width;
+    canvas.height = loadedImg.height;
+
+    ctx?.drawImage(loadedImg, 0, 0);
+
+    canvas.toBlob(async (blob) => {
+      if (blob) {
+        await navigator.clipboard
+          .write([
+            new ClipboardItem({
+              "image/png": blob,
+            }),
+          ])
+          .then(() => {
+            Toast({
+              message: "Figurinha copiada",
+              isSucess: true,
+            });
+          })
+          .catch((error) => {
+            console.log("Erro", error),
+              Toast({
+                message: "Erro ao copiar figurinha",
+                isSucess: false,
+              });
+          });
+      }
+    }, "image/png");
   }
 
   useEffect(() => {
