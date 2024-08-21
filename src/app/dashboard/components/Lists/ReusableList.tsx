@@ -87,17 +87,16 @@ const ReusableList = ({ items, search }: props) => {
           img.onerror = reject;
         });
 
-      const loadedImg = await loadImage();
+      setTimeout(async () => {
+        const loadedImg = await loadImage();
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
 
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+        canvas.width = loadedImg.width;
+        canvas.height = loadedImg.height;
 
-      canvas.width = loadedImg.width;
-      canvas.height = loadedImg.height;
+        ctx?.drawImage(loadedImg, 0, 0);
 
-      ctx?.drawImage(loadedImg, 0, 0);
-
-      setTimeout(() => {
         canvas.toBlob(async (blob) => {
           if (blob) {
             const item = new ClipboardItem({
