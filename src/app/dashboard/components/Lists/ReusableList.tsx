@@ -121,7 +121,7 @@ const ReusableList = ({ items, search }: props) => {
               });
           }
         }, "image/png");
-      }, 1000);
+      }, 100);
     } catch (error: any) {
       Toast({
         message: "Algo deu errado",
