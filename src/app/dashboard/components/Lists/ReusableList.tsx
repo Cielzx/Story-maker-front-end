@@ -98,23 +98,30 @@ const ReusableList = ({ items, search }: props) => {
       ctx?.drawImage(loadedImg, 0, 0);
 
       setTimeout(() => {
-        canvas.toBlob(async (blob) => {
+        canvas.toBlob((blob) => {
           if (blob) {
-            const item = new ClipboardItem({
-              "image/png": navigatorBlob!,
-            });
-
-            const data = [item];
-
-            await navigator.clipboard.write(data);
+            navigator.clipboard
+              .write([
+                new ClipboardItem({
+                  "image/png": blob,
+                }),
+              ])
+              .then(() => {
+                Toast({
+                  message: "Figurinha copiada",
+                  isSucess: true,
+                });
+              })
+              .catch((error) => {
+                console.log("Erro", error),
+                  Toast({
+                    message: "Erro ao copiar figurinha",
+                    isSucess: false,
+                  });
+              });
           }
         }, "image/png");
       }, 1000);
-
-      Toast({
-        message: "Figurinha copiada",
-        isSucess: true,
-      });
     } catch (error: any) {
       Toast({
         message: "Algo deu errado",
@@ -194,19 +201,6 @@ const ReusableList = ({ items, search }: props) => {
   if (!search) {
     filteredItems = items;
   }
-
-  const colorToHue = (color: string): number => {
-    const r = parseInt(color.slice(1, 3), 16);
-    const g = parseInt(color.slice(3, 5), 16);
-    const b = parseInt(color.slice(5, 7), 16);
-
-    const hue = (Math.atan2(g - b, 2 * r - g - b) * 180) / Math.PI;
-    return hue;
-  };
-
-  const filter = `invert(2) sepia(1) saturate(5) hue-rotate(${colorToHue(
-    color
-  )}deg)`;
 
   const handleColorChange = (color: any) => {
     setColor(color.hex);
