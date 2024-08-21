@@ -11,7 +11,7 @@ const Login = () => {
   return (
     <div className="flex h-full flex-col relative">
       <div className="backgroundImage"></div>
-      <main className="flex flex-grow bg-cover bg-center text-white items-center z-[99999]">
+      <main className="flex h-full flex-grow bg-cover bg-center text-white items-center z-[99999]">
         <section className="flex flex-col justify-center items-center w-full ">
           <div className="w-full h-full justify-center items-center flex flex-col">
             <div className="text-center h-40 w-full flex justify-center items-center">
@@ -21,14 +21,14 @@ const Login = () => {
                 alt=""
               />
             </div>
-            <div className="flex w-[80%] flex-col h-full justify-center relative items-center">
+            <div className="flex w-[80%] flex-col h-full justify-center gap-1 relative items-center">
               <LoginForm mode={mode} setMode={setMode} />
 
               {mode === "register" ? (
                 <></>
               ) : (
                 <Link
-                  className="absolute left-[11%] bottom-[22%]"
+                  className="left-[11%] bottom-[22%]"
                   onClick={() => {
                     setMode("resetPassword");
                     if (mode === "resetPassword") {
@@ -42,26 +42,6 @@ const Login = () => {
                     : "Esqueceu sua senha?"}
                 </Link>
               )}
-
-              <div className="w-[80%] min-[940px]:w-[80%]  flex justify-end p-2 flex-col">
-                {mode === "register" ? (
-                  <></>
-                ) : (
-                  <>
-                    <div className="flex flex-col justify-end w-full h-[90px]">
-                      <span className="text-[1rem] text-gray-400">
-                        Não tem um conta?
-                      </span>
-                      <span
-                        onClick={() => setMode("register")}
-                        className="flex items-center gap-3 cursor-pointer"
-                      >
-                        Registre-se <IoIosArrowForward />{" "}
-                      </span>
-                    </div>
-                  </>
-                )}
-              </div>
             </div>
           </div>
         </section>

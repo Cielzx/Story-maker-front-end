@@ -80,15 +80,24 @@ const ReusableList = ({ items, search }: props) => {
       const svgUrl = URL.createObjectURL(svgBlob);
       img.src = svgUrl;
 
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+      const loadImage = () =>
+        new Promise<HTMLImageElement>((resolve, reject) => {
+          img.src = svgUrl;
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+        });
 
-        canvas.width = img.width;
-        canvas.height = img.height;
+      const loadedImg = await loadImage();
 
-        ctx?.drawImage(img, 0, 0);
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
+      canvas.width = loadedImg.width;
+      canvas.height = loadedImg.height;
+
+      ctx?.drawImage(loadedImg, 0, 0);
+
+      setTimeout(() => {
         canvas.toBlob(async (blob) => {
           if (blob) {
             const item = new ClipboardItem({
@@ -97,9 +106,7 @@ const ReusableList = ({ items, search }: props) => {
 
             const data = [item];
 
-            setTimeout(() => {
-              navigator.clipboard.write(data);
-            }, 100);
+            navigator.clipboard.write(data);
 
             Toast({
               message: "Figurinha copiada",
@@ -107,7 +114,7 @@ const ReusableList = ({ items, search }: props) => {
             });
           }
         }, "image/png");
-      };
+      }, 100);
 
       // const item = new ClipboardItem({
       //   "image/png": blob,
