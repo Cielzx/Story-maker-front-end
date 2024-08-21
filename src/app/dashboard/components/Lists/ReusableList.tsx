@@ -109,8 +109,8 @@ const ReusableList = ({ items, search }: props) => {
 
       const data = [item];
 
-      setTimeout(() => {
-        navigator.clipboard.write(data);
+      setTimeout(async () => {
+        await navigator.clipboard.write(data);
       }, 100);
 
       Toast({
