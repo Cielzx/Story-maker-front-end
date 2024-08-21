@@ -111,7 +111,7 @@ const ReusableList = ({ items, search }: props) => {
 
       setTimeout(() => {
         navigator.clipboard.write(data);
-      }, 300);
+      }, 100);
 
       Toast({
         message: "Figurinha copiada",
