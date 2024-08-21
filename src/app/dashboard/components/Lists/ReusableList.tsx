@@ -79,7 +79,6 @@ const ReusableList = ({ items, search }: props) => {
     const svgBlob = new Blob([coloredSvgText], { type: "image/svg+xml" });
     const svgUrl = URL.createObjectURL(svgBlob);
     img.src = svgUrl;
-
     const loadImage = () =>
       new Promise<HTMLImageElement>((resolve, reject) => {
         img.src = svgUrl;
@@ -88,25 +87,29 @@ const ReusableList = ({ items, search }: props) => {
       });
 
     const loadedImg = await loadImage();
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
+    const writeItem = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-    canvas.width = loadedImg.width;
-    canvas.height = loadedImg.height;
+      canvas.width = loadedImg.width;
+      canvas.height = loadedImg.height;
 
-    ctx?.drawImage(loadedImg, 0, 0);
+      ctx?.drawImage(loadedImg, 0, 0);
 
-    canvas.toBlob((blob) => {
-      if (blob) {
-        setNavigatorBlob(blob);
-      }
-    }, "image/png");
+      return new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            resolve(blob);
+          }
+        }, "image/png");
+      });
+    };
 
     setTimeout(() => {
       navigator.clipboard
         .write([
           new ClipboardItem({
-            "image/png": navigatorBlob!,
+            "image/png": writeItem(),
           }),
         ])
         .then(() => {
@@ -123,6 +126,8 @@ const ReusableList = ({ items, search }: props) => {
             });
         });
     }, 100);
+
+    URL.revokeObjectURL(svgUrl);
   }
 
   useEffect(() => {
@@ -281,18 +286,13 @@ const ReusableList = ({ items, search }: props) => {
                         }}
                       />
 
-                      <button className="w-full font-semibold h-[40px] z-[10px] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-sm bg-purple-400">
-                        <p
-                          onClick={async () =>
-                            await writeImageToClipboard(
-                              item.figure_image,
-                              color
-                            )
-                          }
-                          className="text-lg"
-                        >
-                          Copiar figurinha
-                        </p>
+                      <button
+                        onClick={() =>
+                          writeImageToClipboard(item.figure_image, color)
+                        }
+                        className="w-full font-semibold h-[40px] z-[10px] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-sm bg-purple-400"
+                      >
+                        <p className="text-lg">Copiar figurinha</p>
                       </button>
                     </div>
                   </>
