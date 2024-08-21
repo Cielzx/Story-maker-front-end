@@ -8,7 +8,7 @@ const RootDashLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <main className="flex-[1]">
+      <main className="flex-[1] w-full h-full flex-grow ">
         {children}
 
         <DashMenu />
