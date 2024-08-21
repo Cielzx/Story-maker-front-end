@@ -98,29 +98,31 @@ const ReusableList = ({ items, search }: props) => {
 
     canvas.toBlob((blob) => {
       if (blob) {
-        setTimeout(() => {
-          navigator.clipboard
-            .write([
-              new ClipboardItem({
-                "image/png": blob,
-              }),
-            ])
-            .then(() => {
-              Toast({
-                message: "Figurinha copiada",
-                isSucess: true,
-              });
-            })
-            .catch((error) => {
-              console.log("Erro", error),
-                Toast({
-                  message: "Erro ao copiar figurinha",
-                  isSucess: false,
-                });
-            });
-        }, 200);
+        setNavigatorBlob(blob);
       }
     }, "image/png");
+
+    setTimeout(() => {
+      navigator.clipboard
+        .write([
+          new ClipboardItem({
+            "image/png": navigatorBlob!,
+          }),
+        ])
+        .then(() => {
+          Toast({
+            message: "Figurinha copiada",
+            isSucess: true,
+          });
+        })
+        .catch((error) => {
+          console.log("Erro", error),
+            Toast({
+              message: "Erro ao copiar figurinha",
+              isSucess: false,
+            });
+        });
+    }, 700);
   }
 
   useEffect(() => {
