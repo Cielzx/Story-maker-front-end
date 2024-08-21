@@ -87,7 +87,7 @@ const ReusableList = ({ items, search }: props) => {
       });
 
     const loadedImg = await loadImage();
-    const writeItem = () => {
+    const writeItem = async () => {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
@@ -96,7 +96,7 @@ const ReusableList = ({ items, search }: props) => {
 
       ctx?.drawImage(loadedImg, 0, 0);
 
-      return new Promise<Blob>((resolve) => {
+      return await new Promise<Blob>((resolve) => {
         canvas.toBlob((blob) => {
           if (blob) {
             resolve(blob);
@@ -105,7 +105,7 @@ const ReusableList = ({ items, search }: props) => {
       });
     };
 
-    await navigator.clipboard
+    navigator.clipboard
       .write([
         new ClipboardItem({
           "image/png": writeItem(),
