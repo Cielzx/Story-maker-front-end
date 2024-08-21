@@ -203,7 +203,7 @@ const ReusableList = ({ items, search }: props) => {
               <IoIosColorPalette size={40} />
             </button>
             {showPicker && (
-              <div className=" w-[120px] absolute left-[47%] top-[38%] z-10">
+              <div className=" w-[170px] absolute left-[32%] top-[38%] z-10">
                 <SketchPicker
                   width="100%"
                   color={color}
