@@ -126,7 +126,7 @@ const ReusableList = ({ items, search }: props) => {
               isSucess: false,
             });
         });
-    }, 100);
+    }, 0);
 
     URL.revokeObjectURL(svgUrl);
   }
