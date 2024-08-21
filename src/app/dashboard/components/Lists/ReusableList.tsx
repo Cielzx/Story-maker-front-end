@@ -106,11 +106,11 @@ const ReusableList = ({ items, search }: props) => {
       });
     };
 
-    setTimeout(async () => {
+    setTimeout(() => {
       navigator.clipboard
         .write([
           new ClipboardItem({
-            "image/png": await writeItem(),
+            "image/png": writeItem(),
           }),
         ])
         .then(() => {
@@ -127,8 +127,6 @@ const ReusableList = ({ items, search }: props) => {
             });
         });
     }, 0);
-
-    URL.revokeObjectURL(svgUrl);
   }
 
   useEffect(() => {
