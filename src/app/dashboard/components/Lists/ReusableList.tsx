@@ -87,20 +87,21 @@ const ReusableList = ({ items, search }: props) => {
       });
 
     const loadedImg = await loadImage();
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = loadedImg.width;
+    canvas.height = loadedImg.height;
+
+    ctx?.drawImage(loadedImg, 0, 0);
+
     const writeItem = async () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      canvas.width = loadedImg.width;
-      canvas.height = loadedImg.height;
-
-      ctx?.drawImage(loadedImg, 0, 0);
-
-      return await new Promise<Blob>((resolve) => {
+      return new Promise<Blob>((resolve) => {
         canvas.toBlob((blob) => {
           if (blob) {
             resolve(blob);
           }
+          console.log(blob);
         }, "image/png");
       });
     };
@@ -108,7 +109,7 @@ const ReusableList = ({ items, search }: props) => {
     navigator.clipboard
       .write([
         new ClipboardItem({
-          "image/png": writeItem(),
+          "image/png": await writeItem(),
         }),
       ])
       .then(() => {
@@ -274,6 +275,7 @@ const ReusableList = ({ items, search }: props) => {
                       {/* <img src={svgUrl} style={{ filter }} alt="Sticker" /> */}
 
                       <ReactSVG
+                        key={item.id}
                         src={item.figure_image}
                         beforeInjection={(svg) => {
                           svg.querySelectorAll("path").forEach((path) => {
