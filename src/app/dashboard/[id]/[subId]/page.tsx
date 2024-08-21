@@ -31,7 +31,7 @@ const StickerPage = ({ params }: { params: { subId: string } }) => {
     // getSticker(subCategoryId);
   }, [subCategorie]);
 
-  if (user) {
+  if (!user) {
     return <Loading />;
   }
   return (
