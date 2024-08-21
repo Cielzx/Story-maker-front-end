@@ -97,21 +97,19 @@ const ReusableList = ({ items, search }: props) => {
 
       ctx?.drawImage(loadedImg, 0, 0);
 
-      canvas.toBlob(async (blob) => {
-        if (blob) {
-          setNavigatorBlob(blob);
-        }
-      }, "image/png");
+      setTimeout(() => {
+        canvas.toBlob(async (blob) => {
+          if (blob) {
+            const item = new ClipboardItem({
+              "image/png": navigatorBlob!,
+            });
 
-      const item = new ClipboardItem({
-        "image/png": navigatorBlob!,
-      });
+            const data = [item];
 
-      const data = [item];
-
-      setTimeout(async () => {
-        await navigator.clipboard.write(data);
-      }, 100);
+            await navigator.clipboard.write(data);
+          }
+        }, "image/png");
+      }, 1000);
 
       Toast({
         message: "Figurinha copiada",
