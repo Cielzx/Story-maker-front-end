@@ -122,7 +122,7 @@ const ReusableList = ({ items, search }: props) => {
               isSucess: false,
             });
         });
-    }, 700);
+    }, 100);
   }
 
   useEffect(() => {
@@ -281,13 +281,18 @@ const ReusableList = ({ items, search }: props) => {
                         }}
                       />
 
-                      <button
-                        onClick={() =>
-                          writeImageToClipboard(item.figure_image, color)
-                        }
-                        className="w-full font-semibold h-[40px] z-[10px] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-sm bg-purple-400"
-                      >
-                        <p className="text-lg">Copiar figurinha</p>
+                      <button className="w-full font-semibold h-[40px] z-[10px] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-sm bg-purple-400">
+                        <p
+                          onClick={async () =>
+                            await writeImageToClipboard(
+                              item.figure_image,
+                              color
+                            )
+                          }
+                          className="text-lg"
+                        >
+                          Copiar figurinha
+                        </p>
                       </button>
                     </div>
                   </>
