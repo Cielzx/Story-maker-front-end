@@ -232,67 +232,14 @@ const ReusableList = ({ items, search }: props) => {
               >
                 {mode === "sticker" ? (
                   <>
-                    <div className="flex flex-col z-[5px] relative group">
-                      <div className="w-full flex hidden absolute  group-hover:flex justify-between p-1">
-                        <Trash
-                          onClick={() => {
-                            deleteSticker(item.id);
-                          }}
-                          size={20}
-                        />
-
-                        <Heart
-                          size={20}
-                          className="z-[10]"
-                          fill={
-                            favoriteIds.includes(item.id)
-                              ? "red"
-                              : "transparent"
-                          }
-                          onClick={() => {
-                            handleFavoriteClick(item);
-                          }}
-                        />
-                      </div>
-                      {/* <img src={svgUrl} style={{ filter }} alt="Sticker" /> */}
-
-                      <ReactSVG
-                        key={item.id}
-                        src={item.figure_image}
-                        beforeInjection={(svg) => {
-                          svg.querySelectorAll("path").forEach((path) => {
-                            path.setAttribute("fill", color);
-                          }, []);
-                          svg.setAttribute("width", "100%");
-                          svg.setAttribute("height", "100%");
-                        }}
-                      />
-
-                      <button
-                        onClick={async () => {
-                          try {
-                            await navigator.clipboard.write([
-                              new ClipboardItem({
-                                "image/png": writeImageToClipboard(
-                                  item.figure_image,
-                                  color
-                                ),
-                              }),
-                            ]);
-
-                            Toast({
-                              message: "Figurinha copiada",
-                              isSucess: true,
-                            });
-                          } catch (error: any) {
-                            console.log(`${error.name}`, `${error.message}`);
-                          }
-                        }}
-                        className="w-full font-semibold h-[40px] z-[10px] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-sm bg-purple-400"
-                      >
-                        <p className="text-lg">Copiar figurinha</p>
-                      </button>
-                    </div>
+                    <Sticker
+                      item={item}
+                      svgUrl={item.figure_image}
+                      writeImageToClipboard={writeImageToClipboard}
+                      favoriteIds={favoriteIds}
+                      handleFavoriteClick={handleFavoriteClick}
+                      color={color}
+                    />
                   </>
                 ) : (
                   <li
