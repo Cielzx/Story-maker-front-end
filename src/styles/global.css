@@ -54,6 +54,11 @@ body {
   background-size: cover;
 }
 
+.heightFill {
+  height: 100%;
+  height: -webkit-fill-availabe;
+}
+
 input[type="range"] {
   overflow: hidden;
   -webkit-appearance: none;
