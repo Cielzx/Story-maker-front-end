@@ -23,7 +23,7 @@ const SubCategoriePage = ({ params }: { params: { id: string } }) => {
     getSubCategorie(params.id);
   }, [params.id, category]);
 
-  if (isLoading) {
+  if (!user) {
     return <Loading />;
   }
   return <SubCategorieContainer id={params.id} />;
