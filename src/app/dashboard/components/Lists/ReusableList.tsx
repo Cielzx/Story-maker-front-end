@@ -253,7 +253,7 @@ const ReusableList = ({ items, search }: props) => {
                     min="0"
                     max="1"
                     step="0.01"
-                    className="w-full  h-3 rounded-sm cursor-pointer"
+                    className="w-full  h-5 rounded-sm cursor-pointer"
                     style={{
                       background: `linear-gradient(280deg, rgba(${rgbcolor.r},${rgbcolor.g},${rgbcolor.b},0.8) 46%, rgba(47,33,34,0.2) 100%)`,
                       border: "1px solid black",
@@ -272,7 +272,7 @@ const ReusableList = ({ items, search }: props) => {
         )}
 
         {filteredItems && filteredItems.length > 0 ? (
-          <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-2 p-2">
+          <ul className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-2 p-2">
             {filteredItems.map((item) => (
               <motion.div
                 key={item.id}
@@ -391,7 +391,7 @@ const ReusableList = ({ items, search }: props) => {
                 )}
               </motion.div>
             ))}
-          </div>
+          </ul>
         ) : (
           <></>
         )}

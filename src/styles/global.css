@@ -71,6 +71,34 @@ input[type="range"]::-webkit-slider-runnable-track {
   margin-top: -1px;
 }
 
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: blueviolet;
+  background-size: contain;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: blueviolet;
+  background-size: contain;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+input[type="range"]::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  background: blueviolet;
+  background-size: contain;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
 .backgroundDash {
   position: absolute;
   left: 0;
