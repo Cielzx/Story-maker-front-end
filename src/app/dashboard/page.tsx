@@ -23,12 +23,12 @@ const DashBoard = () => {
     getUser();
   }, []);
 
-  if (user) {
+  if (!user) {
     return <Loading />;
   }
 
   let initials = "";
-  const names = user!.name.split(" ");
+  const names = user.name.split(" ");
 
   if (names && names.length > 0) {
     const firstName = names[0];
@@ -56,7 +56,7 @@ const DashBoard = () => {
                   fontSize: "clamp(1.3rem, 1vw + 1rem, 1rem)",
                 }}
               >
-                Seja bem-vinda, {capitalizeFirstLetter(user!.name)}
+                Seja bem-vinda, {capitalizeFirstLetter(user.name)}
               </p>
 
               <DropDown />
