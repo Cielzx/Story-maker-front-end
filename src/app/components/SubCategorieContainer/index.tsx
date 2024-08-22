@@ -15,12 +15,11 @@ interface props {
 const SubCategorieContainer = ({ id, subId }: props) => {
   const { subCategories, subCategorie, getSubCategorie, category } =
     useCategory();
-
   const [isLoading, setIsLoading] = useState(true);
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const { mode, setMode } = useUSer();
+  const { mode, setMode, user } = useUSer();
 
   const router = useRouter();
 
@@ -30,7 +29,7 @@ const SubCategorieContainer = ({ id, subId }: props) => {
     if (category || subCategories || subCategorie) {
       setIsLoading(false);
     }
-  }, [category, subCategories, subCategorie]);
+  }, [category, subCategories, subCategorie, user]);
 
   if (isLoading) {
     return <Loading />;
@@ -55,7 +54,7 @@ const SubCategorieContainer = ({ id, subId }: props) => {
   }
 
   return (
-    <div className="w-full h-full flex flex-grow flex-col">
+    <div className="w-full flex flex-col">
       <div className="w-full flex items-center relative right-[0%] z-10 gap-2 bg-black justify-center text-3xl text-center h-[100px]">
         <button
           onClick={() => {

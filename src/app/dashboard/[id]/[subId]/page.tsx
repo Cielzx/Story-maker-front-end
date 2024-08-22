@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 const StickerPage = ({ params }: { params: { subId: string } }) => {
   const { user, getUser } = useUSer();
-  const { getSubCategorie, subCategorie } = useCategory();
+  const { getSubCategorie, subCategorie, getCategoryById } = useCategory();
 
   const pathname = usePathname();
   const pathWithoutLeadingSlash = pathname.startsWith("/")
@@ -19,6 +19,7 @@ const StickerPage = ({ params }: { params: { subId: string } }) => {
   const subCategoryId = pathParts[2];
 
   useEffect(() => {
+    getCategoryById(categoryId);
     getSubCategorie(subCategoryId);
   }, [subCategorie]);
 

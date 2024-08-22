@@ -21,9 +21,9 @@ const SubCategoriePage = ({ params }: { params: { id: string } }) => {
     }
     getCategoryById(params.id);
     getSubCategorie(params.id);
-  }, [params.id, category]);
+  }, [params.id, category, user]);
 
-  if (!user) {
+  if (isLoading) {
     return <Loading />;
   }
   return <SubCategorieContainer id={params.id} />;
