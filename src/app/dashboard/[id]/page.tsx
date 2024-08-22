@@ -21,7 +21,7 @@ const SubCategoriePage = ({ params }: { params: { id: string } }) => {
     }
     getCategoryById(params.id);
     getSubCategorie(params.id);
-  }, [params.id, category, user]);
+  }, [params.id, category]);
 
   if (isLoading) {
     return <Loading />;
