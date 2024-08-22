@@ -7,13 +7,11 @@ const RootDashLayout = ({ children }: { children: React.ReactNode }) => {
   const { onClose, isOpen, onOpen } = useDisclosure();
 
   return (
-    <>
-      <main className="w-full h-full flex-grow ">
-        {children}
-        <DashMenu />
-        <NotRenewed onClose={onClose} isOpen={isOpen} onOpen={onOpen} />
-      </main>
-    </>
+    <main className="w-full h-full flex-grow ">
+      {children}
+      <DashMenu />
+      <NotRenewed onClose={onClose} isOpen={isOpen} onOpen={onOpen} />
+    </main>
   );
 };
 
