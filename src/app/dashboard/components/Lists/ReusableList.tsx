@@ -203,7 +203,7 @@ const ReusableList = ({ items, search }: props) => {
         }}
       >
         {mode === "sticker" ? (
-          <>
+          <div className="flex absolute w-[300px] h-[60%] right-[0%] top-[25%]">
             <button
               onClick={() => setShowPicker(!showPicker)}
               className="mb-2 p-2 z-30 rounded absolute top-[41%] left-[80%]  "
@@ -216,7 +216,7 @@ const ReusableList = ({ items, search }: props) => {
             </button>
             {showPicker ? (
               <div
-                className="w-[179px] absolute left-[36%] top-[38%] bg-white rounded-md z-10 p-2"
+                className="w-[179px] h-[315px] relative left-[23%] top-[15%] bg-white rounded-md z-10 p-2"
                 style={{
                   boxShadow:
                     "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(0, 0, 0, 0.15) 0px 8px 16px",
@@ -253,7 +253,7 @@ const ReusableList = ({ items, search }: props) => {
                     min="0"
                     max="1"
                     step="0.01"
-                    className="w-full  h-5 rounded-sm cursor-pointer"
+                    className="w-full  h-[0.90rem] rounded-sm cursor-pointer"
                     style={{
                       background: `linear-gradient(280deg, rgba(${rgbcolor.r},${rgbcolor.g},${rgbcolor.b},0.8) 46%, rgba(47,33,34,0.2) 100%)`,
                       border: "1px solid black",
@@ -266,7 +266,7 @@ const ReusableList = ({ items, search }: props) => {
             ) : (
               <></>
             )}
-          </>
+          </div>
         ) : (
           <></>
         )}
