@@ -10,7 +10,6 @@ const RootDashLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <main className="w-full h-full flex-grow ">
         {children}
-
         <DashMenu />
         <NotRenewed onClose={onClose} isOpen={isOpen} onOpen={onOpen} />
       </main>

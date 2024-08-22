@@ -54,6 +54,18 @@ body {
   background-size: cover;
 }
 
+input[type="range"] {
+  overflow: hidden;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 10px;
+  -webkit-appearance: none;
+  color: #7a4221;
+  margin-top: -1px;
+}
+
 .backgroundDash {
   position: absolute;
   left: 0;

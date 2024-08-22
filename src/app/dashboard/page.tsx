@@ -23,12 +23,12 @@ const DashBoard = () => {
     getUser();
   }, []);
 
-  if (!user) {
+  if (user) {
     return <Loading />;
   }
 
   let initials = "";
-  const names = user.name.split(" ");
+  const names = user!.name.split(" ");
 
   if (names && names.length > 0) {
     const firstName = names[0];
@@ -44,10 +44,10 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-grow flex-col">
       <div className="backgroundDash"></div>
-      <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
-        <section className="w-full flex flex-col absolute">
+      <div className="w-full h-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
+        <section className="w-full h-full flex flex-col absolute">
           <div className="w-full  p-6 h-full  flex flex-col justify-center items-center">
             <div className="w-full flex gap-2 items-center justify-between ">
               <p
@@ -56,7 +56,7 @@ const DashBoard = () => {
                   fontSize: "clamp(1.3rem, 1vw + 1rem, 1rem)",
                 }}
               >
-                Seja bem-vinda, {capitalizeFirstLetter(user.name)}
+                Seja bem-vinda, {capitalizeFirstLetter(user!.name)}
               </p>
 
               <DropDown />

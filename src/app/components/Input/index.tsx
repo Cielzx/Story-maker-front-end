@@ -17,7 +17,7 @@ const Input = forwardRef<HTMLInputElement, iInputProps>(
             {label}
           </label>
           <input
-            className="input-style w-full text-white text- outline-none"
+            className="input-style w-full text-white  outline-none"
             required
             type={type}
             id={id}

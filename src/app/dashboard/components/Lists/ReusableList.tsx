@@ -1,14 +1,11 @@
 "use client";
 import Loading from "@/app/components/Loading";
-import Toast from "@/app/components/Toast";
 import { useCategory, useSticker, useUSer } from "@/hooks";
 import { CombineCategorySchema } from "@/schemas/category.schema";
 import { motion } from "framer-motion";
-import { Edit, Frown, Heart, Trash } from "lucide-react";
+import { Edit, Heart, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Canvg } from "canvg";
-import CategoryModal from "../categoryModal";
 import { useDisclosure } from "@chakra-ui/react";
 import UpdateModal from "../updateModal";
 import Sticker from "./components/sticker";
@@ -20,7 +17,12 @@ interface props {
   search?: string;
 }
 
-import { ChromePicker, SketchPicker, SwatchesPicker } from "react-color";
+import {
+  AlphaPicker,
+  ChromePicker,
+  SketchPicker,
+  SwatchesPicker,
+} from "react-color";
 import { IoIosColorPalette } from "react-icons/io";
 import { resolve } from "path";
 import { ReactSVG } from "react-svg";
@@ -35,9 +37,10 @@ const ReusableList = ({ items, search }: props) => {
   const [height, setHeight] = useState("");
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const [color, setColor] = useState("#FFFFFFFF");
+  const [rgbcolor, setRgbColor] = useState({ r: 0, g: 0, b: 0 });
   const [id, setId] = useState("");
   const [showPicker, setShowPicker] = useState(false);
-  const [navigatorBlob, setNavigatorBlob] = useState<Blob>();
+  const [opacity, setOpacity] = useState(1);
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -75,7 +78,8 @@ const ReusableList = ({ items, search }: props) => {
     const svgText = await blob.text();
     const coloredSvgText = svgText
       .replace(/fill="[^"]*"/g, "")
-      .replace(/<svg([^>]+)>/, `<svg$1 fill="${color}">`);
+      .replace(/<svg([^>]+)>/, `<svg$1 fill="${color}">`)
+      .replace(/<svg([^>]+)>/, `<svg$1 opacity="${opacity}">`);
     const svgBlob = new Blob([coloredSvgText], { type: "image/svg+xml" });
     const svgUrl = URL.createObjectURL(svgBlob);
     img.src = svgUrl;
@@ -101,7 +105,6 @@ const ReusableList = ({ items, search }: props) => {
           if (blob) {
             resolve(blob);
           }
-          console.log(blob);
         }, "image/png");
       });
     };
@@ -185,6 +188,11 @@ const ReusableList = ({ items, search }: props) => {
 
   const handleColorChange = (color: any) => {
     setColor(color.hex);
+    setRgbColor(color.rgb);
+  };
+
+  const handleOpacityChange = (event: any) => {
+    setOpacity(event.target.value);
   };
   return (
     <ul className="w-full h-full flex flex-wrap gap-2 p-3">
@@ -200,16 +208,63 @@ const ReusableList = ({ items, search }: props) => {
               onClick={() => setShowPicker(!showPicker)}
               className="mb-2 p-2 z-30 rounded absolute top-[41%] left-[80%]  "
             >
-              <IoIosColorPalette size={40} />
+              <img
+                src="https://imgur.com/GP2GJgq.png"
+                className="w-[40px] h-[40px]"
+                alt=""
+              />
             </button>
-            {showPicker && (
-              <div className=" w-[170px] absolute left-[32%] top-[38%] z-10">
+            {showPicker ? (
+              <div
+                className="w-[179px] absolute left-[36%] top-[38%] bg-white rounded-md z-10 p-2"
+                style={{
+                  boxShadow:
+                    "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(0, 0, 0, 0.15) 0px 8px 16px",
+                }}
+              >
                 <SketchPicker
                   width="100%"
                   color={color}
-                  onChangeComplete={handleColorChange}
+                  styles={{
+                    default: {
+                      picker: {
+                        padding: "0rem",
+                        border: "1px solid transparent",
+                        boxShadow: "none",
+                        color: "black",
+                        fontWeight: "bold",
+                      },
+                    },
+                  }}
+                  disableAlpha
+                  onChange={handleColorChange}
                 />
+
+                <div
+                  className="w-full h-3 flex justify-center"
+                  style={{
+                    backgroundImage:
+                      "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAQCAYAAAD06IYnAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AIWDwYQlZMa3gAAAWVJREFUaN7tmEGO6jAQRCsOArHgBpyAJYGjcGocxAm4A2IHpmoWE0eBH+ezmFlNvU06shJ3W6VEelWMUQAIIF9f6qZpimsA1LYtS2uF51/u27YVAFZVRUkEoGHdPV/sIcbIEIIkUdI/9Xa7neyv61+SWFUVAVCSct00TWn2fv6u3+Ecfd3tXzy/0+nEUu+SPjo/kqzrmiQpScN6v98XewfA8/lMkiLJ2WxGSUopcT6fM6U0NX9/frfbjev1WtfrlZfLhYfDQQHG/AIOlnGwjINlHCxjHCzjYJm/TJWdCwquJXseFFzGwDNNeiKMOJTO8xQdDQaeB29+K9efeLaBo9J7vdvtJj1RjFFjfiv7qv95tjx/7leSQgh93e1ffMeIp6O+YQjho/N791t1XVOSSI7N//K+4/GoxWLBx+PB5/Op5XLJ+/3OlJJWqxU3m83ovv5iGf8KjYNlHCxjHCzjYBkHy5gf5gusvQU7U37jTAAAAABJRU5ErkJggg==)",
+                    backgroundSize: "100% 100%",
+                  }}
+                >
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    className="w-full  h-3 rounded-sm cursor-pointer"
+                    style={{
+                      background: `linear-gradient(280deg, rgba(${rgbcolor.r},${rgbcolor.g},${rgbcolor.b},0.8) 46%, rgba(47,33,34,0.2) 100%)`,
+                      border: "1px solid black",
+                    }}
+                    value={opacity}
+                    onChange={handleOpacityChange}
+                  />
+                </div>
               </div>
+            ) : (
+              <></>
             )}
           </>
         ) : (
@@ -239,6 +294,7 @@ const ReusableList = ({ items, search }: props) => {
                       favoriteIds={favoriteIds}
                       handleFavoriteClick={handleFavoriteClick}
                       color={color}
+                      opacity={opacity}
                     />
                   </>
                 ) : (

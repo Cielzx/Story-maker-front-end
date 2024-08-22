@@ -11,6 +11,7 @@ interface stickerProps {
   favoriteIds: string[];
   handleFavoriteClick: (item: any) => void;
   color: string;
+  opacity: number;
 }
 
 const Sticker = ({
@@ -20,6 +21,7 @@ const Sticker = ({
   favoriteIds,
   handleFavoriteClick,
   color,
+  opacity,
 }: stickerProps) => {
   const { deleteSticker } = useSticker();
   return (
@@ -48,6 +50,7 @@ const Sticker = ({
         beforeInjection={(svg) => {
           svg.querySelectorAll("path").forEach((path) => {
             path.setAttribute("fill", color);
+            path.setAttribute("opacity", `${opacity}`);
           }, []);
           svg.setAttribute("width", "100%");
           svg.setAttribute("height", "100%");

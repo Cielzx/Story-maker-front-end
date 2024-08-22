@@ -55,7 +55,7 @@ const SubCategorieContainer = ({ id, subId }: props) => {
   }
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-grow flex-col">
       <div className="w-full flex items-center relative right-[0%] z-10 gap-2 bg-black justify-center text-3xl text-center h-[100px]">
         <button
           onClick={() => {
