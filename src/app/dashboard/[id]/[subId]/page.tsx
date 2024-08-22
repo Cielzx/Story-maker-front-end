@@ -34,11 +34,7 @@ const StickerPage = ({ params }: { params: { subId: string } }) => {
   if (!user) {
     return <Loading />;
   }
-  return (
-    <>
-      <SubCategorieContainer subId={params.subId} />
-    </>
-  );
+  return <SubCategorieContainer subId={params.subId} />;
 };
 
 export default StickerPage;

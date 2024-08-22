@@ -26,11 +26,7 @@ const SubCategoriePage = ({ params }: { params: { id: string } }) => {
   if (isLoading) {
     return <Loading />;
   }
-  return (
-    <>
-      <SubCategorieContainer id={params.id} />
-    </>
-  );
+  return <SubCategorieContainer id={params.id} />;
 };
 
 export default SubCategoriePage;
