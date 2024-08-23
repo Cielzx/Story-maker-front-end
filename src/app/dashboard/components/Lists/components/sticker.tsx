@@ -75,9 +75,15 @@ const Sticker = ({
             console.log(`${error.name}`, `${error.message}`);
           }
         }}
-        className="w-full font-semibold h-[40px] z-[10px] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-sm bg-purple-400"
+        className="w-full font-semibold h-[40px] z-[10px] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-md bg-purple-400"
       >
-        <p className="text-lg">Copiar figurinha</p>
+        <p
+          style={{
+            fontSize: "clamp(0.5rem, 1vw + 1rem, 1rem)",
+          }}
+        >
+          Copiar figurinha
+        </p>
       </button>
     </li>
   );
