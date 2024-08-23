@@ -25,7 +25,7 @@ const Sticker = ({
 }: stickerProps) => {
   const { deleteSticker } = useSticker();
   return (
-    <div className="flex flex-col z-[5px] relative group">
+    <li className="w-full h-full flex flex-col z-[5px] border border-1 relative border-s-white rounded-md relative group">
       <div className="w-full flex hidden absolute  group-hover:flex justify-between p-1">
         <Trash
           onClick={() => {
@@ -47,13 +47,14 @@ const Sticker = ({
       <ReactSVG
         key={item.id}
         src={svgUrl}
+        className="w-full h-full"
         beforeInjection={(svg) => {
           svg.querySelectorAll("path").forEach((path) => {
             path.setAttribute("fill", color);
             path.setAttribute("opacity", `${opacity}`);
           }, []);
           svg.setAttribute("width", "100%");
-          svg.setAttribute("height", "100%");
+          svg.setAttribute("height", "200px");
         }}
       />
 
@@ -78,7 +79,7 @@ const Sticker = ({
       >
         <p className="text-lg">Copiar figurinha</p>
       </button>
-    </div>
+    </li>
   );
 };
 

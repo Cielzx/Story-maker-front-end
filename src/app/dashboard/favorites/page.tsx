@@ -19,10 +19,10 @@ const FavoritePage = () => {
   }
 
   return (
-    <div className="w-full flex flex-col h-full">
+    <div className="w-full h-full flex flex-col h-full">
       <div className="backgroundDash"></div>
-      <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
-        <section className="w-full flex flex-col">
+      <div className="w-full h-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
+        <section className="w-full h-full flex flex-col">
           <div className="w-full  h-full  flex flex-col fixed justify-center items-center">
             <div className="w-full flex items-center bg-black z-10 justify-center text-3xl text-center h-[100px]">
               <h1>Favoritos</h1>
@@ -34,7 +34,12 @@ const FavoritePage = () => {
               </button>
             </div>
 
-            <div className="w-[90%] h-full overflow-y-auto">
+            <div
+              className="w-[100%] h-full overflow-y-auto flex justify-center"
+              style={{
+                scrollbarWidth: "none",
+              }}
+            >
               <FavoriteList items={user.favorites} />
             </div>
           </div>

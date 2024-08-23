@@ -195,7 +195,7 @@ const ReusableList = ({ items, search }: props) => {
     setOpacity(event.target.value);
   };
   return (
-    <ul className="w-full h-full flex flex-wrap gap-2 p-3">
+    <div className="w-full h-full flex flex-wrap gap-2 p-3">
       <div
         className="w-full h-full overflow-y-scroll"
         style={{
@@ -272,7 +272,7 @@ const ReusableList = ({ items, search }: props) => {
         )}
 
         {filteredItems && filteredItems.length > 0 ? (
-          <ul className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-2 p-2">
+          <ul className="w-full   grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 p-4">
             {filteredItems.map((item) => (
               <motion.div
                 key={item.id}
@@ -286,17 +286,15 @@ const ReusableList = ({ items, search }: props) => {
                 }}
               >
                 {mode === "sticker" ? (
-                  <>
-                    <Sticker
-                      item={item}
-                      svgUrl={item.figure_image}
-                      writeImageToClipboard={writeImageToClipboard}
-                      favoriteIds={favoriteIds}
-                      handleFavoriteClick={handleFavoriteClick}
-                      color={color}
-                      opacity={opacity}
-                    />
-                  </>
+                  <Sticker
+                    item={item}
+                    svgUrl={item.figure_image}
+                    writeImageToClipboard={writeImageToClipboard}
+                    favoriteIds={favoriteIds}
+                    handleFavoriteClick={handleFavoriteClick}
+                    color={color}
+                    opacity={opacity}
+                  />
                 ) : (
                   <li
                     key={item.id}
@@ -402,7 +400,7 @@ const ReusableList = ({ items, search }: props) => {
       ) : (
         <></>
       )}
-    </ul>
+    </div>
   );
 };
 

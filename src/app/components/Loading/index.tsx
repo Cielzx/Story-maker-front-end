@@ -11,7 +11,7 @@ import { FaArrowRight } from "react-icons/fa";
 const Loading = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const [height, setHeight] = useState("");
+  const [height, setHeight] = useState("100%");
   const { getUser, user } = useUSer();
   const cookies = parseCookies();
 
