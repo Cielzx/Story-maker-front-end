@@ -36,7 +36,7 @@ const LoginForm = ({ mode, setMode }: iLoginProps) => {
   const handlePassword = () => setIsShow(!isShow);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center">
+    <div className="w-full max-[1900px]:w-[700px] flex flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(onSub)}
         className="w-[80%] min-[940px]:w-[80%] min-[940px]:items-center flex flex-col  gap-5 p-2"

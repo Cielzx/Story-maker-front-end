@@ -21,7 +21,7 @@ const Login = () => {
                 alt=""
               />
             </div>
-            <div className="flex w-[80%] flex-col h-full justify-center gap-1 relative items-center">
+            <div className="flex  w-[80%] flex-col h-[50%] justify-center gap-1 relative items-center">
               <LoginForm mode={mode} setMode={setMode} />
 
               {mode === "register" ? (

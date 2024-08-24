@@ -74,6 +74,10 @@ const ReusableList = ({ items, search }: props) => {
       throw new Error("Falha ao buscar a imagem");
     }
 
+    if (url.endsWith("png")) {
+      return blob;
+    }
+
     const img = new Image();
     const svgText = await blob.text();
     const coloredSvgText = svgText
@@ -109,9 +113,10 @@ const ReusableList = ({ items, search }: props) => {
       });
     };
 
-    const result = await writeItem();
+    const svg = await writeItem();
 
-    return result;
+    URL.revokeObjectURL(svgUrl);
+    return svg;
   }
 
   useEffect(() => {
@@ -272,7 +277,7 @@ const ReusableList = ({ items, search }: props) => {
         )}
 
         {filteredItems && filteredItems.length > 0 ? (
-          <ul className="w-full   grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 p-4">
+          <ul className="w-full   grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 p-4">
             {filteredItems.map((item) => (
               <motion.div
                 key={item.id}

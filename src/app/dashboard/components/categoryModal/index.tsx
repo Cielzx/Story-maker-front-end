@@ -17,18 +17,11 @@ interface modalProps {
 }
 
 const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
-  const {
-    setCoverImage,
-    createCategory,
-    createSubCategorie,
-    coverImage,
-    updateCategory,
-    category,
-  } = useCategory();
+  const { setCoverImage, createCategory, createSubCategorie, updateCategory } =
+    useCategory();
   const { setFigureImage, createSticker, uploadStickerFile } = useSticker();
   const { user, updateUser } = useUSer();
-  const [stickerFile, setStickerFile] = useState<File | undefined>();
-  const { mode, setMode } = useUSer();
+  const { mode } = useUSer();
   const [files, setFiles] = useState<File[]>([]);
   const {
     register,
@@ -36,7 +29,7 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
     formState: { errors },
   } = useForm<CombineCategorySchema>();
   const [preview, SetPreview] = useState<string | ArrayBuffer | null>();
-  const pathname = usePathname();
+  const [imgMode, setImgMode] = useState("");
 
   const onDrop = useCallback((files: File[]) => {
     setFigureImage(files[0]);
@@ -120,7 +113,7 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
     } else if (mode === "subCategory") {
       createSubCategorie(data);
     } else if (mode === "sticker") {
-      createSticker();
+      createSticker(imgMode);
     } else if (mode === "profile") {
       updateUser(user!.id, data);
     } else if (mode === "update") {
@@ -192,6 +185,29 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
               </div>
             )}
           </div>
+        )}
+
+        {mode === "sticker" ? (
+          <>
+            <div className="w-full h-[40px] flex items-center justify-center gap-2">
+              <button
+                onClick={() => setImgMode("svg")}
+                type="button"
+                className="w-[100px]  h-full text-white font-extrabold border border-1 border-s-white"
+              >
+                SVG
+              </button>
+              <button
+                onClick={() => setImgMode("png")}
+                type="button"
+                className="w-[100px] h-full text-white font-extrabold border border-1 border-s-white"
+              >
+                PNG
+              </button>
+            </div>
+          </>
+        ) : (
+          <></>
         )}
 
         <button type="submit" className="btn-form">

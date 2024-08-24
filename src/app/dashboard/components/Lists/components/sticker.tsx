@@ -3,6 +3,7 @@ import { useSticker } from "@/hooks";
 import { Heart, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { ReactSVG } from "react-svg";
+import Pallet from "../components/img/pallete.png";
 
 interface stickerProps {
   svgUrl: string;
@@ -23,15 +24,28 @@ const Sticker = ({
   color,
   opacity,
 }: stickerProps) => {
+  const [isSvg, setIsSvg] = useState<boolean>(true);
   const { deleteSticker } = useSticker();
+
+  useEffect(() => {
+    setIsSvg(item.figure_image?.endsWith(".svg"));
+  }, [svgUrl]);
+
   return (
-    <li className="w-full h-full flex flex-col z-[5px] border border-1 relative border-s-white rounded-md relative group">
-      <div className="w-full flex hidden absolute  group-hover:flex justify-between p-1">
+    <li
+      className="w-full h-full flex flex-col z-[5px] rounded-lg relative group"
+      style={{
+        boxShadow: "rgba(255, 255, 255, 0.753) 0px 2px 4px -1px",
+      }}
+    >
+      <div className="w-full z-10 flex hidden absolute  group-hover:flex justify-between p-1">
         <Trash
           onClick={() => {
             deleteSticker(item.id);
           }}
           size={20}
+          color="white"
+          fill="black"
         />
 
         <Heart
@@ -44,19 +58,37 @@ const Sticker = ({
         />
       </div>
 
-      <ReactSVG
-        key={item.id}
-        src={svgUrl}
-        className="w-full h-full"
-        beforeInjection={(svg) => {
-          svg.querySelectorAll("path").forEach((path) => {
-            path.setAttribute("fill", color);
-            path.setAttribute("opacity", `${opacity}`);
-          }, []);
-          svg.setAttribute("width", "100%");
-          svg.setAttribute("height", "200px");
-        }}
-      />
+      {isSvg ? (
+        <img
+          src="https://images2.imgbox.com/ef/4e/BzXeOtCi_o.png"
+          className="w-[20px] h-[20px] absolute top-[4%]"
+          alt="color-circle"
+        />
+      ) : (
+        <></>
+      )}
+
+      {isSvg ? (
+        <ReactSVG
+          key={item.id}
+          src={svgUrl}
+          className="w-full h-full"
+          beforeInjection={(svg) => {
+            svg.querySelectorAll("path").forEach((path) => {
+              path.setAttribute("fill", color);
+              path.setAttribute("opacity", `${opacity}`);
+            }, []);
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "200px");
+          }}
+        />
+      ) : (
+        <img
+          src={item.figure_image}
+          alt={item.item_name}
+          className="w-full h-full object-contain"
+        />
+      )}
 
       <button
         onClick={async () => {

@@ -211,7 +211,6 @@ export const CategoryProvider = ({ children }: categoryProp) => {
         ...data,
         categoryId: categoryId,
       };
-      console.log(updatedData);
       const response = await api.post<iSubCategories>(
         "categories",
         updatedData

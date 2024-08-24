@@ -29,13 +29,14 @@ interface stickerValues {
   sticker: iSticker | undefined;
   getSticker: (id?: string) => void;
   setFigureImage: React.Dispatch<React.SetStateAction<File | null>>;
-  createSticker: () => void;
+  createSticker: (imgMode?: string) => void;
   deleteSticker: (id: string) => void;
   deleteFavorite: (id: string) => void;
   createFavorite: (userId: string, stickerId?: string) => void;
   uploadStickerFile: (
     stickerId?: string,
-    figureImage?: File
+    figureImage?: File,
+    imgMode?: string
   ) => Promise<number | undefined>;
 }
 
@@ -65,7 +66,11 @@ export const StickerProvider = ({ children }: categoryProp) => {
     api.defaults.headers.common.authorization = `Bearer ${cookies["user.Token"]}`;
   }
 
-  const uploadStickerFile = async (stickerId?: string, figureImage?: File) => {
+  const uploadStickerFile = async (
+    stickerId?: string,
+    figureImage?: File,
+    imgMode?: string
+  ) => {
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const fd = new FormData();
@@ -76,9 +81,15 @@ export const StickerProvider = ({ children }: categoryProp) => {
         });
       }
 
+      let url = `stickers/upload-to-svg/${stickerId}`;
+
+      if (imgMode === "png") {
+        url = `stickers/upload-to-png/${stickerId}`;
+      }
+
       if (figureImage?.name.includes("png")) {
         fd.append("figure_image", figureImage);
-        const res = await api.patch(`stickers/upload/${stickerId}`, fd, config);
+        const res = await api.patch(url, fd, config);
         return res.status;
       }
     } catch (error) {
@@ -86,7 +97,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
-  const createSticker = async () => {
+  const createSticker = async (imgMode?: string) => {
     try {
       const updatedData = {
         subCategoryId: subCategoryId,
@@ -99,7 +110,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
         });
       } else {
         const response = await api.post<iSticker>("stickers", updatedData);
-        await uploadStickerFile(response.data.id, figureImage!);
+        await uploadStickerFile(response.data.id, figureImage!, imgMode);
 
         Toast({
           message: "Figurinha criada com sucesso",
