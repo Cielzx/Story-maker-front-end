@@ -1,5 +1,5 @@
 import Toast from "@/app/components/Toast";
-import { useSticker } from "@/hooks";
+import { useSticker, useUSer } from "@/hooks";
 import { Heart, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { ReactSVG } from "react-svg";
@@ -25,6 +25,7 @@ const Sticker = ({
   opacity,
 }: stickerProps) => {
   const [isSvg, setIsSvg] = useState<boolean>(true);
+  const { user } = useUSer();
   const { deleteSticker } = useSticker();
 
   useEffect(() => {
@@ -39,14 +40,18 @@ const Sticker = ({
       }}
     >
       <div className="w-full z-10 flex hidden absolute  group-hover:flex justify-between p-1">
-        <Trash
-          onClick={() => {
-            deleteSticker(item.id);
-          }}
-          size={20}
-          color="white"
-          fill="black"
-        />
+        {user && user.is_admin ? (
+          <Trash
+            onClick={() => {
+              deleteSticker(item.id);
+            }}
+            size={20}
+            color="white"
+            fill="black"
+          />
+        ) : (
+          <></>
+        )}
 
         <Heart
           size={20}
