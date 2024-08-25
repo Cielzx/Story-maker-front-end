@@ -116,7 +116,7 @@ const Profile = () => {
 
             <div className="w-[60%] max-[940px]:w-full h-[65%] relative flex items-center justify-center">
               <div
-                className="w-[50%]  max-lg:w-[70%] h-[100%] max-md:h-[400px] bg-black text-white absolute bottom-[35%] text-black font-semibold rounded-lg flex absolute bottom-[20%] items-center flex-col justify-center gap-1 p-2 relative"
+                className="w-[50%]  max-lg:w-[70%] h-[100%] max-md:h-[400px] bg-white text-black font-bold absolute bottom-[35%] text-black font-semibold rounded-lg flex absolute bottom-[20%] items-center flex-col justify-center gap-1 p-2 relative"
                 style={{
                   boxShadow:
                     " rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",

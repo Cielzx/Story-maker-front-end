@@ -39,7 +39,7 @@ const Sticker = ({
         boxShadow: "rgba(255, 255, 255, 0.753) 0px 2px 4px -1px",
       }}
     >
-      <div className="w-full z-10 flex hidden absolute  group-hover:flex justify-between p-1">
+      <div className="w-full h-full z-10 flex hidden absolute  group-hover:flex justify-between p-1">
         {user && user.is_admin ? (
           <Trash
             onClick={() => {
@@ -85,6 +85,7 @@ const Sticker = ({
             }, []);
             svg.setAttribute("width", "100%");
             svg.setAttribute("height", "200px");
+            svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
           }}
         />
       ) : (
