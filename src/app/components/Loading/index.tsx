@@ -34,7 +34,7 @@ const Loading = () => {
       <div className="w-full h-full flex relative flex-grow justify-center items-center">
         <img
           src="https://images2.imgbox.com/2a/e1/p2xQCpxV_o.png"
-          className="w-full object-contain absolute  h-[40%]"
+          className="w-full object-contain absolute  h-[25%]"
           alt=""
         />
         <Spinner className="w-[230px] h-[230px]" color="white" />

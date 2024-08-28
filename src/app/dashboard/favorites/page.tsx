@@ -1,18 +1,32 @@
 "use client";
 import { useUSer } from "@/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Loading from "@/app/components/Loading";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import FavoriteList from "./FavoriteList";
+import ColorPicker from "@/app/components/ColorPicker";
 
 const FavoritePage = () => {
   const { user, getUser } = useUSer();
+  const [opacity, setOpacity] = useState(1);
+  const [color, setColor] = useState("#FFFFFFFF");
+  const [rgbcolor, setRgbColor] = useState({ r: 0, g: 0, b: 0 });
+  const [showPicker, setShowPicker] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     getUser();
   }, [user]);
+
+  const handleColorChange = (color: any) => {
+    setColor(color.hex);
+    setRgbColor(color.rgb);
+  };
+
+  const handleOpacityChange = (event: any) => {
+    setOpacity(event.target.value);
+  };
 
   if (!user) {
     return <Loading />;
@@ -40,7 +54,21 @@ const FavoritePage = () => {
                 scrollbarWidth: "none",
               }}
             >
-              <FavoriteList items={user.favorites} />
+              <ColorPicker
+                color={color}
+                opacity={opacity}
+                rgbcolor={rgbcolor}
+                handleColorChange={handleColorChange}
+                handleOpacityChange={handleOpacityChange}
+                setShowPicker={setShowPicker}
+                showPicker={showPicker}
+              />
+
+              <FavoriteList
+                items={user.favorites}
+                color={color}
+                opacity={opacity}
+              />
             </div>
           </div>
         </section>

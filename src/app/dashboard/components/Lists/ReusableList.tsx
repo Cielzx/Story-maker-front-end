@@ -26,12 +26,19 @@ import {
 import { IoIosColorPalette } from "react-icons/io";
 import { resolve } from "path";
 import { ReactSVG } from "react-svg";
+import ColorPicker from "@/app/components/ColorPicker";
 
 const ReusableList = ({ items, search }: props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { deleteCategory, deleteSubCategory } = useCategory();
-  const { deleteSticker, createFavorite, getSticker, sticker } = useSticker();
+  const {
+    deleteSticker,
+    createFavorite,
+    getSticker,
+    sticker,
+    writeImageToClipboard,
+  } = useSticker();
   const { mode, setMode, user } = useUSer();
   const [clientMode, setClientMode] = useState("");
   const [height, setHeight] = useState("");
@@ -65,59 +72,6 @@ const ReusableList = ({ items, search }: props) => {
     hidden: { opacity: 0, x: 20 },
     visible: { opacity: 1, x: 0 },
   };
-
-  async function writeImageToClipboard(url: string, color: string) {
-    const response = await fetch(url);
-    const blob = await response.blob();
-
-    if (!response.ok) {
-      throw new Error("Falha ao buscar a imagem");
-    }
-
-    if (url.endsWith("png")) {
-      return blob;
-    }
-
-    const img = new Image();
-    const svgText = await blob.text();
-    const coloredSvgText = svgText
-      .replace(/fill="[^"]*"/g, "")
-      .replace(/<svg([^>]+)>/, `<svg$1 fill="${color}">`)
-      .replace(/<svg([^>]+)>/, `<svg$1 opacity="${opacity}">`);
-    const svgBlob = new Blob([coloredSvgText], { type: "image/svg+xml" });
-    const svgUrl = URL.createObjectURL(svgBlob);
-    img.src = svgUrl;
-    const loadImage = () =>
-      new Promise<HTMLImageElement>((resolve, reject) => {
-        img.src = svgUrl;
-        img.onload = () => resolve(img);
-        img.onerror = reject;
-      });
-
-    const loadedImg = await loadImage();
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = loadedImg.width;
-    canvas.height = loadedImg.height;
-
-    ctx?.drawImage(loadedImg, 0, 0);
-
-    const writeItem = async () => {
-      return new Promise<Blob>((resolve) => {
-        canvas.toBlob((blob) => {
-          if (blob) {
-            resolve(blob);
-          }
-        }, "image/png");
-      });
-    };
-
-    const svg = await writeItem();
-
-    URL.revokeObjectURL(svgUrl);
-    return svg;
-  }
 
   useEffect(() => {
     if (pathname === "/dashboard") {
@@ -208,70 +162,15 @@ const ReusableList = ({ items, search }: props) => {
         }}
       >
         {mode === "sticker" ? (
-          <div className="flex absolute w-[300px] h-[60%] right-[0%] top-[25%]">
-            <button
-              onClick={() => setShowPicker(!showPicker)}
-              className="mb-2 p-2 z-30 rounded absolute top-[41%] left-[80%]  "
-            >
-              <img
-                src="https://imgur.com/GP2GJgq.png"
-                className="w-[40px] h-[40px]"
-                alt=""
-              />
-            </button>
-            {showPicker ? (
-              <div
-                className="w-[179px] h-[315px] relative left-[23%] top-[15%] bg-white rounded-md z-10 p-2"
-                style={{
-                  boxShadow:
-                    "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(0, 0, 0, 0.15) 0px 8px 16px",
-                }}
-              >
-                <SketchPicker
-                  width="100%"
-                  color={color}
-                  styles={{
-                    default: {
-                      picker: {
-                        padding: "0rem",
-                        border: "1px solid transparent",
-                        boxShadow: "none",
-                        color: "black",
-                        fontWeight: "bold",
-                      },
-                    },
-                  }}
-                  disableAlpha
-                  onChange={handleColorChange}
-                />
-
-                <div
-                  className="w-full h-3 flex justify-center"
-                  style={{
-                    backgroundImage:
-                      "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAQCAYAAAD06IYnAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AIWDwYQlZMa3gAAAWVJREFUaN7tmEGO6jAQRCsOArHgBpyAJYGjcGocxAm4A2IHpmoWE0eBH+ezmFlNvU06shJ3W6VEelWMUQAIIF9f6qZpimsA1LYtS2uF51/u27YVAFZVRUkEoGHdPV/sIcbIEIIkUdI/9Xa7neyv61+SWFUVAVCSct00TWn2fv6u3+Ecfd3tXzy/0+nEUu+SPjo/kqzrmiQpScN6v98XewfA8/lMkiLJ2WxGSUopcT6fM6U0NX9/frfbjev1WtfrlZfLhYfDQQHG/AIOlnGwjINlHCxjHCzjYJm/TJWdCwquJXseFFzGwDNNeiKMOJTO8xQdDQaeB29+K9efeLaBo9J7vdvtJj1RjFFjfiv7qv95tjx/7leSQgh93e1ffMeIp6O+YQjho/N791t1XVOSSI7N//K+4/GoxWLBx+PB5/Op5XLJ+/3OlJJWqxU3m83ovv5iGf8KjYNlHCxjHCzjYBkHy5gf5gusvQU7U37jTAAAAABJRU5ErkJggg==)",
-                    backgroundSize: "100% 100%",
-                  }}
-                >
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    className="w-full  h-[0.90rem] rounded-sm cursor-pointer"
-                    style={{
-                      background: `linear-gradient(280deg, rgba(${rgbcolor.r},${rgbcolor.g},${rgbcolor.b},0.8) 46%, rgba(47,33,34,0.2) 100%)`,
-                      border: "1px solid black",
-                    }}
-                    value={opacity}
-                    onChange={handleOpacityChange}
-                  />
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
-          </div>
+          <ColorPicker
+            color={color}
+            opacity={opacity}
+            handleColorChange={handleColorChange}
+            handleOpacityChange={handleOpacityChange}
+            setShowPicker={setShowPicker}
+            showPicker={showPicker}
+            rgbcolor={rgbcolor}
+          />
         ) : (
           <></>
         )}

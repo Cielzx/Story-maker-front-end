@@ -7,7 +7,11 @@ import Pallet from "../components/img/pallete.png";
 
 interface stickerProps {
   svgUrl: string;
-  writeImageToClipboard(url: string, color: string): Promise<Blob>;
+  writeImageToClipboard(
+    url: string,
+    color: string,
+    opacity: number
+  ): Promise<Blob>;
   item: any;
   favoriteIds: string[];
   handleFavoriteClick: (item: any) => void;
@@ -101,7 +105,11 @@ const Sticker = ({
           try {
             await navigator.clipboard.write([
               new ClipboardItem({
-                "image/png": writeImageToClipboard(item.figure_image, color),
+                "image/png": writeImageToClipboard(
+                  item.figure_image,
+                  color,
+                  opacity
+                ),
               }),
             ]);
 

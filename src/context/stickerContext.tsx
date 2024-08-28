@@ -38,6 +38,11 @@ interface stickerValues {
     figureImage?: File,
     imgMode?: string
   ) => Promise<number | undefined>;
+  writeImageToClipboard(
+    url: string,
+    color: string,
+    opacity: number
+  ): Promise<Blob>;
 }
 
 export const StickerContext = createContext<stickerValues>({} as stickerValues);
@@ -188,6 +193,63 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
+  async function writeImageToClipboard(
+    url: string,
+    color: string,
+    opacity: number
+  ) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    if (!response.ok) {
+      throw new Error("Falha ao buscar a imagem");
+    }
+
+    if (url.endsWith("png")) {
+      return blob;
+    }
+
+    const img = new Image();
+    const svgText = await blob.text();
+    const coloredSvgText = svgText
+      .replace(/fill="[^"]*"/g, "")
+      .replace(/<svg([^>]+)>/, `<svg$1 fill="${color}">`)
+      .replace(/<svg([^>]+)>/, `<svg$1 opacity="${opacity}">`);
+    const svgBlob = new Blob([coloredSvgText], { type: "image/svg+xml" });
+    const svgUrl = URL.createObjectURL(svgBlob);
+    img.src = svgUrl;
+    const loadImage = () =>
+      new Promise<HTMLImageElement>((resolve, reject) => {
+        img.src = svgUrl;
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+      });
+
+    const loadedImg = await loadImage();
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = loadedImg.width;
+    canvas.height = loadedImg.height;
+
+    ctx?.drawImage(loadedImg, 0, 0);
+
+    const writeItem = async () => {
+      return new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            resolve(blob);
+          }
+        }, "image/png");
+      });
+    };
+
+    const svg = await writeItem();
+
+    URL.revokeObjectURL(svgUrl);
+    return svg;
+  }
+
   return (
     <StickerContext.Provider
       value={{
@@ -199,6 +261,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
         getSticker,
         deleteFavorite,
         deleteSticker,
+        writeImageToClipboard,
       }}
     >
       {children}
