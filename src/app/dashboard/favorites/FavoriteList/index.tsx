@@ -97,7 +97,7 @@ const FavoriteList = ({ items, color, opacity }: props) => {
                     console.log(`${error.name}`, `${error.message}`);
                   }
                 }}
-                className="w-full font-semibold h-[40px] z-[10] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-md bg-purple-400 cursor-pointer"
+                className="w-full font-semibold h-[40px] z-[5px] absolute items-center hidden group-hover:flex group-hover:text-center  bottom-[0%]  flex justify-center  rounded-md bg-purple-400 cursor-pointer"
               >
                 <p
                   style={{
