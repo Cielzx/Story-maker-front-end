@@ -40,7 +40,7 @@ const FavoriteList = ({ items, color, opacity }: props) => {
               <div className="w-full h-full flex justify-end absolute top-[0%] z-[5px]  group-hover:flex text-white p-1">
                 {/* <Trash onClick={() => deleteFavorite(item.id)} size={20} /> */}
 
-                <Heart size={20} className="z-[10]" fill="red" />
+                <Heart size={20} className="z-[5px]" fill="red" />
               </div>
 
               {item.sticker.figure_image.endsWith("svg") ? (
