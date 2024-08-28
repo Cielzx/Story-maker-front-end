@@ -10,7 +10,7 @@
   z-index: -10;
   height: 100%;
   width: 100%;
-  background-image: url("https://images2.imgbox.com/f3/e4/CdWeC3N9_o.jpg");
+  background-image: url("https://images2.imgbox.com/b3/e3/YHuJtP60_o.jpg");
   /* background: linear-gradient(
     to right,
 
@@ -30,10 +30,12 @@
 
 :root {
   --vh: 1vh;
+  --dvh-unit: 1dvh;
+  --viewport-height: calc(calc(var(--dvh-unit) * 100));
 }
 
-.container {
-  height: calc(var(--vh) * 100);
+.heightList {
+  height: calc(var(--viewport-height, 100%));
 }
 
 body {

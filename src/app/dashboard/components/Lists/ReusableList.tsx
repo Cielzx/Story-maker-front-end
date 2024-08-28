@@ -200,7 +200,7 @@ const ReusableList = ({ items, search }: props) => {
     setOpacity(event.target.value);
   };
   return (
-    <div className="w-full h-full flex flex-wrap gap-2 p-3">
+    <div className="w-full h-full flex flex-wrap gap-2 p-3 ">
       <div
         className="w-full h-full overflow-y-scroll"
         style={{

@@ -50,7 +50,7 @@ const UserEditForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSub)}
-      className="w-full h-[85%] flex flex-col justify-center items-center gap-3 absolute top-[17%] p-3"
+      className="w-full h-[85%] flex flex-col justify-center items-center text-black gap-3 absolute top-[17%] p-4"
     >
       {mode === "changePassword" ? (
         <>
@@ -122,7 +122,7 @@ const UserEditForm = () => {
               <>
                 <span
                   onClick={() => setMode("requestPassword")}
-                  className="text-sm text-gray-400"
+                  className="text-sm text-black"
                 >
                   Esqueceu a senha?
                 </span>

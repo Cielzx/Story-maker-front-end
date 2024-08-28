@@ -1,7 +1,7 @@
 "use client";
 import { useUSer } from "@/hooks";
 import { Spinner } from "@chakra-ui/spinner";
-import Image from "next/image";
+
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { parseCookies } from "nookies";
@@ -10,10 +10,8 @@ import { FaArrowRight } from "react-icons/fa";
 
 const Loading = () => {
   const pathname = usePathname();
-  const router = useRouter();
   const [height, setHeight] = useState("100%");
   const { getUser, user } = useUSer();
-  const cookies = parseCookies();
 
   useEffect(() => {
     const userAgent = navigator.userAgent;
@@ -35,7 +33,7 @@ const Loading = () => {
       <div className="backgroundDash"></div>
       <div className="w-full h-full flex relative flex-grow justify-center items-center">
         <img
-          src="https://images2.imgbox.com/68/26/AGtl8eED_o.png"
+          src="https://images2.imgbox.com/2a/e1/p2xQCpxV_o.png"
           className="w-full object-contain absolute  h-[40%]"
           alt=""
         />

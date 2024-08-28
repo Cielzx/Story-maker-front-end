@@ -28,7 +28,6 @@ const NotRenewed = ({ isOpen, onClose, onOpen }: modalProps) => {
         const daysLate = differenceInDays(now, nextPayment);
 
         if (daysLate > 0) {
-          setMode("notRenewed");
           onOpen();
         }
       }
@@ -37,36 +36,37 @@ const NotRenewed = ({ isOpen, onClose, onOpen }: modalProps) => {
   useEffect(() => {
     getUser();
     paymentCheckout();
-  }, [user]);
+  }, [user, paymentCheckout]);
   return (
     <CustomModal
       isOpen={isOpen}
       onClose={onClose}
-      headerText=""
+      headerText="ALERTA!"
       MaxWidthBody="100%"
       MaxWidthHeader="100%"
       widthBody="100%"
       widthHeader="100%"
       heightBody="100%"
     >
-      <div className="w-[100%] h-full flex flex-col gap-2">
-        <h2 className="text-xl text-white text-center">
-          ASSINATURA NÃO RENOVADA
-        </h2>
-
+      <div className="w-[100%] h-full flex flex-col gap-1">
         <div className="w-full flex flex-col h-full justify-center items-center gap-2">
-          <AlertTriangle className="text-black" size={60} fill="yellow" />
-          <p className="text-white text-2xl">
-            Parece que sua assinatura não foi renovada
-          </p>
-          <p className="text-white text-2xl">
-            Por favor renove sua assinatura para continuar usando nosso produto
-          </p>
+          <div className="w-[80%] flex relative flex-col items-center text-clip gap-4">
+            <AlertTriangle className="text-black" size={60} fill="yellow" />
+            <div className="w-[500px] max-[680px]:w-full text-justify flex items-center flex-col gap-1 p-2">
+              <p className="text-white text-2xl">
+                Parece que sua assinatura não foi renovada
+              </p>
+              <p className="text-white text-2xl">
+                Por favor renove sua assinatura para continuar usando nosso
+                produto
+              </p>
+            </div>
+          </div>
 
-          <div className="w-full">
+          <div className="w-[80%] flex justify-center items-center">
             <button
               onClick={() => router.push("/login")}
-              className="w-[90%] btn-form text-white"
+              className="w-[200px] btn-form text-white"
             >
               Voltar ao Login
             </button>

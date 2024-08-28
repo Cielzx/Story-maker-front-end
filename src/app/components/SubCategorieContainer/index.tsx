@@ -54,7 +54,7 @@ const SubCategorieContainer = ({ id, subId }: props) => {
   }
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <>
       <div className="w-full flex items-center relative right-[0%] z-10 gap-2 bg-black justify-center text-3xl text-center h-[100px]">
         <button
           onClick={() => {
@@ -76,7 +76,6 @@ const SubCategorieContainer = ({ id, subId }: props) => {
           </h2>
         </div>
       </div>
-
       <div className="flex w-full h-[72vh] min-[940px]:h-[79vh]  justify-center items-center">
         {pathname.startsWith("/dashboard/") &&
         pathname.split("/").length === 4 ? (
@@ -85,7 +84,7 @@ const SubCategorieContainer = ({ id, subId }: props) => {
           <ReusableList items={subCategories} id={id} subId={subId} />
         )}
       </div>
-    </div>
+    </>
   );
 };
 

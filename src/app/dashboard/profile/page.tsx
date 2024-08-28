@@ -99,7 +99,7 @@ const Profile = () => {
   return (
     <div className="w-full h-full flex flex-col">
       <div className="backgroundDash"></div>
-      <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
+      <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-black items-center ">
         <section className="w-full flex flex-col">
           <div className="w-full  h-full bg-white  flex flex-col fixed justify-center items-center">
             <div
@@ -125,7 +125,7 @@ const Profile = () => {
                 <div className="w-[50%] flex flex-col gap-2 justify-center absolute bottom-[72%] z-10  items-center">
                   <div
                     {...getRootProps()}
-                    className="w-36 h-36 bg-white text-4xl group border border-black border-solid relative rounded-full bg-gray-900 max-[920px]:w-32 max-[920px]:h-32"
+                    className="w-36 h-36 bg-white text-4xl group border border-white border-solid relative rounded-full bg-gray-900 max-[920px]:w-32 max-[920px]:h-32"
                   >
                     <div className="hidden w-full h-full rounded-full flex items-center justify-center group-hover:flex absolute bg-[rgba(0,0,0,0.3)]">
                       <Camera />
@@ -145,7 +145,7 @@ const Profile = () => {
                   </div>
 
                   <div>
-                    <p className="text-3xl font-semibold text-white">
+                    <p className="text-3xl font-semibold text-black">
                       {user?.name}
                     </p>
                   </div>
@@ -156,7 +156,7 @@ const Profile = () => {
                   <>
                     <div className="w-full absolute left-[85%] top-[2%]  z-10 cursor-pointer">
                       <ArrowLeft
-                        className=""
+                        className="cursor-pointer"
                         onClick={() => setMode("profile")}
                         size={30}
                       />
@@ -167,7 +167,7 @@ const Profile = () => {
                   <>
                     <div className="w-full absolute left-[85%] top-[2%]  z-10 cursor-pointer">
                       <ArrowLeft
-                        className=""
+                        className="cursor-pointer"
                         onClick={() => setMode("profile")}
                         size={30}
                       />
@@ -175,16 +175,20 @@ const Profile = () => {
                     <InfoPlan />
                   </>
                 ) : (
-                  <div className="w-[100%] h-[74%] flex items-center flex-col gap-1 justify-end">
+                  <div className="w-full h-[74%] flex items-center flex-col gap-1 justify-end">
                     <div className="w-[80%] flex justify-between gap-1 items-center h-[50px]">
                       <button
                         onClick={() => setMode("info")}
-                        className="flex  gap-1"
+                        className="flex  gap-1 cursor-pointer"
                       >
                         <Edit /> Editar conta
                       </button>
 
-                      <ChevronRight onClick={() => setMode("info")} size={30} />
+                      <ChevronRight
+                        className="cursor-pointer"
+                        onClick={() => setMode("info")}
+                        size={30}
+                      />
                     </div>
 
                     <div className="w-[80%] flex justify-between gap-1 items-center h-[50px]">
@@ -196,6 +200,7 @@ const Profile = () => {
                       </button>
 
                       <ChevronRight
+                        className="cursor-pointer"
                         size={30}
                         onClick={() => setMode("changePassword")}
                       />
@@ -213,6 +218,7 @@ const Profile = () => {
                         </button>
 
                         <ChevronRight
+                          className="cursor-pointer"
                           onClick={() => setMode("infoPlan")}
                           size={30}
                         />
@@ -227,7 +233,11 @@ const Profile = () => {
                         <LogOut /> Sair da conta
                       </button>
 
-                      <ChevronRight size={30} onClick={() => handleLogout()} />
+                      <ChevronRight
+                        className="cursor-pointer"
+                        size={30}
+                        onClick={() => handleLogout()}
+                      />
                     </div>
                   </div>
                 )}

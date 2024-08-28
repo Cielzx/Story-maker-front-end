@@ -40,50 +40,52 @@ const DashMenu = () => {
       {pathname === "/login" || pathname === "/" ? (
         <></>
       ) : (
-        <div className="w-full p-2 absolute bottom-[0%] min-[940px]:left-[0%]  h-[46px] z-[10] flex text-white justify-center bg-black   p-2">
-          <div className="flex gap-2 w-[80%] justify-between">
-            <Home
-              className="cursor-pointer"
-              onClick={() => router.push("/dashboard")}
-              size={30}
-            />
+        <div className="w-full block">
+          <div className="w-full  p-2 absolute bottom-[0%] min-[940px]:left-[0%]  h-[46px] z-[10] flex text-white justify-center bg-black   p-2">
+            <div className="flex gap-2 max-[940px]:w-[80%] max-[1900px]:w-[40%] justify-between">
+              <Home
+                className="cursor-pointer"
+                onClick={() => router.push("/dashboard")}
+                size={30}
+              />
 
-            <Heart
-              onClick={() => {
-                router.push("/dashboard/favorites");
-              }}
-              className="cursor-pointer"
-              size={30}
-            />
+              <Heart
+                onClick={() => {
+                  router.push("/dashboard/favorites");
+                }}
+                className="cursor-pointer"
+                size={30}
+              />
 
-            {user.is_admin &&
-            pathname !== "/dashboard/profile" &&
-            pathname !== "/dashboard/favorites" ? (
-              <>
-                <MonitorCog
-                  className="cursor-pointer"
-                  onClick={() => {
-                    onOpen(), setMode(pageMode);
-                  }}
-                  size={30}
-                />
-              </>
+              {user.is_admin &&
+              pathname !== "/dashboard/profile" &&
+              pathname !== "/dashboard/favorites" ? (
+                <>
+                  <MonitorCog
+                    className="cursor-pointer"
+                    onClick={() => {
+                      onOpen(), setMode(pageMode);
+                    }}
+                    size={30}
+                  />
+                </>
+              ) : (
+                <></>
+              )}
+
+              <CircleUserRound
+                onClick={() => router.push("/dashboard/profile")}
+                className="cursor-pointer"
+                size={30}
+              />
+            </div>
+
+            {user.is_admin ? (
+              <CategoryModal isOpen={isOpen} onClose={onClose} />
             ) : (
               <></>
             )}
-
-            <CircleUserRound
-              onClick={() => router.push("/dashboard/profile")}
-              className="cursor-pointer"
-              size={30}
-            />
           </div>
-
-          {user.is_admin ? (
-            <CategoryModal isOpen={isOpen} onClose={onClose} />
-          ) : (
-            <></>
-          )}
         </div>
       )}
     </>

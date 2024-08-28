@@ -12,12 +12,12 @@ const InputProfile = forwardRef<HTMLInputElement, iInputProps>(
   ({ type, id, error, label, ...rest }, ref) => {
     return (
       <>
-        <div className="max-[940px]:w-full min-[940px]:w-full border-b border-1 text-white border-black relative">
+        <div className="max-[940px]:w-full min-[940px]:w-full border-b border-1 text-black border-black relative">
           <label className="block  font-semibold mb-2" htmlFor={id}>
             {label}
           </label>
           <input
-            className="input-style w-full text-white outline-none"
+            className="input-style w-full text-black outline-none"
             required
             type={type}
             id={id}

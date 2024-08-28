@@ -68,7 +68,7 @@ const CustomModal = ({
           >
             <p className="font-bold text-xl">{headerText}</p>
 
-            {mode === "notRenewed" ? (
+            {headerText === "ALERTA!" ? (
               <></>
             ) : (
               <button onClick={onClose}>

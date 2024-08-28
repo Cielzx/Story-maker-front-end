@@ -55,7 +55,7 @@ const Sticker = ({
 
         <Heart
           size={20}
-          className="z-[10]"
+          className="z-[10] absolute right-1"
           fill={favoriteIds.includes(item.id) ? "red" : "transparent"}
           onClick={() => {
             handleFavoriteClick(item);

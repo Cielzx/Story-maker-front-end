@@ -16,7 +16,7 @@ const Login = () => {
           <div className="w-full h-full justify-center items-center flex flex-col">
             <div className="text-center h-40 w-full flex justify-center items-center">
               <img
-                src="https://images2.imgbox.com/68/26/AGtl8eED_o.png"
+                src="https://images2.imgbox.com/2a/e1/p2xQCpxV_o.png"
                 className="w-3/4 object-contain h-[171%]"
                 alt=""
               />
