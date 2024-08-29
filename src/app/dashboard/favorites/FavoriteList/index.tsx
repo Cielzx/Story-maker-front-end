@@ -46,7 +46,7 @@ const FavoriteList = ({ items, color, opacity }: props) => {
               {item.sticker.figure_image.endsWith("svg") ? (
                 <img
                   src="https://images2.imgbox.com/ef/4e/BzXeOtCi_o.png"
-                  className="w-[20px] h-[20px] absolute top-[4%]"
+                  className="w-[20px] h-[20px] absolute top-[2%] left-[3%]"
                   alt="color-circle"
                 />
               ) : (

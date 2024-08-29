@@ -105,7 +105,7 @@ const Profile = () => {
             <div
               className="w-[100%] h-[55%] flex justify-center"
               style={{
-                backgroundImage: `url(https://images2.imgbox.com/4f/49/NfAbt61z_o.jpg)`,
+                backgroundImage: `url(https://images2.imgbox.com/b3/e3/YHuJtP60_o.jpg)`,
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
