@@ -3,9 +3,11 @@ import { useCategory, useUSer } from "@/hooks";
 import Loading from "@/app/components/Loading";
 import SubCategorieContainer from "@/app/components/SubCategorieContainer";
 import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
 
 const SubCategoriePage = ({ params }: { params: { id: string } }) => {
   const { user, getUser } = useUSer();
+
   const [isLoading, setIsLoading] = useState(true);
   const {
     getCategory,
@@ -26,7 +28,11 @@ const SubCategoriePage = ({ params }: { params: { id: string } }) => {
   if (isLoading) {
     return <Loading />;
   }
-  return <SubCategorieContainer id={params.id} />;
+  return (
+    <>
+      <SubCategorieContainer id={params.id} />
+    </>
+  );
 };
 
 export default SubCategoriePage;

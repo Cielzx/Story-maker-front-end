@@ -29,7 +29,7 @@ interface stickerValues {
   sticker: iSticker | undefined;
   getSticker: (id?: string) => void;
   setFigureImage: React.Dispatch<React.SetStateAction<File | null>>;
-  createSticker: (imgMode?: string) => void;
+  createSticker: (imgMode?: string, file?: File) => void;
   deleteSticker: (id: string) => void;
   deleteFavorite: (id: string) => void;
   createFavorite: (userId: string, stickerId?: string) => void;
@@ -78,6 +78,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
   ) => {
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
+      console.log(imgMode);
       const fd = new FormData();
       if (figureImage?.name.includes("jpg")) {
         Toast({
@@ -102,7 +103,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
-  const createSticker = async (imgMode?: string) => {
+  const createSticker = async (imgMode?: string, file?: File) => {
     try {
       const updatedData = {
         subCategoryId: subCategoryId,
@@ -115,7 +116,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
         });
       } else {
         const response = await api.post<iSticker>("stickers", updatedData);
-        await uploadStickerFile(response.data.id, figureImage!, imgMode);
+        await uploadStickerFile(response.data.id, file!, imgMode);
 
         Toast({
           message: "Figurinha criada com sucesso",

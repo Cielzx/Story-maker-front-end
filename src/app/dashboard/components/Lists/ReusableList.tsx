@@ -139,6 +139,16 @@ const ReusableList = ({ items, search }: props) => {
         }
       });
     }
+
+    if (clientMode === "subCategory") {
+      filteredItems = items.filter((item) => {
+        if (clientMode === "subCategory" && items) {
+          return item.item_name
+            .toLocaleLowerCase()
+            .includes(search!.toLocaleLowerCase());
+        }
+      });
+    }
   }
 
   if (!search) {
@@ -277,18 +287,20 @@ const ReusableList = ({ items, search }: props) => {
                       ></div>
                     )}
 
-                    <span
-                      className="absolute   font-semibold font-nixie bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
-                      style={{
-                        fontSize: "clamp(1rem, 1vw + 1rem, 1rem)",
-                      }}
-                    >
-                      {clientMode === "category" ? (
-                        <>{item.category_name}</>
-                      ) : (
-                        <>{item.item_name}</>
-                      )}
-                    </span>
+                    <div className="w-full flex items-center h-[18%] absolute bottom-2 p-1">
+                      <span
+                        className="font-semibold font-nixie  bg-black bg-opacity-50 text-white px-2 py-1 rounded-md cursor-pointer"
+                        style={{
+                          fontSize: "clamp(1rem, 1vw + 1rem, 1rem)",
+                        }}
+                      >
+                        {clientMode === "category" ? (
+                          <>{item.category_name}</>
+                        ) : (
+                          <>{item.item_name}</>
+                        )}
+                      </span>
+                    </div>
                   </li>
                 )}
               </motion.div>

@@ -1,12 +1,13 @@
 import Input from "@/app/components/Input";
 import CustomModal from "@/app/components/Modal";
+import Toast from "@/app/components/Toast";
 import { iSubCategories } from "@/context/categoryContext";
 import { useCategory, useSticker, useUSer } from "@/hooks";
 import { CategoryData, CombineCategorySchema } from "@/schemas/category.schema";
 import { StickerData, StickerSchema } from "@/schemas/sticker.schema";
 import { Image, Sticker, Target } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useForm, UseFormRegister } from "react-hook-form";
 
@@ -22,7 +23,8 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
   const { setFigureImage, createSticker, uploadStickerFile } = useSticker();
   const { user, updateUser } = useUSer();
   const { mode } = useUSer();
-  const [files, setFiles] = useState<File[]>([]);
+  const [multi, setMulti] = useState(false);
+  const [filesPaste, setFiles] = useState<File[]>([]);
   const {
     register,
     handleSubmit,
@@ -30,23 +32,44 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
   } = useForm<CombineCategorySchema>();
   const [preview, SetPreview] = useState<string | ArrayBuffer | null>();
   const [imgMode, setImgMode] = useState("");
+  const pathname = usePathname();
+  const pathWithoutLeadingSlash = pathname.startsWith("/")
+    ? pathname.slice(1)
+    : pathname;
+  const pathParts = pathWithoutLeadingSlash.split("/");
+  console.log(filesPaste);
+  const onDrop = useCallback(
+    (files: File[]) => {
+      files.forEach(async (file, index: number) => {
+        setTimeout(() => {
+          if (imgMode !== "") {
+            createSticker(imgMode, files[index] || filesPaste[index]);
+          } else {
+            Toast({
+              message: "Selecione o formato da imagem SVG OU PNG",
+              isSucess: false,
+            });
+          }
+        }, 1000);
 
-  const onDrop = useCallback((files: File[]) => {
-    setFigureImage(files[0]);
+        // setFigureImage(files[index]);
+      });
 
-    const file = new FileReader();
+      const file = new FileReader();
 
-    file.onload = () => {
-      SetPreview(file.result);
-    };
+      file.onload = () => {
+        SetPreview(file.result);
+      };
 
-    file.readAsDataURL(files[0]);
-    setCoverImage(files[0]);
-  }, []);
+      file.readAsDataURL(files[0]);
+      setCoverImage(files[0]);
+    },
+    [imgMode]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-
+    multiple: multi,
     accept: {
       "image/*": [".jpg", ".jpeg", ".png", ".heif", ".heic"],
     },
@@ -65,6 +88,19 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
         }
       }
     }
+
+    pastedFiles.forEach(async (pasteFile, index: number) => {
+      setTimeout(() => {
+        if (imgMode !== "") {
+          createSticker(imgMode, pastedFiles[index]);
+        } else {
+          Toast({
+            message: "Selecione o formato da imagem SVG OU PNG",
+            isSucess: false,
+          });
+        }
+      }, 1000);
+    });
 
     const file = new FileReader();
 
@@ -124,6 +160,10 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
       onClose();
     }, 1000);
   };
+
+  useEffect(() => {
+    setMulti(true);
+  }, []);
 
   return (
     <CustomModal
@@ -210,9 +250,13 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
           <></>
         )}
 
-        <button type="submit" className="btn-form">
-          Criar
-        </button>
+        {mode === "sticker" ? (
+          <></>
+        ) : (
+          <button type="submit" className="btn-form">
+            Criar
+          </button>
+        )}
       </form>
     </CustomModal>
   );
