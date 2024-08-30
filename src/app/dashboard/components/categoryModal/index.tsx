@@ -37,7 +37,7 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
     ? pathname.slice(1)
     : pathname;
   const pathParts = pathWithoutLeadingSlash.split("/");
-  console.log(filesPaste);
+
   const onDrop = useCallback(
     (files: File[]) => {
       files.forEach(async (file, index: number) => {

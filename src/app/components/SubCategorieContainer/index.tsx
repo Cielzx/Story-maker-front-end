@@ -82,12 +82,12 @@ const SubCategorieContainer = ({ id, subId }: props) => {
           <ReusableList items={subCategorie!.stickers} id={id} subId={subId} />
         ) : (
           <>
-            <div className="w-[70%] min-[940px]:w-[50%] min-[940px]:right-[22%] max-[940px]:right-[8%] flex flex-row-reverse items-center  relative top-[4%]  gap-1  p-1 bg-white rounded-md">
+            <div className="w-[70%] min-[940px]:w-[50%] min-[940px]:right-[22%] max-[940px]:right-[8%] flex flex-row-reverse items-center  relative top-[2%]  gap-1  p-1 bg-white z-10 rounded-md">
               <input
                 type="text"
                 value={search}
                 placeholder="Pesquisar..."
-                className="text-black outline-none w-[97%]"
+                className="text-black outline-none w-[97%] z-[5px]"
                 onChange={(e) => setSearch(e.target.value)}
                 id="text"
               />
