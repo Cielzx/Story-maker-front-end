@@ -237,7 +237,7 @@ const StickerCanvas = ({
       <Stage
         className="flex justify-center items-center  text-center z-8"
         width={dimensions.width}
-        height={480}
+        height={dimensions.height}
         ref={stageRef}
       >
         <Layer className="flex justify-center items-center">
@@ -281,7 +281,7 @@ const StickerCanvas = ({
         </Layer>
       </Stage>
 
-      <div className="w-full h-[50px] absolute bg-[rgba(0,0,0,0.4)] rounded-md flex justify-center items-center text-white z-[9]">
+      <div className="w-full h-[50px] absolute bottom-0 bg-[rgba(0,0,0,0.4)] rounded-md flex justify-center items-center text-white z-[9]">
         <button onClick={() => setFormat(!format)} className="btn-form">
           {format ? "Fechar" : "Criar figurinha"}
         </button>
