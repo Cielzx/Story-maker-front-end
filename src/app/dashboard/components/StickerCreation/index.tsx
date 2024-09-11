@@ -178,7 +178,7 @@ const StickerCanvas = ({
 
   return (
     <div
-      className="w-full h-[90%] border border-s-wite relative"
+      className="w-full h-[90%] relative"
       style={{
         backgroundImage:
           "url(https://img.freepik.com/vetores-premium/padrao-quadrado-cinza-sem-costura-textura-transparente-quadriculada_53562-19403.jpg)",
