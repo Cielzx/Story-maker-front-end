@@ -19,6 +19,7 @@ import { modalModeProps, textProps } from "../UserStickerModal";
 import { useSticker, useUSer } from "@/hooks";
 import { Cloudinary } from "cloudinary-core";
 import { useTimeout } from "react-use";
+import { KonvaEventObject } from "konva/lib/Node";
 
 interface konvasProps {
   currentText: string;
@@ -172,6 +173,19 @@ const StickerCanvas = ({
     }
   };
 
+  const lastTap = useRef<number>(0);
+
+  const handleTouchEnd = (e: KonvaEventObject<TouchEvent>, id: number) => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap.current;
+
+    if (tapLength < 300 && tapLength > 0) {
+      handleDblClick(id);
+    }
+
+    lastTap.current = currentTime;
+  };
+
   useEffect(() => {
     loadImage();
   }, [textProps.image]);
@@ -275,6 +289,7 @@ const StickerCanvas = ({
                 y={50}
                 draggable
                 onDblClick={() => handleDblClick(img.id)}
+                onTouchEnd={(e) => handleTouchEnd(e, img.id)}
               />
             </Group>
           ))}

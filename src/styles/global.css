@@ -30,12 +30,6 @@
 
 :root {
   --vh: 1vh;
-  --dvh-unit: 1dvh;
-  --viewport-height: calc(calc(var(--dvh-unit) * 100));
-}
-
-.heightList {
-  height: calc(var(--viewport-height, 100%));
 }
 
 html {
@@ -58,11 +52,6 @@ body {
     rgb(2, 8, 17)
   );
   background-size: cover;
-}
-
-.heightFill {
-  height: 100%;
-  height: -webkit-fill-availabe;
 }
 
 input[type="range"] {
