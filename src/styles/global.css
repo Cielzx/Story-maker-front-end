@@ -38,11 +38,16 @@
   height: calc(var(--viewport-height, 100%));
 }
 
+html {
+  height: -webkit-fill-availabe;
+}
+
 body {
   display: flex;
   flex-direction: column;
   max-width: 100%;
   margin: 0 auto;
+  height: 100vh;
   height: -webkit-fill-availabe;
 
   background: linear-gradient(

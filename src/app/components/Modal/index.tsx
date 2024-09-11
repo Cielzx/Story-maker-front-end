@@ -44,15 +44,16 @@ const CustomModal = ({
         style={{
           flexGrow: 0,
           flexShrink: 0,
+          height: "-webkit-fill-available",
         }}
         className="flex flex-col items-center justify-center z-10  bg-black bg-opacity-70 "
       >
         <ModalBody
           style={{
             padding: "1rem",
-            height: heightBody,
             flexGrow: 0,
             flexShrink: 0,
+            height: heightBody,
           }}
           className="bg-[rgba(0,0,0,0.9)] flex w-[100%] flex-col relative gap-5 justify-start p-5 min-[940px]:w-[600px] "
         >

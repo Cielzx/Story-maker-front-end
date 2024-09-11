@@ -130,7 +130,7 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
       MaxWidthHeader="100%"
       widthBody="100%"
       widthHeader="100%"
-      heightBody="-webkit-fill-availabe"
+      heightBody="100%"
     >
       {modalMode.font ? (
         <FontWrapper
