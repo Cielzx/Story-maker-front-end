@@ -4,7 +4,7 @@ import { ptBR } from "date-fns/locale";
 
 const InfoPlan = () => {
   const { user, mode } = useUSer();
-
+ 
   const date = new Date(user!.subscription!.next_payment);
 
   const formattedDate = format(date, "d 'de' MMMM 'de' yyyy", { locale: ptBR });

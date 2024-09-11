@@ -32,6 +32,10 @@ export default function RootLayout({
     >
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Raleway:wght@400;700&family=Poppins:wght@400;700&family=Ubuntu:wght@400;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@400;700&family=Nunito:wght@400;700&family=Oswald:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
         <script src="public/js/viewport.js" defer></script>
       </Head>
       <body

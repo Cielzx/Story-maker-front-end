@@ -273,7 +273,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
       getCategory();
     } catch (error) {
       Toast({
-        message: "Algo deu errado ao tentar deletar sua musica!",
+        message: "Algo deu errado!",
         isSucess: false,
       });
     }
@@ -292,7 +292,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
       getCategory(categoryId);
     } catch (error) {
       Toast({
-        message: "Algo deu errado ao tentar deletar sua musica!",
+        message: "Algo deu errado!",
         isSucess: false,
       });
     }

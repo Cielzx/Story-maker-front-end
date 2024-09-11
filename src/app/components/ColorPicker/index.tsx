@@ -4,15 +4,15 @@ import { SketchPicker } from "react-color";
 interface PickerProps {
   showPicker: boolean;
   setShowPicker: Dispatch<SetStateAction<boolean>>;
-  color: string;
-  handleColorChange: (color: any) => void;
-  handleOpacityChange: (event: any) => void;
+  color?: string;
+  handleColorChange?: (color: any) => void;
+  handleOpacityChange?: (event: any) => void;
   rgbcolor: {
     r: number;
     g: number;
     b: number;
   };
-  opacity: number;
+  opacity?: number;
 }
 
 const ColorPicker = ({

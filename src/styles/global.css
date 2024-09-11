@@ -91,7 +91,6 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
   border-radius: 50%;
 }
-
 input[type="range"]::-ms-thumb {
   width: 10px;
   height: 10px;
@@ -99,6 +98,18 @@ input[type="range"]::-ms-thumb {
   background-size: contain;
   cursor: pointer;
   border-radius: 50%;
+}
+
+@media (max-width: 940px) {
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    background: white;
+    background-size: contain;
+    cursor: pointer;
+    border-radius: 50%;
+  }
 }
 
 .backgroundDash {
@@ -126,6 +137,13 @@ input[type="range"]::-ms-thumb {
   filter: blur(5px); */
 }
 
+@font-face {
+  font-family: "MyCustomFont";
+  src: url("/fonts/font_66afdaed4203d.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer components {
   .btn-primary {
     @apply w-28 h-8  bg-blue-950 border  border-blue-300 rounded-lg flex justify-center items-center;
@@ -141,6 +159,10 @@ input[type="range"]::-ms-thumb {
 
   .btn-dropDown {
     @apply flex gap-1 items-center justify-start text-gray-400 text-sm;
+  }
+
+  .btn-userSticker {
+    @apply w-full h-[2.2rem] border border-s-white text-white bg-white dark:bg-neutral-900 dark:border-neutral-700;
   }
 
   .btn-secundary {

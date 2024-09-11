@@ -1,15 +1,25 @@
 "use client";
-import { Home, UploadIcon, CircleUserRound, MonitorCog } from "lucide-react";
+import {
+  Home,
+  UploadIcon,
+  CircleUserRound,
+  MonitorCog,
+  CirclePlus,
+  Sticker,
+} from "lucide-react";
 import CategoryModal from "../categoryModal";
 import { useDisclosure } from "@chakra-ui/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useUSer } from "@/hooks";
 import { Heart } from "@phosphor-icons/react/dist/ssr";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import UserStickerModal from "../UserStickerModal";
 
 const DashMenu = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { setMode, user, mode } = useUSer();
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [modalSticker, setModalSticker] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   let pageMode = "";
@@ -30,6 +40,16 @@ const DashMenu = () => {
       pageMode = "sticker";
     }
   }, [pathname, mode]);
+
+  const openModal = (modalName: string) => {
+    setActiveModal(modalName); // Define o modal ativo
+    onOpen(); // Abre o modal
+  };
+
+  const closeModal = () => {
+    setActiveModal(null); // Reseta o modal ativo quando fechado
+    onClose();
+  };
 
   if (!user) {
     return <></>;
@@ -57,14 +77,34 @@ const DashMenu = () => {
                 size={30}
               />
 
+              <CirclePlus
+                className="cursor-pointer relative bottom-2"
+                onClick={() => {
+                  openModal("UserStickerModal");
+                }}
+                size={50}
+                color="black"
+                fill="white"
+              />
+
+              <Sticker
+                onClick={() => {
+                  router.push("/dashboard/user-stickers");
+                }}
+                className="cursor-pointer"
+                size={30}
+              />
+
               {user.is_admin &&
               pathname !== "/dashboard/profile" &&
-              pathname !== "/dashboard/favorites" ? (
+              pathname !== "/dashboard/favorites" &&
+              pathname !== "/dashboard/user-stickers" ? (
                 <>
                   <MonitorCog
                     className="cursor-pointer"
                     onClick={() => {
-                      onOpen(), setMode(pageMode);
+                      setMode(pageMode);
+                      openModal("UserAdmModal");
                     }}
                     size={30}
                   />
@@ -75,15 +115,21 @@ const DashMenu = () => {
 
               <CircleUserRound
                 onClick={() => router.push("/dashboard/profile")}
-                className="cursor-pointer"
+                className="cursor-pointer "
                 size={30}
               />
             </div>
 
-            {user.is_admin ? (
-              <CategoryModal isOpen={isOpen} onClose={onClose} />
-            ) : (
-              <></>
+            {activeModal === "UserAdmModal" && (
+              <CategoryModal isOpen={!!activeModal} onClose={closeModal} />
+            )}
+
+            {activeModal === "UserStickerModal" && (
+              <UserStickerModal
+                isOpen={!!activeModal}
+                onClose={closeModal}
+                modalSticker={modalSticker}
+              />
             )}
           </div>
         </div>

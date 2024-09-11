@@ -30,7 +30,8 @@ interface stickerValues {
   getSticker: (id?: string) => void;
   setFigureImage: React.Dispatch<React.SetStateAction<File | null>>;
   createSticker: (imgMode?: string, file?: File) => void;
-  deleteSticker: (id: string) => void;
+  createUserSticker: (imgMode?: string, file?: File) => Promise<void>;
+  deleteSticker: (id: string, userId?: string) => void;
   deleteFavorite: (id: string) => void;
   createFavorite: (userId: string, stickerId?: string) => void;
   uploadStickerFile: (
@@ -43,12 +44,22 @@ interface stickerValues {
     color: string,
     opacity: number
   ): Promise<Blob>;
+  createIcon: (file?: File) => Promise<void>;
+  deleteIcon: (id: string) => Promise<void>;
+  getIcons: () => Promise<void>;
+  icons: iIcon[] | undefined;
+}
+
+interface iIcon {
+  id: string;
+  icon_image: string;
 }
 
 export const StickerContext = createContext<stickerValues>({} as stickerValues);
 
 export const StickerProvider = ({ children }: categoryProp) => {
   const [sticker, setSticker] = useState<iSticker>();
+  const [icons, setIcons] = useState<iIcon[]>();
   const [figureImage, setFigureImage] = useState<File | null>(null);
   const [showSpinner, setShowSpinner] = useState(false);
   const cookies = parseCookies();
@@ -57,7 +68,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
   const { subCategories, subCategorie, getCategory, getSubCategorie } =
     useCategory();
 
-  const { getUser } = useUSer();
+  const { getUser, user } = useUSer();
 
   const pathWithoutLeadingSlash = pathname.startsWith("/")
     ? pathname.slice(1)
@@ -78,7 +89,6 @@ export const StickerProvider = ({ children }: categoryProp) => {
   ) => {
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
-      console.log(imgMode);
       const fd = new FormData();
       if (figureImage?.name.includes("jpg")) {
         Toast({
@@ -133,8 +143,114 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
-  const deleteSticker = async (id: string) => {
+  const deleteIcon = async (id: string) => {
     try {
+      await api.delete(`stickers/icon/${id}`);
+      Toast({
+        message: "Deletado com sucesso!",
+        isSucess: true,
+      });
+
+      getIcons();
+    } catch (error) {
+      Toast({
+        message: "Algo deu errado!",
+        isSucess: false,
+      });
+    }
+  };
+
+  const iconUpload = async (iconId: string, iconImage: File) => {
+    try {
+      const config = { headers: { "Content-Type": "multipart/form-data" } };
+      const fd = new FormData();
+      if (iconImage?.name.includes("jpg")) {
+        Toast({
+          message: "Formato não suportado, use o formato PNG",
+          isSucess: false,
+        });
+      }
+
+      if (iconImage?.name.includes("png")) {
+        fd.append("icon_image", iconImage);
+        const res = await api.patch(`stickers/icon/${iconId}`, fd, config);
+        return res.status;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getIcons = async () => {
+    try {
+      const response = await api.get("stickers/icons");
+      setIcons(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createIcon = async (file?: File) => {
+    try {
+      if (file?.name.includes("jpg")) {
+        Toast({
+          message: "Formato não suportado, use o formato PNG",
+          isSucess: false,
+        });
+      } else {
+        const response = await api.post(`stickers/icon`);
+        await iconUpload(response.data.id, file!);
+
+        Toast({
+          message: "Icon adicionado com sucesso",
+          isSucess: true,
+        });
+        getIcons();
+      }
+    } catch (error) {}
+  };
+
+  const createUserSticker = async (imgMode?: string, file?: File) => {
+    try {
+      const updatedData = {
+        subCategoryId: null,
+      };
+
+      if (file?.name.includes("jpg")) {
+        Toast({
+          message: "Formato não suportado, use o formato PNG",
+          isSucess: false,
+        });
+      } else {
+        const response = await api.post<iSticker>(
+          `stickers/user-sticker/${user!.id}`,
+          updatedData
+        );
+        await uploadStickerFile(response.data.id, file!, imgMode);
+
+        Toast({
+          message: "Figurinha criada com sucesso",
+          isSucess: true,
+        });
+        getUser();
+        getSubCategorie(subCategoryId);
+      }
+    } catch (error) {
+      console.log(error);
+      Toast({
+        message: "Ops! algo deu errado :(",
+        isSucess: false,
+      });
+    }
+  };
+
+  const deleteSticker = async (id: string, userId?: string) => {
+    try {
+      let url = `stickers/${id}`;
+      if (userId) {
+        url = `stickers/${userId}/${id}}`;
+      }
+
       await api.delete(`stickers/${id}`);
       Toast({
         message: "Deletado com sucesso!",
@@ -147,7 +263,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
       getSubCategorie(subCategoryId);
     } catch (error) {
       Toast({
-        message: "Algo deu errado ao tentar deletar sua musica!",
+        message: "Algo deu errado!",
         isSucess: false,
       });
     }
@@ -188,7 +304,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
       getUser();
     } catch (error) {
       Toast({
-        message: "Algo deu errado ao tentar deletar sua musica!",
+        message: "Algo deu errado!",
         isSucess: false,
       });
     }
@@ -212,6 +328,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
 
     const img = new Image();
     const svgText = await blob.text();
+
     const coloredSvgText = svgText
       .replace(/fill="[^"]*"/g, "")
       .replace(/<svg([^>]+)>/, `<svg$1 fill="${color}">`)
@@ -257,12 +374,17 @@ export const StickerProvider = ({ children }: categoryProp) => {
         sticker,
         setFigureImage,
         createSticker,
+        createUserSticker,
         createFavorite,
         uploadStickerFile,
         getSticker,
         deleteFavorite,
         deleteSticker,
         writeImageToClipboard,
+        createIcon,
+        getIcons,
+        icons,
+        deleteIcon,
       }}
     >
       {children}

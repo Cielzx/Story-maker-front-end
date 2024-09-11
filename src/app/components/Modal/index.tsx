@@ -54,7 +54,7 @@ const CustomModal = ({
             flexGrow: 0,
             flexShrink: 0,
           }}
-          className="bg-[rgba(0,0,0,0.9)] flex w-[100%] flex-col  gap-5 justify-start p-5 min-[940px]:w-[600px] "
+          className="bg-[rgba(0,0,0,0.9)] flex w-[100%] flex-col relative gap-5 justify-start p-5 min-[940px]:w-[600px] "
         >
           <ModalHeader
             style={{

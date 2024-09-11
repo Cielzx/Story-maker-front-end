@@ -32,6 +32,11 @@ export interface userData {
   description: string;
   is_admin: boolean;
   favorites: favoriteData[];
+  my_stickers: {
+    id: string;
+    figure_image: string;
+    userId: string;
+  }[];
   subscription?: Subscription;
 }
 

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import ReusableList from "./components/Lists/ReusableList";
 import DashMenu from "./components/dashMenu";
+import KonvaSVGExample from "./components/StickerCreation";
 
 const DashBoard = () => {
   const { user, getUser } = useUSer();
