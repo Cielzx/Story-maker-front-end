@@ -270,6 +270,7 @@ const StickerCanvas = ({
         <Layer className="flex justify-center items-center">
           {texts.map((text) => (
             <Text
+              key={text.id}
               id={`text-${text.id}`}
               x={100}
               y={10 + text.id * 20}
