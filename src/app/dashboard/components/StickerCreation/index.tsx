@@ -32,10 +32,26 @@ interface konvasProps {
   setModalMode: Dispatch<SetStateAction<modalModeProps>>;
   modalMode: modalModeProps;
   setTextProps: Dispatch<SetStateAction<textProps>>;
+  images: {
+    id: number;
+    image: HTMLImageElement;
+    removed: boolean;
+  }[];
+
+  setImages: React.Dispatch<
+    React.SetStateAction<
+      {
+        id: number;
+        image: HTMLImageElement;
+        removed: boolean;
+      }[]
+    >
+  >;
 }
 
 const StickerCanvas = ({
   textProps,
+  setTextProps,
   nextId,
   texts,
   setTexts,
@@ -44,6 +60,8 @@ const StickerCanvas = ({
   setModalMode,
   currentText,
   setCurrentText,
+  images,
+  setImages,
 }: konvasProps) => {
   const { createUserSticker } = useSticker();
   const { user, getUser } = useUSer();
@@ -51,18 +69,16 @@ const StickerCanvas = ({
 
   const textRef = useRef<Konva.Text>(null);
 
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
   const [format, setFormat] = useState(false);
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  const [images, setImages] = useState<
-    { id: number; image: HTMLImageElement }[]
-  >([]);
-
   const cloudinary = new Cloudinary({ cloud_name: "dpv8s8uvd" });
   const imgUrl = cloudinary.url(textProps.image, {
-    secure: true, // Gera um link seguro (https)
-    crossorigin: "anonymous", // Para evitar problemas com CORS
+    secure: true,
+    crossorigin: "anonymous",
   });
 
   const loadImage = () => {
@@ -72,13 +88,19 @@ const StickerCanvas = ({
     img.onload = () => {
       setImages((prevImages) => [
         ...prevImages,
-        { id: Date.now(), image: img },
+        { id: Date.now(), image: img, removed: false },
       ]);
     };
   };
 
   const handleDblClick = (id: number) => {
-    setImages((prevImages) => prevImages.filter((img) => img.id !== id));
+    setImages((prevImages) =>
+      prevImages.map((img) => (img.id === id ? { ...img, removed: true } : img))
+    );
+    setTextProps({ ...textProps, image: "" });
+    if (stageRef.current) {
+      setSelectedId(null);
+    }
   };
 
   useEffect(() => {
@@ -132,6 +154,10 @@ const StickerCanvas = ({
 
         const file = dataURLToFile(dataURL, "sticker.png");
 
+        if (textProps.image) {
+          imgMode = "png";
+        }
+
         createUserSticker(imgMode, file);
 
         getUser();
@@ -160,6 +186,7 @@ const StickerCanvas = ({
         letterSpacing: 0,
         strokeWidth: 0,
         image: "",
+        iconHeight: 50,
       },
     ]);
     setNextId(nextId + 1);
@@ -184,6 +211,25 @@ const StickerCanvas = ({
     }
 
     lastTap.current = currentTime;
+  };
+
+  const trRef = useRef<Konva.Transformer>(null);
+
+  const handleSelect = (id: number) => {
+    setSelectedId(id);
+  };
+
+  const handleDeselect = (e: KonvaEventObject<MouseEvent>) => {
+    if (e.target === stageRef.current) {
+      setSelectedId(null);
+    }
+  };
+
+  const addTransformer = (node: Konva.Node | null) => {
+    if (node && trRef.current) {
+      trRef.current.nodes([node]);
+      trRef.current.getLayer()?.batchDraw();
+    }
   };
 
   useEffect(() => {
@@ -214,90 +260,64 @@ const StickerCanvas = ({
         <></>
       )}
 
-      {format && (
-        <div className="w-full h-full absolute bg-[rgba(0,0,0,0.6)] flex flex-col gap-4 text-white z-[9] justify-center items-center p-2">
-          <h2>Escolha o formato da sua figurinha :)</h2>
-          <div className="w-full flex">
-            <div className="w-[50%] flex justify-center items-center">
-              <button
-                onClick={() => {
-                  userSticker("png");
-                  setTimeout(() => {
-                    setFormat(!format);
-                  }, 3000);
-                }}
-                className="btn-form"
-              >
-                PNG
-              </button>
-            </div>
-            <div className="w-[50%] flex justify-center items-center">
-              <button
-                onClick={() => {
-                  userSticker("");
-                  setTimeout(() => {
-                    setFormat(!format);
-                  }, 4000);
-                }}
-                className="btn-form"
-              >
-                SVG
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       <Stage
         className="flex justify-center items-center  text-center z-8"
         width={dimensions.width}
-        height={dimensions.height}
+        height={520}
         ref={stageRef}
+        onMouseDown={handleDeselect}
       >
         <Layer className="flex justify-center items-center">
           {texts.map((text) => (
-            <Group key={text.id} x={150} y={100} draggable>
-              <Text
-                id={`text-${text.id}`}
-                x={-100}
-                y={10 + text.id * 10}
-                text={text.text}
-                fontSize={textProps.fontSize}
-                fontFamily={textProps.fontFamily}
-                fill={textProps.fill}
-                opacity={textProps.opacity}
-                letterSpacing={textProps.letterSpacing}
-                filters={[Konva.Filters.Blur]}
-                stroke="black"
-                strokeWidth={textProps.strokeWidth}
-                align="center"
-                draggable
-                onTransformEnd={handleTransform}
-                onDblClick={() => removeText(text.id)}
-              />
-            </Group>
+            <Text
+              id={`text-${text.id}`}
+              x={100}
+              y={10 + text.id * 20}
+              text={text.text}
+              fontSize={textProps.fontSize}
+              fontFamily={textProps.fontFamily}
+              fill={textProps.fill}
+              opacity={textProps.opacity}
+              letterSpacing={textProps.letterSpacing}
+              filters={[Konva.Filters.Blur]}
+              stroke="black"
+              strokeWidth={textProps.strokeWidth}
+              align="center"
+              draggable
+              onClick={() => handleSelect(text.id)}
+              onDblClick={() => removeText(text.id)}
+              ref={(node) => {
+                if (text.id === selectedId) addTransformer(node);
+              }}
+            />
           ))}
 
-          {images.map((img) => (
-            <Group key={img.id} x={150} y={100} draggable>
+          {images
+            .filter((img) => !img.removed)
+            .map((img) => (
               <Img
                 key={img.id}
                 image={img.image}
-                width={100}
-                height={100}
+                width={textProps.iconHeight}
+                height={textProps.iconHeight}
                 x={50}
                 y={50}
                 draggable
+                onClick={() => handleSelect(img.id)}
                 onDblClick={() => handleDblClick(img.id)}
                 onTouchEnd={(e) => handleTouchEnd(e, img.id)}
+                ref={(node) => {
+                  if (img.id === selectedId) addTransformer(node);
+                }}
               />
-            </Group>
-          ))}
+            ))}
+
+          {selectedId && <Transformer ref={trRef} />}
         </Layer>
       </Stage>
 
-      <div className="w-full h-[50px] absolute bottom-0 bg-[rgba(0,0,0,0.4)] rounded-md flex justify-center items-center text-white z-[9]">
-        <button onClick={() => setFormat(!format)} className="btn-form">
+      <div className="w-full h-[50px] absolute bottom-0 bg-[rgba(0,0,0,0.4)] flex justify-center items-center text-white z-[9]">
+        <button onClick={() => userSticker("")} className="btn-form">
           {format ? "Fechar" : "Criar figurinha"}
         </button>
       </div>

@@ -24,6 +24,7 @@ export interface textProps {
   letterSpacing: number;
   strokeWidth: number;
   image: string;
+  iconHeight: number;
 }
 export interface modalModeProps {
   text: boolean;
@@ -35,6 +36,7 @@ export interface modalModeProps {
   letterSpacing: boolean;
   strokeWidth: boolean;
   icon: boolean;
+  iconHeight: boolean;
 }
 
 interface Font {
@@ -55,6 +57,7 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
     letterSpacing: 0,
     strokeWidth: 0,
     image: "",
+    iconHeight: 50,
   });
 
   const [texts, setTexts] = useState<textProps[]>([
@@ -62,6 +65,10 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
   ]);
   const [nextId, setNextId] = useState(2);
   const [currentText, setCurrentText] = useState<string>("");
+
+  const [images, setImages] = useState<
+    { id: number; image: HTMLImageElement; removed: boolean }[]
+  >([]);
 
   const [modalMode, setModalMode] = useState({
     text: false,
@@ -73,6 +80,7 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
     letterSpacing: false,
     strokeWidth: false,
     icon: false,
+    iconHeight: false,
   });
   let value: string | number = "";
 
@@ -89,6 +97,10 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
   }
   if (modalMode.strokeWidth) {
     value = textProps.strokeWidth;
+  }
+
+  if (modalMode.iconHeight) {
+    value = textProps.iconHeight;
   }
 
   const handleColorChange = (color: any) => {
@@ -119,7 +131,7 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
     }
 
     fetchFonts();
-  }, []);
+  }, [isOpen]);
 
   return (
     <CustomModal
@@ -150,6 +162,8 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
           setModalMode={setModalMode}
           textProps={textProps}
           setTextProps={setTextProps}
+          images={images}
+          setImages={setImages}
         />
       ) : (
         <></>
@@ -166,11 +180,13 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
               setTexts={setTexts}
               currentText={currentText}
               setCurrentText={setCurrentText}
+              images={images}
+              setImages={setImages}
               modalMode={modalMode}
               setModalMode={setModalMode}
             />
 
-            <div className="w-full bg-black h-[80px] flex gap-2 relative  text-white">
+            <div className="w-full bg-black h-[70px] flex gap-2 relative justify-center items-center  text-white">
               <div>
                 {modalMode.fill ? (
                   <ChromePicker
@@ -187,13 +203,26 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
               {modalMode.fontSize ||
               modalMode.opacity ||
               modalMode.letterSpacing ||
-              modalMode.strokeWidth ? (
-                <div className="w-full h-[80px] z-[5] flex justify-center gap-2 items-center absolute bg-gray-700">
+              modalMode.strokeWidth ||
+              modalMode.iconHeight ? (
+                <div className="w-full h-full z-[5] flex justify-center gap-2 items-center absolute bg-gray-700">
                   <div className="w-[80%] h-[20px] border border-black rounded-md">
                     <input
                       type="range"
-                      min={modalMode.strokeWidth ? "0" : ""}
-                      max={modalMode.strokeWidth ? "5" : ""}
+                      min={
+                        modalMode.strokeWidth
+                          ? "0"
+                          : "" || modalMode.iconHeight
+                          ? "5"
+                          : ""
+                      }
+                      max={
+                        modalMode.strokeWidth
+                          ? "5"
+                          : "" || modalMode.iconHeight
+                          ? "300"
+                          : ""
+                      }
                       value={value}
                       onChange={(e) => {
                         {
@@ -216,6 +245,11 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
                             setTextProps({
                               ...textProps,
                               strokeWidth: +e.currentTarget.value,
+                            });
+                          } else if (modalMode.iconHeight) {
+                            setTextProps({
+                              ...textProps,
+                              iconHeight: +e.currentTarget.value,
                             });
                           }
                         }
@@ -247,6 +281,11 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
                           ...modalMode,
                           strokeWidth: !modalMode.strokeWidth,
                         });
+                      } else if (modalMode.iconHeight) {
+                        setModalMode({
+                          ...modalMode,
+                          iconHeight: !modalMode.iconHeight,
+                        });
                       }
                     }}
                     size={30}
@@ -266,6 +305,7 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
                 currentText={currentText}
                 setCurrentText={setCurrentText}
                 texts={texts}
+                textProps={textProps}
                 setTexts={setTexts}
               />
             </div>

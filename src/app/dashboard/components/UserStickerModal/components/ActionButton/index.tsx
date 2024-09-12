@@ -2,6 +2,7 @@ import {
   FlipHorizontal2,
   Heart,
   Icon,
+  Image,
   ListPlus,
   StarIcon,
   TypeOutline,
@@ -16,6 +17,7 @@ interface ButtonProps {
   currentText: string;
   setTexts: React.Dispatch<React.SetStateAction<textProps[]>>;
   texts: textProps[];
+  textProps: textProps;
   nextId: number;
   setNextId: React.Dispatch<React.SetStateAction<number>>;
   modalMode: modalModeProps;
@@ -29,6 +31,7 @@ const ActionButton = ({
   modalMode,
   setTexts,
   texts,
+  textProps,
   nextId,
   setNextId,
   currentText,
@@ -47,6 +50,8 @@ const ActionButton = ({
         letterSpacing: 0,
         strokeWidth: 0,
         image: "",
+
+        iconHeight: 50,
       },
     ]);
     setNextId(nextId + 1);
@@ -78,6 +83,20 @@ const ActionButton = ({
         }),
       icon: <ImFontSize size={25} />,
     },
+    ...(textProps.image
+      ? [
+          {
+            label: "Tamanho do icone",
+            onClick: () =>
+              setModalMode({
+                ...modalMode,
+                iconHeight: !modalMode.iconHeight,
+              }),
+            icon: <Image size={25} />,
+          },
+        ]
+      : []),
+
     {
       label: "Opacidade",
       onClick: () =>
@@ -143,8 +162,13 @@ const ActionButton = ({
             {action.icon}
           </p>
 
-          <div className="w-[60px] flex justify-center">
-            <p style={{ fontSize: "clamp(0.5rem, 1vw + 0.5rem, 1rem)" }}>
+          <div className="w-[60px] flex justify-center overflow-hidden relative">
+            <p
+              className={`whitespace-nowrap ${
+                action.label.length > 10 ? "scrolling-text" : ""
+              }`}
+              style={{ fontSize: "clamp(0.5rem, 1vw + 0.5rem, 1rem)" }}
+            >
               {action.label}
             </p>
           </div>

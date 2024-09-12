@@ -20,6 +20,22 @@ interface IconProps {
   modalMode: modalModeProps;
 
   setModalMode: Dispatch<SetStateAction<modalModeProps>>;
+
+  images: {
+    id: number;
+    image: HTMLImageElement;
+    removed: boolean;
+  }[];
+
+  setImages: React.Dispatch<
+    React.SetStateAction<
+      {
+        id: number;
+        image: HTMLImageElement;
+        removed: boolean;
+      }[]
+    >
+  >;
 }
 
 const IconWrapper = ({
@@ -27,6 +43,8 @@ const IconWrapper = ({
   setModalMode,
   textProps,
   setTextProps,
+  images,
+  setImages,
 }: IconProps) => {
   const { icons, createIcon, getIcons, deleteIcon } = useSticker();
   const { user } = useUSer();
@@ -58,6 +76,22 @@ const IconWrapper = ({
   useEffect(() => {
     getIcons();
   }, []);
+
+  const handleIconSelect = () => {
+    let id = 0;
+
+    const index = images.findIndex((img) => img.removed === false);
+
+    if (index !== -1) {
+      id = images[index].id;
+
+      setImages((prevImages) =>
+        prevImages.map((img, idx) =>
+          idx === index ? { ...img, removed: false } : img
+        )
+      );
+    }
+  };
 
   if (!user) {
     return <Loading />;
@@ -125,6 +159,7 @@ const IconWrapper = ({
               key={icon.id}
               onClick={() => {
                 setTextProps({ ...textProps, image: icon.icon_image });
+                handleIconSelect();
                 setModalMode({ ...modalMode, icon: !modalMode.icon });
               }}
               className="w-[80%] h-[130px] relative group"
