@@ -266,6 +266,7 @@ const StickerCanvas = ({
         height={520}
         ref={stageRef}
         onMouseDown={handleDeselect}
+        onTap={handleDeselect}
       >
         <Layer className="flex justify-center items-center">
           {texts.map((text) => (
@@ -286,6 +287,7 @@ const StickerCanvas = ({
               align="center"
               draggable
               onClick={() => handleSelect(text.id)}
+              onTap={() => handleSelect(text.id)}
               onDblClick={() => removeText(text.id)}
               ref={(node) => {
                 if (text.id === selectedId) addTransformer(node);
@@ -305,6 +307,7 @@ const StickerCanvas = ({
                 y={50}
                 draggable
                 onClick={() => handleSelect(img.id)}
+                onTap={() => handleSelect(img.id)}
                 onDblClick={() => handleDblClick(img.id)}
                 onTouchEnd={(e) => handleTouchEnd(e, img.id)}
                 ref={(node) => {
