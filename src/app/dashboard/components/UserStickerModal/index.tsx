@@ -57,7 +57,7 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
     letterSpacing: 0,
     strokeWidth: 0,
     image: "",
-    iconHeight: 50,
+    iconHeight: 100,
   });
 
   const [texts, setTexts] = useState<textProps[]>([
