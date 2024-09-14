@@ -65,7 +65,7 @@ const FontWrapper = ({
     return "";
   }
   return (
-    <div className="w-[60%] max-[940px]:w-full h-full flex flex-col absolute z-10 left-1 ">
+    <div className="w-full max-[940px]:w-full h-full flex flex-col absolute z-10 left-1 ">
       <div className="w-full h-[60px] text-white bg-black flex justify-center items-center relative">
         <button
           onClick={() => setModalMode({ ...modalMode, font: !modalMode.font })}
