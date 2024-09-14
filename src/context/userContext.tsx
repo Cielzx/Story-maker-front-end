@@ -40,6 +40,13 @@ export interface userData {
   subscription?: Subscription;
 }
 
+interface fontData {
+  id: string;
+  name: string;
+  fileUrl: string;
+  format: string;
+}
+
 interface Subscription {
   id: string;
   next_payment: Date;
@@ -68,12 +75,16 @@ interface userValues {
   description: string;
   updateDescription: (data: userDescription) => Promise<void>;
   setMode: Dispatch<SetStateAction<string>>;
+  fonts: fontData[];
+  fetchFonts(): Promise<void>;
+  createFont: (File: File, name: string) => Promise<number | undefined>;
 }
 
 export const UserContext = createContext<userValues>({} as userValues);
 
 export const UserProvider = ({ children }: userProviderProp) => {
   const [user, setUser] = useState<userData>();
+  const [fonts, setFonts] = useState<fontData[]>([]);
   let [userId, setUserId] = useState("");
   const [mode, setMode] = useState("");
   const [description, setDescription] = useState("");
@@ -94,6 +105,82 @@ export const UserProvider = ({ children }: userProviderProp) => {
       const id = decodedToken ? decodedToken.sub : null;
       const response = await api.get(`users/${id}`);
       setUser(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async function fetchFonts() {
+    try {
+      const response = await api.get(`users/fonts`);
+      if (!response) {
+        throw new Error(`HTTP error! Status: ${response}`);
+      }
+      const data = await response.data;
+      setFonts(data);
+
+      data.forEach(
+        (font: {
+          id: string;
+          name: string;
+          fileUrl: string;
+          format: string;
+        }) => {
+          const style = document.createElement("style");
+          style.textContent = `@font-face {
+          font-family: '${font.name}';
+          src: url('https://story-marker-backend.onrender.com${font.fileUrl}');
+        }`;
+          document.head.appendChild(style);
+        }
+      );
+    } catch (error) {
+      console.error("Error fetching fonts:", error);
+    }
+  }
+
+  const createFont = async (File: File, name: string) => {
+    try {
+      const supportedFormats = ["font/ttf", "font/otf"];
+      if (supportedFormats.includes(File.type)) {
+        const fd = new FormData();
+        fd.append("file", File);
+        fd.append("name", name);
+
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+
+        const response = await api.post("users/fonts", fd, config);
+
+        Toast({
+          message: "Fonte adicionada",
+          isSucess: true,
+        });
+
+        fetchFonts();
+
+        return response.status;
+      }
+    } catch (error) {
+      console.error("Erro ao adicionar fonte:", error);
+
+      Toast({
+        message: "Erro ao adicionar fonte",
+        isSucess: false,
+      });
+    }
+  };
+
+  const getFonts = async () => {
+    try {
+      const response = await api.get(`users/fonts`);
+
+      setFonts(response.data);
+
+      return fonts;
     } catch (error) {
       console.log(error);
     }
@@ -187,6 +274,9 @@ export const UserProvider = ({ children }: userProviderProp) => {
         setMode,
         description,
         updateDescription,
+        fonts,
+        fetchFonts,
+        createFont,
       }}
     >
       {children}

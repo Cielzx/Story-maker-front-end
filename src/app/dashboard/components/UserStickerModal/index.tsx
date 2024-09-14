@@ -6,6 +6,8 @@ import ActionButton from "./components/ActionButton";
 import { ChromePicker } from "react-color";
 import IconWrapper from "./components/iconWrapper";
 import StickerCanvas from "../StickerCreation";
+import { useUSer } from "@/hooks";
+import api from "@/services/api";
 
 interface modalProps {
   isOpen: boolean;
@@ -40,19 +42,19 @@ export interface modalModeProps {
 }
 
 interface Font {
-  label: string;
-  fontName: string;
-  value: string;
+  id: string;
+  name: string;
+  fileUrl: string;
+  format: string;
 }
 
 const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
-  const [fonts, setFonts] = useState<Font[]>([]);
   const [textProps, setTextProps] = useState({
     id: 1,
     fontSize: 50,
     fontFamily: "Arial",
     fill: "#faf8f8",
-    text: "Olá :)",
+    text: "",
     opacity: 1,
     letterSpacing: 0,
     strokeWidth: 0,
@@ -60,9 +62,9 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
     iconHeight: 100,
   });
 
-  const [texts, setTexts] = useState<textProps[]>([
-    { ...textProps, id: 1 }, // Texto inicial
-  ]);
+  // const { fonts, getFonts } = useUSer();
+
+  const [texts, setTexts] = useState<textProps[]>([{ ...textProps, id: 1 }]);
   const [nextId, setNextId] = useState(2);
   const [currentText, setCurrentText] = useState<string>("");
 
@@ -107,32 +109,6 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
     setTextProps({ ...textProps, fill: color.hex });
   };
 
-  useEffect(() => {
-    async function fetchFonts() {
-      try {
-        const response = await fetch("/api/fonts");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setFonts(data);
-
-        data.forEach((font: Font) => {
-          const style = document.createElement("style");
-          style.textContent = `@font-face {
-            font-family: '${font.label}';
-            src: url('${font.value}');
-          }`;
-          document.head.appendChild(style);
-        });
-      } catch (error) {
-        console.error("Error fetching fonts:", error);
-      }
-    }
-
-    fetchFonts();
-  }, [isOpen]);
-
   return (
     <CustomModal
       isOpen={isOpen}
@@ -146,7 +122,6 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
     >
       {modalMode.font ? (
         <FontWrapper
-          fonts={fonts}
           textProps={textProps}
           modalMode={modalMode}
           setTextProps={setTextProps}

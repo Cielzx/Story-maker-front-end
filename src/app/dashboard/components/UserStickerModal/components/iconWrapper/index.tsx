@@ -12,6 +12,8 @@ import {
 import { useDropzone } from "react-dropzone";
 import { modalModeProps, textProps } from "../..";
 
+import { useForm, UseFormRegister } from "react-hook-form";
+
 interface IconProps {
   textProps: textProps;
 
@@ -108,19 +110,17 @@ const IconWrapper = ({
         </button>
         <h2 className="text-2xl">Icones</h2>
 
-        {user.is_admin ? (
+        {user.is_admin && (
           <button
             onClick={() => setShowDrop(!drop)}
             className="btn-form w-[25%] h-[40px] text-white text-base flex justify-center items-center absolute right-[6%]"
           >
             {drop ? "Fechar" : "Adicionar"}
           </button>
-        ) : (
-          <></>
         )}
       </div>
 
-      {drop ? (
+      {drop && (
         <div
           {...getRootProps()}
           className={`dropzone ${isDragActive ? "active" : ""}`}
@@ -148,8 +148,6 @@ const IconWrapper = ({
             </div>
           )}
         </div>
-      ) : (
-        <></>
       )}
 
       <ul className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 p-4 ">
