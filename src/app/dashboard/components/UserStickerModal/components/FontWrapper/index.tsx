@@ -1,4 +1,4 @@
-import { ArrowLeft, Image } from "lucide-react";
+import { ArrowLeft, FileType, Image } from "lucide-react";
 import {
   Dispatch,
   SetStateAction,
@@ -116,11 +116,11 @@ const FontWrapper = ({
             >
               <input {...getInputProps()} />
               {isDragActive ? (
-                <p>Solte a imagem aqui ...</p>
+                <p>Solte a fonte aqui ...</p>
               ) : (
                 <div className="w-full flex flex-col items-center h-full justify-center text-white font-extrabold text-[15px] p-2">
-                  <p>Arraste uma imagem aqui ou clique para selecionar</p>
-                  <Image size={30} />
+                  <p>Arraste uma fonte aqui ou clique para selecionar</p>
+                  <FileType size={30} />
                 </div>
               )}
             </div>
