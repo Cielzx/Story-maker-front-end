@@ -78,7 +78,7 @@ const FontWrapper = ({
         {user.is_admin && (
           <button
             onClick={() => setShowDrop(!drop)}
-            className="btn-form w-[25%] h-[40px] z-10 text-white text-base flex justify-center items-center absolute right-[6%]"
+            className="btn-form w-[25%] h-[40px] z-20 text-white text-base flex justify-center items-center absolute right-[6%]"
           >
             {drop ? "Fechar" : "Adicionar"}
           </button>
@@ -89,7 +89,7 @@ const FontWrapper = ({
         <div className="w-full h-full absolute flex items-center">
           <form
             onSubmit={handleSubmit(onSub)}
-            className="w-full h-full  bg-[rgba(0,0,0,0.8)] text-white flex gap-2 flex-col justify-center items-center p-2"
+            className="w-full h-full  bg-[rgba(0,0,0,0.8)] text-white flex z-10 gap-2 flex-col justify-center items-center p-2"
           >
             <Input
               label="Nome da fonte"
@@ -149,7 +149,7 @@ const FontWrapper = ({
                 setTextProps({ ...textProps, fontFamily: font.name });
                 setModalMode({ ...modalMode, font: !modalMode.font });
               }}
-              className="w-[80%] flex justify-center items-center"
+              className="w-[80%] flex justify-center z-5 items-center"
             >
               <p
                 className="flex items-center"
