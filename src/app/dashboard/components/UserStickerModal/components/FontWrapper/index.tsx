@@ -1,4 +1,4 @@
-import { ArrowLeft, FileType, Image } from "lucide-react";
+import { ArrowLeft, FileType, Image, Trash } from "lucide-react";
 import {
   Dispatch,
   SetStateAction,
@@ -32,7 +32,7 @@ const FontWrapper = ({
 }: FontProps) => {
   const [file, setFile] = useState<File[]>();
   const [drop, setShowDrop] = useState(false);
-  const { createFont, fetchFonts, user, fonts } = useUSer();
+  const { createFont, fetchFonts, user, fonts, deleteFont } = useUSer();
   const {
     register,
     handleSubmit,
@@ -136,21 +136,31 @@ const FontWrapper = ({
         {fonts.map((font) => (
           <li
             key={font.id}
-            onClick={() => {
-              setTextProps({ ...textProps, fontFamily: font.name });
-              setModalMode({ ...modalMode, font: !modalMode.font });
-            }}
-            className="w-full h-[80px] flex justify-center border border-s-white rounded-md cursor-pointer text-white"
+            className="w-full h-[80px] relative flex justify-center border group border-s-white rounded-md z-5 cursor-pointer text-white"
           >
-            <p
-              className="flex items-center"
-              style={{
-                fontFamily: `${font.name}`,
-                fontSize: "clamp(2rem, 1vw + 1rem, 1rem)",
+            {user.is_admin && (
+              <div className="w-full h-[30px] hidden absolute group-hover:flex flex z-10 left-0">
+                <Trash onClick={() => deleteFont(font.id)} size={30} />
+              </div>
+            )}
+
+            <div
+              onClick={() => {
+                setTextProps({ ...textProps, fontFamily: font.name });
+                setModalMode({ ...modalMode, font: !modalMode.font });
               }}
+              className="w-[80%] flex justify-center items-center"
             >
-              {font.name}
-            </p>
+              <p
+                className="flex items-center"
+                style={{
+                  fontFamily: `${font.name}`,
+                  fontSize: "clamp(2rem, 1vw + 1rem, 1rem)",
+                }}
+              >
+                {font.name}
+              </p>
+            </div>
           </li>
         ))}
       </ul>

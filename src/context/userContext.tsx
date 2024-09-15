@@ -78,6 +78,7 @@ interface userValues {
   fonts: fontData[];
   fetchFonts(): Promise<void>;
   createFont: (File: File, name: string) => Promise<number | undefined>;
+  deleteFont: (id: string) => Promise<void>;
 }
 
 export const UserContext = createContext<userValues>({} as userValues);
@@ -174,13 +175,17 @@ export const UserProvider = ({ children }: userProviderProp) => {
     }
   };
 
-  const getFonts = async () => {
+  const deleteFont = async (id: string) => {
     try {
-      const response = await api.get(`users/fonts`);
+      await api.delete(`users/fonts/${id}`);
 
-      setFonts(response.data);
+      Toast({
+        message: "Fonte deletada",
+        isSucess: false,
+      });
 
-      return fonts;
+      fetchFonts();
+      return;
     } catch (error) {
       console.log(error);
     }
@@ -277,6 +282,7 @@ export const UserProvider = ({ children }: userProviderProp) => {
         fonts,
         fetchFonts,
         createFont,
+        deleteFont,
       }}
     >
       {children}
