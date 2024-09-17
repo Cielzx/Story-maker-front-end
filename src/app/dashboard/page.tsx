@@ -45,7 +45,7 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-grow flex-col">
       <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
         <section className="w-full flex flex-col absolute">
           <div className="w-full  p-4 h-full  flex flex-col justify-center items-center">
@@ -78,7 +78,7 @@ const DashBoard = () => {
             <h3>Recentes</h3>
             <RecentList stickers={sticker!} />
           </div>
-          <div className="flex flex-col w-full h-[50vh] min-[940px]:h-[60vh] justify-center items-center">
+          <div className="flex flex-col w-full h-[55vh] min-[940px]:h-[60vh] justify-center items-center">
             <ReusableList items={categoryArray} search={search} />
           </div>
         </section>
