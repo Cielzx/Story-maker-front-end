@@ -22,11 +22,12 @@ export interface iSticker {
   id: string;
   figure_name: string;
   subCategoryId: string;
-  figure_image?: string;
+  figure_image: string;
+  created_at: string;
 }
 
 interface stickerValues {
-  sticker: iSticker | undefined;
+  sticker: iSticker[] | undefined;
   getSticker: (id?: string) => void;
   setFigureImage: React.Dispatch<React.SetStateAction<File | null>>;
   createSticker: (imgMode?: string, file?: File) => void;
@@ -58,7 +59,7 @@ interface iIcon {
 export const StickerContext = createContext<stickerValues>({} as stickerValues);
 
 export const StickerProvider = ({ children }: categoryProp) => {
-  const [sticker, setSticker] = useState<iSticker>();
+  const [sticker, setSticker] = useState<iSticker[]>();
   const [icons, setIcons] = useState<iIcon[]>();
   const [figureImage, setFigureImage] = useState<File | null>(null);
   const [showSpinner, setShowSpinner] = useState(false);

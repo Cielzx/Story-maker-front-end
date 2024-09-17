@@ -164,7 +164,7 @@ const ReusableList = ({ items, search }: props) => {
     setOpacity(event.target.value);
   };
   return (
-    <div className="w-full h-full flex flex-wrap gap-2 p-3 ">
+    <div className="w-full h-full flex flex-wrap gap-2 p-2">
       <div
         className="w-full h-full overflow-y-scroll"
         style={{
@@ -186,7 +186,7 @@ const ReusableList = ({ items, search }: props) => {
         )}
 
         {filteredItems && filteredItems.length > 0 ? (
-          <ul className="w-full   grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 p-4">
+          <ul className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 p-2">
             {filteredItems.map((item) => (
               <motion.div
                 key={item.id}

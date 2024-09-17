@@ -2,16 +2,18 @@
 import { Heart, Home, Search, Share, UploadIcon, User } from "lucide-react";
 import { useDisclosure } from "@chakra-ui/react";
 import DropDown from "../components/DropDown/dropdownUser";
-import { useCategory, useUSer } from "@/hooks";
+import { useCategory, useSticker, useUSer } from "@/hooks";
 import Loading from "../components/Loading";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import ReusableList from "./components/Lists/ReusableList";
 import DashMenu from "./components/dashMenu";
 import KonvaSVGExample from "./components/StickerCreation";
+import RecentList from "./components/RecentStickerList";
 
 const DashBoard = () => {
   const { user, getUser } = useUSer();
+  const { getSticker, sticker } = useSticker();
   const { categoryArray, getCategory, subCategories, deleteCategory } =
     useCategory();
   const [search, setSearch] = useState("");
@@ -19,6 +21,7 @@ const DashBoard = () => {
   useEffect(() => {
     getCategory();
     getUser();
+    getSticker();
   }, []);
 
   if (!user) {
@@ -45,7 +48,7 @@ const DashBoard = () => {
     <div className="w-full h-full flex flex-col">
       <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
         <section className="w-full flex flex-col absolute">
-          <div className="w-full  p-6 h-full  flex flex-col justify-center items-center">
+          <div className="w-full  p-2 h-full  flex flex-col justify-center items-center">
             <div className="w-full flex gap-2 items-center justify-between ">
               <p
                 className=""
@@ -71,7 +74,11 @@ const DashBoard = () => {
               <Search color="purple" />
             </div>
           </div>
-          <div className="flex w-full h-[72vh] min-[940px]:h-[79vh] justify-center items-center">
+          <div className="w-full h-[130px] min-[940px]:h-[150px] flex flex-col p-2 overflow-x-auto">
+            <h3>Recentes</h3>
+            <RecentList stickers={sticker!} />
+          </div>
+          <div className="flex flex-col w-full h-[60vh] min-[940px]:h-[60vh] justify-center items-center">
             <ReusableList items={categoryArray} search={search} />
           </div>
         </section>

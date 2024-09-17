@@ -1,7 +1,7 @@
 import Toast from "@/app/components/Toast";
 import { useSticker, useUSer } from "@/hooks";
 import { Heart, Trash } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ReactSVG } from "react-svg";
 import Pallet from "../components/img/pallete.png";
 
@@ -31,6 +31,20 @@ const Sticker = ({
   const [isSvg, setIsSvg] = useState<boolean>(true);
   const { user } = useUSer();
   const { deleteSticker } = useSticker();
+
+  const beforeInjection = useCallback(
+    (svg: SVGSVGElement) => {
+      const paths = svg.querySelectorAll("path");
+      paths.forEach((path) => {
+        path.setAttribute("fill", `${color}`);
+        path.setAttribute("opacity", `${opacity}`);
+      });
+      svg.setAttribute("width", "100%");
+      svg.setAttribute("height", "100%");
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    },
+    [color, opacity]
+  );
 
   useEffect(() => {
     setIsSvg(item.figure_image?.endsWith(".svg"));
@@ -79,18 +93,10 @@ const Sticker = ({
 
       {isSvg ? (
         <ReactSVG
-          key={item.id}
           src={svgUrl}
           className="w-full h-full"
-          beforeInjection={(svg) => {
-            svg.querySelectorAll("path").forEach((path) => {
-              path.setAttribute("fill", color);
-              path.setAttribute("opacity", `${opacity}`);
-            }, []);
-            svg.setAttribute("width", "100%");
-            svg.setAttribute("height", "200px");
-            svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
-          }}
+          beforeInjection={beforeInjection}
+          wrapper="svg"
         />
       ) : (
         <img
