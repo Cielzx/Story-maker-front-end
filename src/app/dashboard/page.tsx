@@ -78,7 +78,7 @@ const DashBoard = () => {
             <h3>Recentes</h3>
             <RecentList stickers={sticker!} />
           </div>
-          <div className="flex flex-col w-full h-[56vh] min-[940px]:h-[60vh] justify-center items-center">
+          <div className="flex flex-col w-full h-[50vh] min-[940px]:h-[60vh] justify-center items-center">
             <ReusableList items={categoryArray} search={search} />
           </div>
         </section>
