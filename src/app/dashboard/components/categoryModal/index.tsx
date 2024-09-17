@@ -40,22 +40,20 @@ const CategoryModal = ({ isOpen, onClose, id }: modalProps) => {
 
   const onDrop = useCallback(
     (files: File[]) => {
-      if (mode === "sticker") {
-        files.forEach(async (file, index: number) => {
-          setTimeout(() => {
-            if (imgMode !== "") {
-              createSticker(imgMode, files[index] || filesPaste[index]);
-            } else {
-              Toast({
-                message: "Selecione o formato da imagem SVG OU PNG",
-                isSucess: false,
-              });
-            }
-          }, 1000);
+      files.forEach(async (file, index: number) => {
+        setTimeout(() => {
+          if (imgMode !== "") {
+            createSticker(imgMode, files[index] || filesPaste[index]);
+          } else {
+            Toast({
+              message: "Selecione o formato da imagem SVG OU PNG",
+              isSucess: false,
+            });
+          }
+        }, 1000);
 
-          // setFigureImage(files[index]);
-        });
-      }
+        // setFigureImage(files[index]);
+      });
 
       const file = new FileReader();
 
