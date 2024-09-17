@@ -48,7 +48,7 @@ const DashBoard = () => {
     <div className="w-full h-full flex flex-col">
       <div className="w-full flex flex-col relative flex-grow bg-cover bg-center text-white items-center ">
         <section className="w-full flex flex-col absolute">
-          <div className="w-full  p-2 h-full  flex flex-col justify-center items-center">
+          <div className="w-full  p-4 h-full  flex flex-col justify-center items-center">
             <div className="w-full flex gap-2 items-center justify-between ">
               <p
                 className=""
@@ -74,7 +74,7 @@ const DashBoard = () => {
               <Search color="purple" />
             </div>
           </div>
-          <div className="w-full h-[130px] min-[940px]:h-[150px] flex flex-col p-2 overflow-x-auto">
+          <div className="w-full h-[130px] min-[940px]:h-[150px] flex flex-col p-4 overflow-x-auto">
             <h3>Recentes</h3>
             <RecentList stickers={sticker!} />
           </div>
