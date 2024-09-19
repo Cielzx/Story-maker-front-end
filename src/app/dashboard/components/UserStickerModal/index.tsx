@@ -165,7 +165,7 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
               <div>
                 {modalMode.fill ? (
                   <ChromePicker
-                    className="absolute bottom-20 right-0"
+                    className="absolute bottom-20 right-0 z-10"
                     color={textProps.fill}
                     onChange={handleColorChange}
                     disableAlpha

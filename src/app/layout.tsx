@@ -44,7 +44,6 @@ export default function RootLayout({
           padding: "0",
           overflowX: "hidden",
           overflowY: "hidden",
-          height: "100dvh",
         }}
       >
         <ToastProvider>

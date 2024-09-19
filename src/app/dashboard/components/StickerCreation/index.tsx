@@ -71,8 +71,6 @@ const StickerCanvas = ({
 
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  const [format, setFormat] = useState(false);
-
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const cloudinary = new Cloudinary({ cloud_name: "dpv8s8uvd" });
@@ -118,18 +116,6 @@ const StickerCanvas = ({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const handleTransform = () => {
-    const node = textRef.current;
-    const scaleX = node!.scaleX();
-    const scaleY = node!.scaleY();
-
-    node!.scaleX(1);
-    node!.scaleY(1);
-
-    node!.width(node!.width() * scaleX);
-    node!.height(node!.height() * scaleY);
-  };
 
   function dataURLToFile(dataURL: string, fileName: string): File {
     const arr = dataURL.split(",");
@@ -232,9 +218,16 @@ const StickerCanvas = ({
     }
   };
 
+  const handleFontChange = (id: number, fontFamily: string) => {
+    setTexts((prevTexts) =>
+      prevTexts.map((text) => (text.id === id ? { ...text, fontFamily } : text))
+    );
+  };
+
   useEffect(() => {
     loadImage();
-  }, [textProps.image]);
+    handleFontChange(selectedId!, textProps.fontFamily);
+  }, [textProps.image, textProps.fontFamily]);
 
   return (
     <div
@@ -277,7 +270,7 @@ const StickerCanvas = ({
               y={10 + text.id * 20}
               text={text.text}
               fontSize={textProps.fontSize}
-              fontFamily={textProps.fontFamily}
+              fontFamily={text.fontFamily}
               fill={textProps.fill}
               opacity={textProps.opacity}
               letterSpacing={textProps.letterSpacing}
@@ -322,7 +315,7 @@ const StickerCanvas = ({
 
       <div className="w-full h-[50px] absolute bottom-0 bg-[rgba(0,0,0,0.4)] flex justify-center items-center text-white z-[9]">
         <button onClick={() => userSticker("")} className="btn-form">
-          {format ? "Fechar" : "Criar figurinha"}
+          Criar figurinha
         </button>
       </div>
     </div>

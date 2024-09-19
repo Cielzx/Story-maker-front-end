@@ -100,7 +100,7 @@ const IconWrapper = ({
   }
 
   return (
-    <div className="w-[60%] bg-black text-white max-[940px]:w-full h-full flex flex-col absolute z-10 top-[5%] max-[940px]:top-[1%] max-[940px]:left-[1%] p-2">
+    <div className="w-full bg-black text-white max-[940px]:w-full h-full flex flex-col absolute z-10 top-[5%] max-[940px]:top-[1%] max-[940px]:left-[1%] p-2">
       <div className="w-full h-[80px] flex justify-center items-center relative">
         <button
           onClick={() => setModalMode({ ...modalMode, icon: !modalMode.icon })}
@@ -160,7 +160,7 @@ const IconWrapper = ({
                 handleIconSelect();
                 setModalMode({ ...modalMode, icon: !modalMode.icon });
               }}
-              className="w-[80%] h-[130px] relative group"
+              className="w-full h-[130px] relative group"
             >
               {user.is_admin ? (
                 <div className="w-ful h-[20px] z-10  absolute hidden group-hover:flex right-0">
@@ -172,7 +172,7 @@ const IconWrapper = ({
 
               <img
                 src={icon.icon_image}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 alt="icone"
               />
             </div>

@@ -134,7 +134,7 @@ const ActionButton = ({
       icon: (
         <img
           src="https://images2.imgbox.com/ef/4e/BzXeOtCi_o.png"
-          className="w-full h-[25px]"
+          className="w-[25px] h-[25px]"
           alt=""
         />
       ),
@@ -148,17 +148,19 @@ const ActionButton = ({
         }),
       icon: <TypeOutline size={25} />,
     },
-    // Adicione mais funcionalidades conforme necessário
   ];
   return (
-    <div className="w-[500px] h-full flex gap-2 relative overflow-x-auto cursor-pointer">
+    <div className="w-[500px] min-[940px]:w-[90%] h-full flex gap-2 relative overflow-x-auto cursor-pointer p-2">
       {buttonActions.map((action, index) => (
         <div
           className="w-full h-[90%] flex flex-col justify-center items-center gap-1"
           key={index}
           onClick={action.onClick}
         >
-          <p style={{ fontSize: "clamp(1.5rem, 1vw + 1rem, 1rem)" }}>
+          <p
+            className="object-contain"
+            style={{ fontSize: "clamp(1.5rem, 1vw + 1rem, 1rem)" }}
+          >
             {action.icon}
           </p>
 
