@@ -281,6 +281,7 @@ const StickerCanvas = ({
               draggable
               onClick={() => handleSelect(text.id)}
               onTap={() => handleSelect(text.id)}
+              onDblTap={() => removeText(text.id)}
               onDblClick={() => removeText(text.id)}
               ref={(node) => {
                 if (text.id === selectedId) addTransformer(node);
