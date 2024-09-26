@@ -163,114 +163,110 @@ const UserStickerModal = ({ isOpen, onClose, modalSticker }: modalProps) => {
 
             <div className="w-full bg-black h-[70px] flex gap-2 relative justify-center items-center  text-white">
               <div>
-                {modalMode.fill ? (
+                {modalMode.fill && (
                   <ChromePicker
                     className="absolute bottom-20 right-0 z-10"
                     color={textProps.fill}
                     onChange={handleColorChange}
                     disableAlpha
                   />
-                ) : (
-                  <></>
                 )}
               </div>
 
               {modalMode.fontSize ||
-              modalMode.opacity ||
-              modalMode.letterSpacing ||
-              modalMode.strokeWidth ||
-              modalMode.iconHeight ? (
-                <div className="w-full h-full z-[5] flex justify-center gap-2 items-center absolute bg-gray-700">
-                  <div className="w-[80%] h-[20px] border border-black rounded-md">
-                    <input
-                      type="range"
-                      min={
-                        modalMode.strokeWidth
-                          ? "0"
-                          : "" || modalMode.iconHeight
-                          ? "5"
-                          : ""
-                      }
-                      max={
-                        modalMode.strokeWidth
-                          ? "5"
-                          : "" || modalMode.iconHeight
-                          ? "300"
-                          : ""
-                      }
-                      value={value}
-                      onChange={(e) => {
-                        {
-                          if (modalMode.fontSize) {
-                            setTextProps({
-                              ...textProps,
-                              fontSize: +e.currentTarget.value,
-                            });
-                          } else if (modalMode.opacity) {
-                            setTextProps({
-                              ...textProps,
-                              opacity: +e.currentTarget.value / 100,
-                            });
-                          } else if (modalMode.letterSpacing) {
-                            setTextProps({
-                              ...textProps,
-                              letterSpacing: +e.currentTarget.value,
-                            });
-                          } else if (modalMode.strokeWidth) {
-                            setTextProps({
-                              ...textProps,
-                              strokeWidth: +e.currentTarget.value,
-                            });
-                          } else if (modalMode.iconHeight) {
-                            setTextProps({
-                              ...textProps,
-                              iconHeight: +e.currentTarget.value,
-                            });
+                modalMode.opacity ||
+                modalMode.letterSpacing ||
+                modalMode.strokeWidth ||
+                (modalMode.iconHeight && (
+                  <div className="w-full h-full z-[5] flex justify-center gap-2 items-center absolute bg-gray-700">
+                    <div className="w-[80%] h-[20px] border border-black rounded-md">
+                      <input
+                        type="range"
+                        min={
+                          modalMode.strokeWidth
+                            ? "0"
+                            : "" || modalMode.iconHeight
+                            ? "5"
+                            : ""
+                        }
+                        max={
+                          modalMode.strokeWidth
+                            ? "5"
+                            : "" || modalMode.iconHeight
+                            ? "300"
+                            : ""
+                        }
+                        value={value}
+                        onChange={(e) => {
+                          {
+                            if (modalMode.fontSize) {
+                              setTextProps({
+                                ...textProps,
+                                fontSize: +e.currentTarget.value,
+                              });
+                            } else if (modalMode.opacity) {
+                              setTextProps({
+                                ...textProps,
+                                opacity: +e.currentTarget.value / 100,
+                              });
+                            } else if (modalMode.letterSpacing) {
+                              setTextProps({
+                                ...textProps,
+                                letterSpacing: +e.currentTarget.value,
+                              });
+                            } else if (modalMode.strokeWidth) {
+                              setTextProps({
+                                ...textProps,
+                                strokeWidth: +e.currentTarget.value,
+                              });
+                            } else if (modalMode.iconHeight) {
+                              setTextProps({
+                                ...textProps,
+                                iconHeight: +e.currentTarget.value,
+                              });
+                            }
                           }
+                        }}
+                        className="w-full h-full bg-gray-600 border z-[5] rounded-md outline-none border-none text-white "
+                      />
+                    </div>
+
+                    <CircleCheck
+                      className="cursor-pointer"
+                      onClick={() => {
+                        if (modalMode.fontSize) {
+                          setModalMode({
+                            ...modalMode,
+                            fontSize: !modalMode.fontSize,
+                          });
+                        } else if (modalMode.opacity) {
+                          setModalMode({
+                            ...modalMode,
+                            opacity: !modalMode.opacity,
+                          });
+                        } else if (modalMode.letterSpacing) {
+                          setModalMode({
+                            ...modalMode,
+                            letterSpacing: !modalMode.letterSpacing,
+                          });
+                        } else if (modalMode.strokeWidth) {
+                          setModalMode({
+                            ...modalMode,
+                            strokeWidth: !modalMode.strokeWidth,
+                          });
+                        } else if (modalMode.iconHeight) {
+                          setModalMode({
+                            ...modalMode,
+                            iconHeight: !modalMode.iconHeight,
+                          });
                         }
                       }}
-                      className="w-full h-full bg-gray-600 border z-[5] rounded-md outline-none border-none text-white "
+                      size={30}
+                      fill="white"
+                      color="black"
                     />
                   </div>
-
-                  <CircleCheck
-                    className="cursor-pointer"
-                    onClick={() => {
-                      if (modalMode.fontSize) {
-                        setModalMode({
-                          ...modalMode,
-                          fontSize: !modalMode.fontSize,
-                        });
-                      } else if (modalMode.opacity) {
-                        setModalMode({
-                          ...modalMode,
-                          opacity: !modalMode.opacity,
-                        });
-                      } else if (modalMode.letterSpacing) {
-                        setModalMode({
-                          ...modalMode,
-                          letterSpacing: !modalMode.letterSpacing,
-                        });
-                      } else if (modalMode.strokeWidth) {
-                        setModalMode({
-                          ...modalMode,
-                          strokeWidth: !modalMode.strokeWidth,
-                        });
-                      } else if (modalMode.iconHeight) {
-                        setModalMode({
-                          ...modalMode,
-                          iconHeight: !modalMode.iconHeight,
-                        });
-                      }
-                    }}
-                    size={30}
-                    fill="white"
-                    color="black"
-                  />
-                </div>
-              ) : (
-                <></>
-              )}
+                ))}
 
               <ActionButton
                 modalMode={modalMode}

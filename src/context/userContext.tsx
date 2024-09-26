@@ -263,7 +263,7 @@ export const UserProvider = ({ children }: userProviderProp) => {
 
   useEffect(() => {
     getUser();
-  }, [pathname]);
+  }, []);
 
   return (
     <UserContext.Provider

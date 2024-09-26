@@ -150,7 +150,7 @@ const ActionButton = ({
     },
   ];
   return (
-    <div className="w-[500px] min-[940px]:w-[90%] h-full flex gap-2 relative overflow-x-auto cursor-pointer p-2">
+    <div className="w-[500px] min-[940px]:w-full h-full flex gap-2 relative overflow-x-auto cursor-pointer p-1">
       {buttonActions.map((action, index) => (
         <div
           className="w-full h-[90%] flex flex-col justify-center items-center gap-1"
@@ -169,7 +169,7 @@ const ActionButton = ({
               className={`whitespace-nowrap ${
                 action.label.length > 10 ? "scrolling-text" : ""
               }`}
-              style={{ fontSize: "clamp(0.5rem, 1vw + 0.5rem, 1rem)" }}
+              style={{ fontSize: "clamp(0.5rem, 1vw + 0.5rem, 0.7rem)" }}
             >
               {action.label}
             </p>

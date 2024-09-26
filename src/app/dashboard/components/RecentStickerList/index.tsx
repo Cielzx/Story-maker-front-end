@@ -42,63 +42,52 @@ const RecentList = ({ stickers }: RecentProps) => {
             .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
             .slice(0, 10)
             .map((sticker) => (
-              <>
-                <li
-                  onClick={async () => {
-                    try {
-                      await navigator.clipboard.write([
-                        new ClipboardItem({
-                          "image/png": writeImageToClipboard(
-                            sticker.figure_image,
-                            "#FFFF",
-                            1
-                          ),
-                        }),
-                      ]);
+              <li
+                key={sticker.id}
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.write([
+                      new ClipboardItem({
+                        "image/png": writeImageToClipboard(
+                          sticker.figure_image,
+                          "#FFFF",
+                          1
+                        ),
+                      }),
+                    ]);
 
-                      Toast({
-                        message: "Figurinha copiada",
-                        isSucess: true,
-                      });
-                    } catch (error: any) {
-                      console.log(`${error.name}`, `${error.message}`);
-                    }
-                  }}
-                  className="w-auto h-auto flex flex-col z-[5] rounded-lg relative group"
-                  style={{
-                    boxShadow: "rgba(255, 255, 255, 0.753) 0px 2px 4px -1px",
-                    minWidth: "83px",
-                    flex: "1 1 150px",
-                  }}
-                >
-                  <div className="w-full h-full z-5 flex justify-between p-1">
-                    {sticker && sticker.figure_image.endsWith("svg") ? (
-                      <ReactSVG
-                        src={sticker.figure_image}
-                        className="w-full h-full rounded-lg"
-                        beforeInjection={beforeInjection}
-                        wrapper="svg"
-                      />
-                    ) : (
-                      <img
-                        src={sticker.figure_image}
-                        alt="Sticker"
-                        className="w-full h-full object-contain rounded-lg"
-                      />
-                    )}
-
-                    {/* <button className="w-full font-semibold h-[40px] z-[10] absolute items-center hidden group-hover:flex group-hover:text-center bottom-[0%] flex justify-center rounded-md bg-purple-400 cursor-pointer">
-                <p
-                  style={{
-                    fontSize: "clamp(0.5rem, 1vw + 1rem, 1rem)",
-                  }}
-                >
-                  Copiar figurinha
-                </p>
-              </button> */}
-                  </div>
-                </li>
-              </>
+                    Toast({
+                      message: "Figurinha copiada",
+                      isSucess: true,
+                    });
+                  } catch (error: any) {
+                    console.log(`${error.name}`, `${error.message}`);
+                  }
+                }}
+                className="w-auto h-[85px] flex flex-col z-[5] rounded-lg relative group"
+                style={{
+                  boxShadow: "rgba(255, 255, 255, 0.753) 0px 2px 4px -1px",
+                  minWidth: "83px",
+                  flex: "1 1 180px",
+                }}
+              >
+                <div className="w-full h-full z-5 flex items-center  justify-between p-1">
+                  {sticker && sticker.figure_image.endsWith("svg") ? (
+                    <ReactSVG
+                      src={sticker.figure_image}
+                      className="w-full h-full rounded-lg"
+                      beforeInjection={beforeInjection}
+                      wrapper="svg"
+                    />
+                  ) : (
+                    <img
+                      src={sticker.figure_image}
+                      alt="Sticker"
+                      className="w-full h-full object-contain rounded-lg"
+                    />
+                  )}
+                </div>
+              </li>
             ))}
       </ul>
     </div>

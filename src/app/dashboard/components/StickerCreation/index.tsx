@@ -238,7 +238,7 @@ const StickerCanvas = ({
         backgroundSize: "100% 100%",
       }}
     >
-      {modalMode.text ? (
+      {modalMode.text && (
         <div className="w-full h-full absolute bg-[rgba(0,0,0,0.6)] flex justify-center items-center z-10">
           <input
             type="text"
@@ -249,8 +249,6 @@ const StickerCanvas = ({
             className="input-style bg-transparent w-[85%] p-2 mb-4 text-white font-extrabold"
           />
         </div>
-      ) : (
-        <></>
       )}
 
       <Stage

@@ -17,7 +17,7 @@ const FavoritePage = () => {
 
   useEffect(() => {
     getUser();
-  }, [user]);
+  }, []);
 
   const handleColorChange = (color: any) => {
     setColor(color.hex);

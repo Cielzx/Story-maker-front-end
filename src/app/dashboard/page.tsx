@@ -74,7 +74,7 @@ const DashBoard = () => {
               <Search color="purple" />
             </div>
           </div>
-          <div className="w-full h-[130px] min-[940px]:h-[150px] flex flex-col p-4 overflow-x-auto">
+          <div className="w-full h-[145px] min-[940px]:h-[150px] flex flex-col p-3 overflow-x-auto">
             <h3>Recentes</h3>
             <RecentList stickers={sticker!} />
           </div>
