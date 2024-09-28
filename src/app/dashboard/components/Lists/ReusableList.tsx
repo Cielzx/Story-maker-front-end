@@ -3,7 +3,7 @@ import Loading from "@/app/components/Loading";
 import { useCategory, useSticker, useUSer } from "@/hooks";
 import { CombineCategorySchema } from "@/schemas/category.schema";
 import { motion } from "framer-motion";
-import { Edit, Heart, Trash } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@chakra-ui/react";
@@ -16,33 +16,16 @@ interface props {
   subId?: string;
   search?: string;
 }
-
-import {
-  AlphaPicker,
-  ChromePicker,
-  SketchPicker,
-  SwatchesPicker,
-} from "react-color";
-import { IoIosColorPalette } from "react-icons/io";
-import { resolve } from "path";
-import { ReactSVG } from "react-svg";
 import ColorPicker from "@/app/components/ColorPicker";
 
 const ReusableList = ({ items, search }: props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { deleteCategory, deleteSubCategory } = useCategory();
-  const {
-    deleteSticker,
-    createFavorite,
-    getSticker,
-    sticker,
-    writeImageToClipboard,
-  } = useSticker();
+  const { deleteSticker, writeImageToClipboard } = useSticker();
   const { mode, setMode, user } = useUSer();
   const [clientMode, setClientMode] = useState("");
   const [height, setHeight] = useState("");
-  const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const [color, setColor] = useState("#FFFFFFFF");
   const [rgbcolor, setRgbColor] = useState({ r: 0, g: 0, b: 0 });
   const [id, setId] = useState("");
@@ -92,11 +75,6 @@ const ReusableList = ({ items, search }: props) => {
   }, [mode]);
 
   useEffect(() => {
-    const savedFavorites = localStorage.getItem("favorites");
-    if (savedFavorites) {
-      setFavoriteIds(JSON.parse(savedFavorites));
-    }
-
     if (clientMode === "category" || clientMode === "subCategory") {
       setHeight("300px");
     } else {
@@ -107,22 +85,6 @@ const ReusableList = ({ items, search }: props) => {
   if (!user) {
     return <Loading />;
   }
-
-  const handleFavoriteClick = async (item: any) => {
-    await getSticker(item.id);
-    const updatedFavorites = [...favoriteIds];
-    const favoriteIndex = updatedFavorites.indexOf(item.id);
-
-    if (favoriteIndex === -1) {
-      createFavorite(user.id, item.id);
-      updatedFavorites.push(item.id);
-    } else {
-      updatedFavorites.splice(favoriteIndex, 1);
-    }
-
-    setFavoriteIds(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-  };
 
   if (!items) {
     return <Loading />;
@@ -185,7 +147,7 @@ const ReusableList = ({ items, search }: props) => {
           <></>
         )}
 
-        {filteredItems && filteredItems.length > 0 ? (
+        {filteredItems && filteredItems.length > 0 && (
           <ul className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 p-2">
             {filteredItems.map((item) => (
               <motion.div
@@ -204,8 +166,6 @@ const ReusableList = ({ items, search }: props) => {
                     item={item}
                     svgUrl={item.figure_image}
                     writeImageToClipboard={writeImageToClipboard}
-                    favoriteIds={favoriteIds}
-                    handleFavoriteClick={handleFavoriteClick}
                     color={color}
                     opacity={opacity}
                   />
@@ -257,23 +217,6 @@ const ReusableList = ({ items, search }: props) => {
                       ) : (
                         <></>
                       )}
-
-                      {clientMode === "sticker" ? (
-                        <Heart
-                          size={20}
-                          className="z-[10]"
-                          fill={
-                            favoriteIds.includes(item.id)
-                              ? "red"
-                              : "transparent"
-                          }
-                          onClick={() => {
-                            handleFavoriteClick(item);
-                          }}
-                        />
-                      ) : (
-                        <></>
-                      )}
                     </div>
 
                     {mode === "sticker" ? (
@@ -306,8 +249,6 @@ const ReusableList = ({ items, search }: props) => {
               </motion.div>
             ))}
           </ul>
-        ) : (
-          <></>
         )}
       </div>
 

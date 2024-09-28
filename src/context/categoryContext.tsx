@@ -147,20 +147,12 @@ export const CategoryProvider = ({ children }: categoryProp) => {
     }
   };
 
-  const updateItem = (updatedItem: iCategoryData) => {
-    setCategoryArray((prevItems) =>
-      prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
-    );
-  };
-
   const updateCategory = async (data: iCategoryData, id: string) => {
     try {
       const response = await api.patch(`category/update/${id}`, data);
       if (data.cover_image) {
         await uploadFile(id, coverImage!);
       }
-
-      updateItem(response.data);
 
       Toast({
         message: "Atualizado com sucesso :)",
@@ -233,11 +225,9 @@ export const CategoryProvider = ({ children }: categoryProp) => {
 
   const updateCategories = async (data: iSubCategories, id: string) => {
     try {
-      const response = await api.patch(`categories/update/${id}`, data);
+      await api.patch(`categories/update/${id}`, data);
 
       await uploadSubFile(id, coverImage!);
-
-      updateItem(response.data);
 
       Toast({
         message: "Atualizado com sucesso :)",
@@ -257,6 +247,7 @@ export const CategoryProvider = ({ children }: categoryProp) => {
   const getSubCategorie = async (id: string) => {
     try {
       const response = await api.get(`categories/${id}`);
+
       setSubCategorie(response.data);
     } catch (error) {
       console.log(error);

@@ -3,7 +3,6 @@ import { useSticker, useUSer } from "@/hooks";
 import { Heart, Trash } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import { ReactSVG } from "react-svg";
-import Pallet from "../components/img/pallete.png";
 
 interface stickerProps {
   svgUrl: string;
@@ -13,8 +12,6 @@ interface stickerProps {
     opacity: number
   ): Promise<Blob>;
   item: any;
-  favoriteIds: string[];
-  handleFavoriteClick: (item: any) => void;
   color: string;
   opacity: number;
 }
@@ -23,14 +20,13 @@ const Sticker = ({
   svgUrl,
   writeImageToClipboard,
   item,
-  favoriteIds,
-  handleFavoriteClick,
   color,
   opacity,
 }: stickerProps) => {
   const [isSvg, setIsSvg] = useState<boolean>(true);
+  const [favorite, setFavorite] = useState(true);
   const { user } = useUSer();
-  const { deleteSticker } = useSticker();
+  const { deleteSticker, updateFavoriteSticker } = useSticker();
 
   const beforeInjection = useCallback(
     (svg: SVGSVGElement) => {
@@ -46,12 +42,21 @@ const Sticker = ({
     [color, opacity]
   );
 
+  const handleFavorite = async (item: any) => {
+    const data = {
+      is_favorited: favorite,
+    };
+
+    updateFavoriteSticker(data, item.id);
+  };
+
   useEffect(() => {
     setIsSvg(item.figure_image?.endsWith(".svg"));
   }, [svgUrl]);
 
   return (
     <li
+      key={item.id}
       className="w-full h-full flex flex-col z-[5px] rounded-lg relative group"
       style={{
         boxShadow: "rgba(255, 255, 255, 0.753) 0px 2px 4px -1px",
@@ -74,9 +79,11 @@ const Sticker = ({
         <Heart
           size={20}
           className="z-[10] absolute right-1"
-          fill={favoriteIds.includes(item.id) ? "red" : "transparent"}
+          fill={item.is_favorited ? "red" : "transparent"}
           onClick={() => {
-            handleFavoriteClick(item);
+            setFavorite(!favorite);
+
+            handleFavorite(item);
           }}
         />
       </div>

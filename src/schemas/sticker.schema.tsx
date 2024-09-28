@@ -5,6 +5,7 @@ export const StickerSchema = z.object({
   figure_name: z.string().min(1, "Nome não pode ser vazio"),
   figure_image: z.string().min(1, "Imagem obrigatoria"),
   subCategoryId: z.string(),
+  is_favorited: z.boolean().optional(),
 });
 
 export type StickerData = z.infer<typeof StickerSchema>;

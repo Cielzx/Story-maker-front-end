@@ -4,6 +4,7 @@ import { StickerSchema } from "./sticker.schema";
 
 export const favoriteSchema = z.object({
   id: z.string(),
+  stickerId: z.string(),
   sticker: StickerSchema,
 });
 

@@ -24,11 +24,18 @@ export interface iSticker {
   subCategoryId: string;
   figure_image: string;
   created_at: string;
+  is_favorited: boolean;
 }
 
 interface stickerValues {
   sticker: iSticker[] | undefined;
   getSticker: (id?: string) => void;
+  updateFavoriteSticker: (
+    data: {
+      is_favorited: boolean;
+    },
+    id: string
+  ) => Promise<void>;
   setFigureImage: React.Dispatch<React.SetStateAction<File | null>>;
   createSticker: (imgMode?: string, file?: File) => void;
   createUserSticker: (imgMode?: string, file?: File) => Promise<void>;
@@ -141,6 +148,35 @@ export const StickerProvider = ({ children }: categoryProp) => {
         message: "Ops! algo deu errado :(",
         isSucess: false,
       });
+    }
+  };
+
+  const getSticker = async (id?: string) => {
+    try {
+      let url = "stickers";
+
+      if (id) {
+        url = `stickers/${id}`;
+      }
+
+      const response = await api.get(url);
+
+      setSticker(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateFavoriteSticker = async (
+    data: { is_favorited: boolean },
+    id: string
+  ) => {
+    try {
+      await api.patch(`stickers/update/${id}`, data);
+
+      createFavorite(user!.id, id);
+    } catch (error) {
+      console.log("Erro:", error);
     }
   };
 
@@ -270,32 +306,16 @@ export const StickerProvider = ({ children }: categoryProp) => {
     }
   };
 
-  const getSticker = async (id?: string) => {
-    try {
-      let url = "stickers";
-
-      if (id) {
-        url = `stickers/${id}`;
-      }
-
-      const response = await api.get(url);
-
-      setSticker(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const createFavorite = async (userId: string, stickerId?: string) => {
     try {
       const updatedData = {
         userId: userId,
         stickerId: stickerId,
       };
-      const response = await api.post("favorites", updatedData);
+      await api.post("favorites", updatedData);
       getUser();
     } catch (error) {
-      console.log(error);
+      <></>;
     }
   };
 
@@ -379,6 +399,7 @@ export const StickerProvider = ({ children }: categoryProp) => {
         createFavorite,
         uploadStickerFile,
         getSticker,
+        updateFavoriteSticker,
         deleteFavorite,
         deleteSticker,
         writeImageToClipboard,
